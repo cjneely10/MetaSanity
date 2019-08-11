@@ -42,7 +42,7 @@ SIGNALP_FOLDER = "/path/to/signalp-4.1"
 RNAMMER_FOLDER = "/path/to/rnammer-1.2.src"
 
 # MetaSanity version
-DOCKER_IMAGE = "cjneely10/MetaSanity:v0.1.0"
+DOCKER_IMAGE = "cjneely10/metasanity:v0.1.0"
 
 
 class ArgParse:
