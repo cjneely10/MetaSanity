@@ -149,7 +149,7 @@ def metagenome_annotation(str directory, str config_file, bint cancel_autocommit
             )
         )
 
-        # Optional task - prokka
+        # Integral task - prokka
         if prokka and cfg.check_pipe_set("prokka", MetagenomeAnnotationConstants.PIPELINE_NAME):
             for task in (
                 # PROKKA annotation pipeline
@@ -168,7 +168,7 @@ def metagenome_annotation(str directory, str config_file, bint cancel_autocommit
                                         out_prefix,
                                         out_prefix + ".faa")
         else:
-            # Required task - predict proteins in contigs with prodigal
+            # Integral task - predict proteins in contigs with prodigal
             task_list.append(
                 Prodigal(
                     output_directory=os.path.join(output_directory, ProdigalConstants.OUTPUT_DIRECTORY),
