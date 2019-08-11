@@ -25,7 +25,7 @@ OUTPUT_ORDER = (
 
 CITATIONS = {
     "$metsanity": {
-        "citation": "Neely C. 2020. METsanity: Pipeline for major biological analyses. https://github.com/cjneely10/BioMetaPipeline.",
+        "citation": "Neely C. 2020. MetaSanity: Pipeline for major biological analyses. https://github.com/cjneely10/MetaSanity.",
         "dependencies": [],
         "version": "latest",
         "in-text": "The genomic analysis was completed using METsanity $version (Neely 2020)."
