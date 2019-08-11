@@ -8,7 +8,7 @@ from configparser import RawConfigParser
 from argparse import RawTextHelpFormatter
 
 """
-BioMetaPipeline calling script
+MetaSanity calling script
 
 
 **********
@@ -41,8 +41,8 @@ SIGNALP_FOLDER = "/path/to/signalp-4.1"
 # RNAmmer software package, including binary, from  http://www.cbs.dtu.dk/cgi-bin/nph-sw_request?rnammer
 RNAMMER_FOLDER = "/path/to/rnammer-1.2.src"
 
-# BioMetaPipeline version
-DOCKER_IMAGE = "cjneely10/biometapipeline:v0.0.3"
+# MetaSanity version
+DOCKER_IMAGE = "cjneely10/MetaSanity:v0.1.0"
 
 
 class ArgParse:
@@ -88,12 +88,12 @@ class ArgParse:
 
 
 class GetDBDMCall:
-    def __init__(self, calling_script_path, db_name, cancel_autocommit, added_flags=[]):
+    def __init__(self, calling_script_path, _db_name, cancel_autocommit, added_flags=[]):
         """ Class handles determining state of dbdm project
 
         """
         self.calling_script_path = calling_script_path
-        self.db_name = db_name
+        self.db_name = _db_name
         self.cancel_autocommit = cancel_autocommit
         self.added_flags = added_flags
 
@@ -177,14 +177,14 @@ ap = ArgParse(
     description=ArgParse.description_builder(
         "pipedm:\tRun meta/genomes evaluation and annotation pipelines",
         {
-            "MET_EVAL": "Evaluates completion, contamination, and redundancy of MAGs",
-            "MET_ANNOT": "Runs gene callers and annotation programs on MAGs",
+            "PhyloSanity": "Evaluates completion, contamination, and redundancy of MAGs",
+            "FuncSanity": "Runs gene callers and annotation programs on MAGs",
         },
         {
-            "MET_EVAL": ("directory", "config_file", "cancel_autocommit", "output_directory",
-                         "biometadb_project"),
-            "MET_ANNOT": ("directory", "config_file", "cancel_autocommit", "output_directory",
-                          "biometadb_project", "type_file"),
+            "PhyloSanity": ("directory", "config_file", "cancel_autocommit", "output_directory",
+                            "biometadb_project"),
+            "FuncSanity": ("directory", "config_file", "cancel_autocommit", "output_directory",
+                           "biometadb_project", "type_file", "prokka"),
         }
     )
 )
