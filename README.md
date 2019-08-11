@@ -75,7 +75,7 @@ for the docker installation.
                  [-b BIOMETADB_PROJECT] [-t TYPE_FILE]
                  program
 
-pipedm: Run meta/genome evaluation and annotation pipelines
+MetaSanity: Run meta/genome evaluation and annotation pipelines
 
 Available Programs:
 

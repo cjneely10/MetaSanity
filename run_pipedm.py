@@ -175,7 +175,7 @@ ap = ArgParse(
          {"help": "Use PROKKA gene calls instead of prodigal search", "default": False, "action": "store_true"}),
     ),
     description=ArgParse.description_builder(
-        "pipedm:\tRun meta/genomes evaluation and annotation pipelines",
+        "MetaSanity:\tRun meta/genomes evaluation and annotation pipelines",
         {
             "PhyloSanity": "Evaluates completion, contamination, and redundancy of MAGs",
             "FuncSanity": "Runs gene callers and annotation programs on MAGs",
