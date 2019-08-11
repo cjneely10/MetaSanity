@@ -22,7 +22,9 @@ def make_dirs(_dir):
             os.chdir(outdir)
             func(outdir, *args, **kwargs)
             os.chdir(current_loc)
+
         return func_wrapper
+
     return decorator
 
 
@@ -38,6 +40,7 @@ def wget(url, tar=False, gzip=False):
     subprocess.run(["wget", url], check=True)
     if tar:
         subprocess.run(["tar", "-xzf", os.path.basename(url)], check=True)
+        os.remove(os.path.basename(url))
     elif gzip:
         subprocess.run(["gunzip", os.path.basename(url)], check=True)
 
@@ -46,21 +49,18 @@ def wget(url, tar=False, gzip=False):
 def gtdbtk(outdir, *args, **kwargs):
     RELEASE_URL = "https://data.ace.uq.edu.au/public/gtdb/data/releases/release89/89.0/gtdbtk_r89_data.tar.gz"
     wget(RELEASE_URL, tar=True)
-    os.remove(os.path.basename(RELEASE_URL))
 
 
 @make_dirs("checkm")
 def checkm(outdir, *args, **kwargs):
     RELEASE_URL = "https://data.ace.uq.edu.au/public/CheckM_databases/checkm_data_2015_01_16.tar.gz"
     wget(RELEASE_URL, tar=True)
-    os.remove(os.path.basename(RELEASE_URL))
 
 
 @make_dirs("kofamscan")
 def kofamscan(outdir, *args, **kwargs):
     PROFILES_URL = "ftp://ftp.genome.jp/pub/db/kofam/profiles.tar.gz"
     wget(PROFILES_URL, tar=True)
-    os.remove(os.path.basename(PROFILES_URL))
     KO_LIST_URL = "ftp://ftp.genome.jp/pub/db/kofam/ko_list.gz"
     wget(KO_LIST_URL, gzip=True)
 
@@ -81,24 +81,19 @@ def peptidase(outdir, *args, **kwargs):
 def virsorter(outdir, *args, **kwargs):
     RELEASE_URL = "https://zenodo.org/record/1168727/files/virsorter-data-v2.tar.gz"
     wget(RELEASE_URL, tar=True)
-    os.remove(os.path.basename(RELEASE_URL))
 
 
 if __name__ == "__main__":
-    args_list = (
-        (("-d", "--data"),
-         {"help": "Comma-separated list (no spaces) of databases to download, default all", "default": "all"}),
-        (("-o", "--outdir"),
-         {"help": "Directory for storing database files, default 'databases'", "default": "databases"}),
-    )
-
-    ap = ArgParse(args_list,
-                  description="Download required BioMetaPipeline data\nSelect from: %s" % AVAILABLE_DATABASES)
+    ap = ArgParse(
+        ((("-d", "--data"),
+          {"help": "Comma-separated list (no spaces) of databases to download, default all", "default": "all"}),
+         (("-o", "--outdir"),
+          {"help": "Directory for storing database files, default 'databases'", "default": "databases"}),),
+        description="Download required BioMetaPipeline data\nSelect from: %s" % AVAILABLE_DATABASES)
 
     if ap.args.data == "all":
         to_download = AVAILABLE_DATABASES.split(",")
     else:
         to_download = [val.lower() for val in ap.args.data.split(",") if val != ""]
-
     for dwnld in to_download:
         locals()[dwnld](ap.args.outdir)
