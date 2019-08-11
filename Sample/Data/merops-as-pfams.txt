@@ -1,0 +1,451 @@
+Family	Subfamily	Name	PFAM ID
+A1	A1A	pepsin A 	PF00026
+A1	A1A	pepsin A 	PF14543
+A1	A1B	nepenthesin	PF00026
+A1	A1B	nepenthesin	PF14543
+A1	A1B	nepenthesin	PF14541
+A2	A2A	HIV-1 retropepsin	PF00077
+A2	A2A	HIV-1 retropepsin	PF12382
+A2	A2B	Ty3 transposon peptidase	PF12384
+A2	A2C	Gypsy transposon peptidase	PF00077
+A2	A2D	Osvaldo retrotransposon peptidase	PF00077
+A2	A2D	Osvaldo retrotransposon peptidase	PF13650
+A2	A2D	Osvaldo retrotransposon peptidase	PF13975
+A3	A3A	cauliflower mosaic virus-type peptidase	PF00077
+A3	A3A	cauliflower mosaic virus-type peptidase	PF02160
+A3	A3A	cauliflower mosaic virus-type peptidase	PF13650
+A3	A3B	bacilliform virus peptidase	PF02160
+A5	null	thermopsin	PF05317
+A8	null	signal peptidase II	PF01252
+A9	null	spumapepsin	PF03539
+A11	A11A	Copia transposon peptidase 	PF01021
+A11	A11A	Copia transposon peptidase 	PF13976
+A11	A11B	Ty1 transposon peptidase	PF01021
+A22	A22A	presenilin 1	PF01080
+A22	A22A	presenilin 1	PF06550
+A22	A22B	impas 1 peptidase	PF04258
+A22	A22B	impas 1 peptidase	PF06550
+A24	A24A	type 4 prepilin peptidase 1	PF01478
+A24	A24B	FlaK peptidase	PF01478
+A25	null	gpr peptidase	PF03418
+A26	null	omptin	PF01278
+A28	A28A	DNA-damage inducible protein 1	PF00077
+A28	A28A	DNA-damage inducible protein 1	PF09668
+A28	A28B	skin SASPase	PF00077
+A28	A28B	skin SASPase	PF09668
+A28	A28B	skin SASPase	PF13650
+A28	A28B	skin SASPase	PF13975
+A31	null	HybD peptidase	PF01750
+A32	null	PerP peptidase	PF13650
+A36	null	sporulation factor SpoIIGA	PF03419
+A37	null	sso1175 g.p. 	null
+C1	C1A	papain	PF00112
+C1	C1B	bleomycin hydrolase	PF00112
+C1	C1B	bleomycin hydrolase	PF03051
+C2	C2A	calpain-2	PF00648
+C3	C3A	poliovirus-type picornain 3C	PF00548
+C3	C3B	enterovirus picornain 2A	PF00947
+C3	C3C	foot-and-mouth disease virus picornain 3C	PF00548
+C3	C3C	foot-and-mouth disease virus picornain 3C	PF12381
+C3	C3D	cowpea mosaic comovirus-type picornain 3C	PF00548
+C3	C3E	hepatitis A virus-type picornain 3C	PF00548
+C3	C3F	parechovirus picornain 3C	PF00548
+C3	C3G	rice tungro spherical virus-type peptidase 	PF12381
+C3	C3H	grapevine fanleaf-type nepovirus picornain 3C	null
+C4	null	nuclear-inclusion-a peptidase	PF00863
+C5	null	adenain	PF00770
+C6	null	potato virus Y-type helper component peptidase	PF00851
+C7	null	chestnut blight fungus virus p29 peptidase	PF01830
+C8	null	chestnut blight fungus virus p48 peptidase	PF03569
+C9	null	sindbis virus-type nsP2 peptidase	PF01707
+C10	null	streptopain	PF01640
+C11	C11A	clostripain	PF03415
+C11	C11B	PNT1 peptidase	PF03415
+C12	null	ubiquitinyl hydrolase-L1	PF01088
+C13	null	legumain	PF01650
+C14	C14A	caspase-1	PF00656
+C14	C14B	metacaspase Yca1	PF00656
+C15	null	pyroglutamyl-peptidase I 	PF01470
+C15	null	pyroglutamyl-peptidase I 	PF06162
+C16	C16A	murine hepatitis coronavirus papain-like peptidase 1 	PF01831
+C16	C16B	murine hepatitis coronavirus papain-like peptidase 2	PF08715
+C18	null	hepatitis C virus peptidase 2	PF01538
+C19	null	ubiquitin-specific peptidase 14	PF00443
+C19	null	ubiquitin-specific peptidase 14	PF13423
+C21	null	tymovirus peptidase	PF05381
+C23	null	carlavirus peptidase	PF05379
+C24	null	rabbit hemorrhagic disease virus 3C-like peptidase	PF03510
+C25	null	gingipain RgpA	PF01364
+C26	null	gamma-glutamyl hydrolase	PF00117
+C26	null	gamma-glutamyl hydrolase	PF01174
+C26	null	gamma-glutamyl hydrolase	PF07685
+C26	null	gamma-glutamyl hydrolase	PF07722
+C26	null	gamma-glutamyl hydrolase	PF09825
+C27	null	rubella virus peptidase	PF05407
+C28	null	foot-and-mouth disease virus L-peptidase	PF05408
+C30	null	porcine transmissible gastroenteritis virus-type main peptidase	PF05409
+C31	null	porcine reproductive and respiratory syndrome arterivirus-type cysteine peptidase alpha	PF05410
+C32	null	equine arteritis virus-type cysteine peptidase	PF05411
+C33	null	equine arteritis virus Nsp2-type cysteine peptidase	PF05412
+C36	null	beet necrotic yellow vein furovirus-type papain-like peptidase	PF05415
+C37	null	calicivirin	PF05416
+C39	null	bacteriocin-processing peptidase 	PF03412
+C39	null	bacteriocin-processing peptidase 	PF13529
+C40	null	dipeptidyl-peptidase VI	PF00877
+C40	null	dipeptidyl-peptidase VI	PF05382
+C42	null	beet yellows virus-type papain-like peptidase	PF05533
+C44	null	amidophosphoribosyltransferase precursor	PF00310
+C44	null	amidophosphoribosyltransferase precursor	PF00733
+C44	null	amidophosphoribosyltransferase precursor	PF12481
+C44	null	amidophosphoribosyltransferase precursor	PF13230
+C44	null	amidophosphoribosyltransferase precursor	PF13522
+C44	null	amidophosphoribosyltransferase precursor	PF13537
+C45	null	acyl-coenzyme A:6-aminopenicillanic acid acyl-transferase precursor	PF03417
+C46	null	hedgehog protein	PF01079
+C47	null	staphopain A 	PF05543
+C48	null	Ulp1 peptidase	PF02902
+C49	null	Strawberry mottle virus peptidase	null
+C50	null	separase	PF03568
+C51	null	D-alanyl-glycyl peptidase	PF05257
+C53	null	pestivirus Npro peptidase 	PF05550
+C54	null	autophagin-1 	PF03416
+C55	null	YopJ protein	PF03421
+C56	null	PfpI peptidase	PF01965
+C56	null	PfpI peptidase	PF13278
+C56	null	PfpI peptidase	PF13507
+C57	null	vaccinia virus I7L processing peptidase	PF03290
+C58	C58A	YopT peptidase	PF03543
+C58	C58B	HopN1 peptidase	PF03543
+C59	null	penicillin V acylase precursor	PF02275
+C60	C60A	sortase A	PF04203
+C60	C60B	sortase B	PF04203
+C60	C60B	sortase B	PF07170
+C62	null	gill-associated virus 3C-like peptidase 	PF12380
+C63	null	African swine fever virus processing peptidase	PF02902
+C64	null	Cezanne peptidase	PF02338
+C65	null	otubain-1 	PF10275
+C66	null	IdeS peptidase	PF09028
+C67	null	CylD peptidase	PF00443
+C69	null	dipeptidase A	PF03577
+C70	null	AvrRpt2 peptidase	PF12385
+C71	null	pseudomurein endoisopeptidase Pei	PF12386
+C74	null	pestivirus NS2 peptidase	PF12387
+C75	null	AgrB peptidase 	PF04647
+C76	null	viral tegument protein deubiquitinylating peptidase	PF04843
+C78	null	UfSP1 peptidase	PF07910
+C79	null	ElaD peptidase 	PF02902
+C80	null	RTX self-cleaving toxin	PF11713
+C82	C82A	L,D-transpeptidase	PF03734
+C83	null	gamma-glutamylcysteine dipeptidyltranspeptidase	PF05023
+C84	null	prtH peptidase	null
+C85	C85A	OTLD1 deubiquitinylating enzyme	PF02338
+C85	C85B	OTU1 peptidase	PF02338
+C86	null	ataxin-3	PF02099
+C87	null	nairovirus deubiquitinylating peptidase	PF02338
+C89	null	acid ceramidase precursor	PF02275
+C93	null	LapG peptidase	PF06035
+C95	null	lysosomal 66.3 kDa protein 	PF04916
+C96	null	McjB peptidase	PF13471
+C97	null	DeSI-1 peptidase	PF05903
+C98	null	USPL1 peptidase 	PF15499
+C99	null	iflavirus processing peptidase	null
+C100	null	agglutinin peptidase	null
+C101	null	OTULIN peptidase	null
+C102	null	GtgE peptidase	null
+C104	null	PlyC phage lysin	null
+C105	null	papain-like peptidase 1 alpha 	null
+C107	null	alphamesonivirus 3C-like peptidase	null
+C108	null	Prp peptidase	null
+C110	null	kyphoscoliosis peptidase 	null
+C111	null	coagulation factor XIIIa	null
+C113	null	IgdE peptidase	null
+C115	null	MINDY-1 protein	null
+C116	null	dermonecrotic toxin	null
+C117	null	SpvD g.p.	null
+C118	null	EspL g.p.	null
+G01	null	scytalidoglutamic peptidase	PF01828
+G02	null	pre-neck appendage protein	PF11962
+M1	null	aminopeptidase N	PF01433
+M1	null	aminopeptidase N	PF13485
+M2	null	angiotensin-converting enzyme peptidase unit 1	PF01401
+M3	M3A	thimet oligopeptidase	PF01432
+M3	M3B	oligopeptidase F	PF01432
+M3	M3C	 Pz-peptidase A	null
+M4	null	thermolysin	PF01447
+M4	null	thermolysin	PF02868
+M5	null	mycolysin	null
+M6	null	immune inhibitor A peptidase	PF05547
+M7	null	snapalysin	PF02031
+M8	null	leishmanolysin	PF01457
+M9	M9A	bacterial collagenase V	PF01752
+M9	M9B	bacterial collagenase H	PF01752
+M9	M9B	bacterial collagenase H	PF08453
+M10	M10A	matrix metallopeptidase-1	PF00413
+M10	M10B	serralysin	PF00413
+M10	M10C	fragilysin	PF00413
+M11	null	gametolysin	PF05548
+M12	M12A	astacin	PF01400
+M12	M12B	adamalysin	PF01421
+M12	M12B	adamalysin	PF13574
+M12	M12B	adamalysin	PF13582
+M12	M12B	adamalysin	PF13583
+M12	M12B	adamalysin	PF13688
+M13	null	neprilysin	PF01431
+M13	null	neprilysin	PF05649
+M14	M14A	carboxypeptidase A1	PF00246
+M14	M14B	carboxypeptidase E	PF00246
+M14	M14C	gamma-D-glutamyl-(L)-meso-diaminopimelate peptidase I	PF00246
+M14	M14C	gamma-D-glutamyl-(L)-meso-diaminopimelate peptidase I	PF01476
+M14	M14D	cytosolic carboxypeptidase 6	PF00246
+M15	M15A	zinc D-Ala-D-Ala carboxypeptidase	PF01471
+M15	M15A	zinc D-Ala-D-Ala carboxypeptidase	PF05951
+M15	M15A	zinc D-Ala-D-Ala carboxypeptidase	PF08291
+M15	M15B	vanY D-Ala-D-Ala carboxypeptidase	PF02557
+M15	M15C	Ply118 L-Ala-D-Glu peptidase 	PF01510
+M15	M15C	Ply118 L-Ala-D-Glu peptidase 	PF02557
+M15	M15C	Ply118 L-Ala-D-Glu peptidase 	PF13539
+M16	M16A	pitrilysin	PF00675
+M16	M16A	pitrilysin	PF05193
+M16	M16B	mitochondrial processing peptidase beta-subunit 	PF00675
+M16	M16B	mitochondrial processing peptidase beta-subunit 	PF05193
+M16	M16C	eupitrilysin	PF00675
+M16	M16C	eupitrilysin	PF05193
+M17	null	leucine aminopeptidase 3	PF00883
+M18	null	aminopeptidase I	PF02127
+M19	null	membrane dipeptidase	PF01244
+M20	M20A	glutamate carboxypeptidase	PF01546
+M20	M20B	peptidase T	PF01546
+M20	M20C	Xaa-His dipeptidase	PF01546
+M20	M20D	carboxypeptidase Ss1	PF01546
+M20	M20F	carnosine dipeptidase II 	PF01546
+M23	M23A	beta-lytic metallopeptidase	PF01551
+M23	M23B	lysostaphin	PF01551
+M24	M24A	methionyl aminopeptidase 1	PF00557
+M24	M24B	aminopeptidase P	PF00557
+M26	null	IgA1-specific metallopeptidase	PF05342
+M26	null	IgA1-specific metallopeptidase	PF07580
+M27	null	tentoxilysin	PF01742
+M28	M28A	aminopeptidase S	PF04389
+M28	M28A	aminopeptidase S	PF09940
+M28	M28B	glutamate carboxypeptidase II	PF04389
+M28	M28C	IAP aminopeptidase	PF04389
+M28	M28D	aminopeptidase ES-62	PF04389
+M28	M28E	aminopeptidase Ap1	PF04389
+M28	M28F	YwaD peptidase	null
+M29	null	aminopeptidase T	PF02073
+M30	null	hyicolysin	PF10026
+M30	null	hyicolysin	PF10460
+M30	null	hyicolysin	PF13485
+M32	null	carboxypeptidase Taq 	PF02074
+M34	null	anthrax lethal factor	PF07737
+M35	null	deuterolysin	PF02102
+M35	null	deuterolysin	PF14521
+M36	null	fungalysin	PF02128
+M38	null	isoaspartyl dipeptidase	PF00962
+M38	null	isoaspartyl dipeptidase	PF01979
+M38	null	isoaspartyl dipeptidase	PF04909
+M38	null	isoaspartyl dipeptidase	PF07969
+M38	null	isoaspartyl dipeptidase	PF12890
+M38	null	isoaspartyl dipeptidase	PF13147
+M38	null	isoaspartyl dipeptidase	PF13594
+M41	null	FtsH peptidase	PF01434
+M42	null	glutamyl aminopeptidase	PF05343
+M43	M43A	cytophagalysin	PF05572
+M43	M43B	pappalysin-1	PF05572
+M44	null	pox virus metallopeptidase	PF03410
+M48	M48A	Ste24 peptidase	PF01435
+M48	M48B	HtpX peptidase	PF01435
+M48	M48C	Oma1 peptidase	PF01435
+M49	null	dipeptidyl-peptidase III 	PF03571
+M50	M50A	site 2 peptidase	PF02163
+M50	M50B	sporulation factor SpoIVFB	PF02163
+M50	M50B	sporulation factor SpoIVFB	PF13398
+M54	null	archaelysin	PF07998
+M55	null	D-aminopeptidase DppA 	PF04951
+M56	null	BlaR1 peptidase	PF05569
+M57	null	prtB g.p.	PF12388
+M60	null	enhancin	PF03272
+M60	null	enhancin	PF13402
+M61	null	glycyl aminopeptidase	PF05299
+M61	null	glycyl aminopeptidase	PF13485
+M64	null	IgA peptidase	PF09471
+M66	null	StcE peptidase	PF10462
+M67	M67A	RPN11 peptidase	PF01398
+M67	M67A	RPN11 peptidase	PF05021
+M67	M67A	RPN11 peptidase	PF14464
+M67	M67B	JAMM-like protein	PF01398
+M67	M67B	JAMM-like protein	PF14464
+M67	M67C	STAMBP isopeptidase	PF01398
+M72	null	peptidyl-Asp metallopeptidase	PF13574
+M72	null	peptidyl-Asp metallopeptidase	PF13582
+M72	null	peptidyl-Asp metallopeptidase	PF13583
+M72	null	peptidyl-Asp metallopeptidase	PF13688
+M73	null	camelysin	PF12389
+M74	null	murein endopeptidase	PF03411
+M75	null	imelysin	PF09375
+M76	null	 Atp23 peptidase	PF09768
+M77	null	tryptophanyl aminopeptidase 7-DMATS-type peptidase	PF11991
+M78	null	ImmA peptidase	PF06114
+M79	null	RCE1 peptidase	PF02517
+M80	null	Wss1 peptidase	PF08325
+M81	null	microcystinase MlrC	PF07171
+M81	null	microcystinase MlrC	PF07364
+M82	null	PrsW peptidase	PF10086
+M82	null	PrsW peptidase	PF13367
+M84	null	MpriBi peptidase	PF13582
+M84	null	MpriBi peptidase	PF13688
+M85	null	NleC peptidase 	PF13678
+M86	null	PghP gamma-polyglutamate hydrolase 	PF05908
+M87	null	chloride channel accessory protein 1 	PF08434
+M88	null	IMPa peptidase	PF13402
+M90	null	 MtfA peptidase	PF06167
+M91	null	NleD peptidase	PF14891
+M93	null	BACCAC_01431 g.p.	PF15890
+M95	null	selecase	PF01863
+M96	null	Tiki1 peptidase	PF01963
+M97	null	EcxAB peptidase	null
+M98	null	YghJ g.p.	PF13402
+M99	null	Csd4 peptidase	null
+M100	null	spartan peptidase	null
+M101	null	flagellinolysin	null
+M102	null	DA1 peptidase	null
+N1	null	nodavirus peptide lyase	PF01829
+N2	null	tetravirus coat protein	PF03566
+N4	null	Tsh-associated self-cleaving domain	PF03797
+N5	null	picobirnavirus self-cleaving protein	null
+N6	null	YscU protein	PF01312
+N7	null	reovirus type 1 coat protein	PF05993
+N8	null	poliovirus capsid VP0-type self-cleaving protein	PF00073
+N8	null	poliovirus capsid VP0-type self-cleaving protein	PF02226
+N9	null	intein-containing V-type proton ATPase catalytic subunit A	PF05203
+N10	null	intein-containing replicative DNA helicase precursor 	PF07591
+N10	null	intein-containing replicative DNA helicase precursor 	PF14890
+N11	null	intein-containing chloroplast ATP-dependent peptide lyase	PF00574
+P1	null	DmpA aminopeptidase	PF03576
+P2	P2A	EGF-like module containing mucin-like hormone receptor-like 2	PF00002
+P2	P2B	polycystin-1	PF01825
+S1	S1A	chymotrypsin A	PF00089
+S1	S1A	chymotrypsin A	PF03761
+S1	S1A	chymotrypsin A	PF13365
+S1	S1B	glutamyl endopeptidase I 	PF13365
+S1	S1C	DegP peptidase	PF00089
+S1	S1C	DegP peptidase	PF13365
+S1	S1D	 lysyl endopeptidase	PF00089
+S1	S1D	 lysyl endopeptidase	PF13365
+S1	S1E	streptogrisin A	PF00089
+S1	S1F	astrovirus serine peptidase	PF13365
+S3	null	togavirin	PF00944
+S6	null	IgA1-specific serine peptidase	PF02395
+S7	null	flavivirin	PF00949
+S8	S8A	subtilisin Carlsberg	PF00082
+S8	S8B	kexin	PF00082
+S9	S9A	prolyl oligopeptidase	PF00326
+S9	S9B	dipeptidyl-peptidase IV	PF00326
+S9	S9B	dipeptidyl-peptidase IV	PF00756
+S9	S9B	dipeptidyl-peptidase IV	PF12695
+S9	S9B	dipeptidyl-peptidase IV	PF12697
+S9	S9C	acylaminoacyl-peptidase	PF00135
+S9	S9C	acylaminoacyl-peptidase	PF00326
+S9	S9C	acylaminoacyl-peptidase	PF00756
+S9	S9C	acylaminoacyl-peptidase	PF01738
+S9	S9C	acylaminoacyl-peptidase	PF02230
+S9	S9C	acylaminoacyl-peptidase	PF05728
+S9	S9C	acylaminoacyl-peptidase	PF07859
+S9	S9C	acylaminoacyl-peptidase	PF12695
+S9	S9C	acylaminoacyl-peptidase	PF12697
+S9	S9C	acylaminoacyl-peptidase	PF12715
+S9	S9C	acylaminoacyl-peptidase	PF12740
+S9	S9D	glutamyl endopeptidase C	PF00326
+S9	S9D	glutamyl endopeptidase C	PF07859
+S10	null	carboxypeptidase Y	PF00450
+S11	null	D-Ala-D-Ala carboxypeptidase A	PF00144
+S11	null	D-Ala-D-Ala carboxypeptidase A	PF00768
+S11	null	D-Ala-D-Ala carboxypeptidase A	PF13354
+S12	null	D-Ala-D-Ala carboxypeptidase B	PF00144
+S13	null	D-Ala-D-Ala peptidase C	PF02113
+S14	null	peptidase Clp	PF00574
+S15	null	Xaa-Pro dipeptidyl-peptidase	PF02129
+S15	null	Xaa-Pro dipeptidyl-peptidase	PF08840
+S15	null	Xaa-Pro dipeptidyl-peptidase	PF12695
+S15	null	Xaa-Pro dipeptidyl-peptidase	PF12697
+S16	null	Lon-A peptidase	PF05362
+S16	null	Lon-A peptidase	PF13541
+S21	null	cytomegalovirus assemblin	PF00716
+S24	null	repressor LexA	PF00717
+S26	S26A	signal peptidase I	PF10502
+S26	S26B	signalase	PF00461
+S26	S26C	TraF peptidase	PF10502
+S27	null	 lysosomal Pro-Xaa carboxypeptidase	PF05577
+S29	null	hepacivirin	PF02907
+S30	null	potyvirus P1 peptidase	PF01577
+S31	null	pestivirus NS3 polyprotein peptidase	PF05578
+S32	null	equine arteritis virus serine peptidase 	PF05579
+S33	null	prolyl aminopeptidase	PF00561
+S33	null	prolyl aminopeptidase	PF00975
+S33	null	prolyl aminopeptidase	PF03096
+S33	null	prolyl aminopeptidase	PF07819
+S33	null	prolyl aminopeptidase	PF08386
+S33	null	prolyl aminopeptidase	PF11339
+S33	null	prolyl aminopeptidase	PF12146
+S33	null	prolyl aminopeptidase	PF12147
+S33	null	prolyl aminopeptidase	PF12695
+S33	null	prolyl aminopeptidase	PF12697
+S37	null	PS-10 peptidase	PF05576
+S39	S39A	sobemovirus peptidase	PF02122
+S39	S39B	luteovirus peptidase	PF02122
+S41	S41A	C-terminal processing peptidase-1	PF03572
+S41	S41B	tricorn core peptidas	PF03572
+S41	S41B	tricorn core peptidas	PF14684
+S45	null	penicillin G acylase precursor	PF01804
+S46	null	dipeptidyl-peptidase 7	PF10459
+S48	null	HetR putative peptidase	PF03574
+S49	S49A	signal peptide peptidase A	PF01343
+S49	S49A	signal peptide peptidase A	PF01972
+S49	S49B	protein C 	PF01343
+S49	S49C	archaean signal peptide peptidase 1 	PF01343
+S49	S49C	archaean signal peptide peptidase 1 	PF01972
+S50	null	infectious pancreatic necrosis birnavirus Vp4 peptidase	PF01768
+S51	null	dipeptidase E	PF03575
+S53	null	sedolisin	PF00082
+S54	null	rhomboid-1	PF01694
+S54	null	rhomboid-1	PF04511
+S55	null	SpoIVB peptidase	PF05580
+S59	null	nucleoporin 145	PF03093
+S59	null	nucleoporin 145	PF04096
+S60	null	lactoferrin	PF00405
+S62	null	influenza A PA peptidase	PF00603
+S64	null	Ssy5 peptidase	PF08192
+S65	null	picornain-like serine peptidase	null
+S66	null	murein tetrapeptidase LD-carboxypeptidase	PF02016
+S68	null	PIDD auto-processing protein unit 1	PF10461
+S69	null	Tellina virus 1 VP4 peptidase	PF01766
+S71	null	MUC1 self-cleaving mucin	PF01390
+S72	null	dystroglycan	PF05454
+S73	null	gpO peptidase	PF05929
+S74	null	Escherichia coli phage K1F endosialidase CIMCD self-cleaving protein	PF13884
+S75	null	White bream virus serine peptidase	null
+S77	null	prohead peptidase gp21	PF03420
+S78	null	prohead peptidase 	PF04586
+S79	null	CARD8 self-cleaving protein	PF13553
+S80	null	prohead peptidase gp175	null
+S81	null	destabilase	PF05497
+S82	null	autocrine proliferation repressor protein A	null
+T1	T1A	 archaean proteasome, beta component 	PF00227
+T1	T1A	 archaean proteasome, beta component 	PF10584
+T1	T1B	HslV component of HslUV peptidase	PF00227
+T2	null	glycosylasparaginase precursor	PF01112
+T3	null	gamma-glutamyltransferase 1	PF01019
+T5	null	ornithine acetyltransferase precursor	PF01960
+T7	null	CwpV	null
+T8	null	HopB1 g.p. 	null
+U32	null	collagenase	PF01136
+U40	null	protein P5 murein endopeptidase	PF10464
+U49	null	Lit peptidase	PF10463
+U56	null	homomultimeric peptidase	PF04454
+U57	null	yabG protein	PF05582
+U62	null	microcin-processing peptidase 1	PF01523
+U69	null	AIDA-I self-cleaving autotransporter protein	PF03212
+U72	null	Dop isopeptidase	PF03136
+U73	null	small protease	PF04264
+U74	null	neprosin	PF03080
+U75	null	Ras/Rap1-specific peptidase 	null

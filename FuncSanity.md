@@ -5,6 +5,7 @@
 **FuncSanity** uses `prodigal`, `kofamscan`, `interproscan`, `PROKKA`, `VirSorter`, `psortb`, `signalp`, and `KEGGDecoder`
 to structurally and functionally annotate contig data. This will generate a final `BioMetaDB` project containing integrated 
 results of this pipeline. An additional `.tsv` output file is generated summarizing each "pipe" in the pipeline's config file.
+Users have the option of using prodigal gene calls or PROKKA-annotated gene calls in downstream analysis.
 The peptidase pipe requires the latest `dbCAN` and `CAZy` HMM profiles, whose links are available on the main README.
 The peptidase pipe also requires the file `merops-as-pfams.txt`, which is available in `Sample/Data`. 
 
@@ -12,11 +13,12 @@ The peptidase pipe also requires the file `merops-as-pfams.txt`, which is availa
     - --directory (-d): /path/to/directory of fasta files
     - --config_file (-c): /path/to/config.ini file matching template in Sample/Config
 - Optional flags
+    - --prokka (-p): Use prokka gene calls in downstream analysis 
     - --output_directory (-o): Output prefix
     - --biometadb_project (-b): Name to assign to `BioMetaDB` project, or name of existing project to use
     - --cancel_autocommit (-a): Cancel creation/update of `BioMetaDB` project
     - --type_file (-t): /path/to/type_file, formatted as `'file_name.fna\t[Archaea/Bacteria]\t[gram+/gram-]\n'`
-        - This argument is only required if running the **peptidase** portion of the pipeline.
+        - This argument is only required if running the **peptidase** portion of the pipeline on non gram- bacteria.
 
 ## Example
 
@@ -121,7 +123,7 @@ the following info, separated by tabs, with one line per relevant fasta file pas
 
 <pre><code>[fasta-file]\t[bacteria/archaea]\t[gram+/gram-]\n</code></pre> 
 
-This file is only required if running the **peptidase** portion of the pipeline.
+This file is only required if running the **peptidase** portion of the pipeline on non gram- bacteria.
     
 ## FuncSanity config file
 
