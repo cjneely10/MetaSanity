@@ -96,4 +96,7 @@ if __name__ == "__main__":
     else:
         to_download = [val.lower() for val in ap.args.data.split(",") if val != ""]
     for dwnld in to_download:
-        locals()[dwnld](ap.args.outdir)
+        try:
+            locals()[dwnld](ap.args.outdir)
+        except KeyError:
+            print("%s database not found" % dwnld)

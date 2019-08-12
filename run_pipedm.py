@@ -14,28 +14,33 @@ MetaSanity calling script
 **********
 Prior to first run:
 
-Ensure that all path arguments below are filled and that all required databases are downloaded.
+If using the provided `download-data.py` script, provide its location as the variable DOWNLOAD_DIRECTORY.
+Otherwise, ensure that all path arguments are valid and that all required databases are downloaded.
 If a certain program will not be used, and the database files are not downloaded, provide any valid directory
 or leave the default values. Directory contents are never deleted and are only used to reference stored data.
+Ensure that BioMetaDB path is accurate, and that optional program binary paths are valid
 
 **********
 
 """
 
+DOWNLOAD_DIRECTORY = "/path/to/databases"
+
 # Data downloaded from  https://data.ace.uq.edu.au/public/gtdbtk/
-GTDBTK_FOLDER = "/path/to/gtdbtk/release_##/##.#"
+GTDBTK_FOLDER = os.path.join(DOWNLOAD_DIRECTORY, "gtdbtk")
 # Extracted checkm data from  https://data.ace.uq.edu.au/public/CheckM_databases/
-CHECKM_FOLDER = "/path/to/checkm_databases"
+CHECKM_FOLDER = os.path.join(DOWNLOAD_DIRECTORY, "checkm")
 # Directory containing extracted ko_list and profiles/ from  ftp://ftp.genome.jp/pub/db/kofam/
-KOFAM_FOLDER = "/path/to/kofam_data"
-# Extracted interproscan package with binary from  https://github.com/ebi-pf-team/interproscan/wiki/HowToDownload
-INTERPROSCAN_FOLDER = "/path/to/interproscan"
+KOFAM_FOLDER = os.path.join(DOWNLOAD_DIRECTORY, "kofamscan")
 # Directory containing 3 files - merops-as-pfams.txt, dbCAN-fam-HMMs.txt, MEROPS.pfam.hmm
-PEPTIDASE_DATA_FOLDER = "/path/to/peptidase_data"
+PEPTIDASE_DATA_FOLDER = os.path.join(DOWNLOAD_DIRECTORY, "peptidase")
 # Extracted virsorter data from  https://github.com/simroux/VirSorter
-VIRSORTER_DATA_FOLDER = "/path/to/virsorter-data"
+VIRSORTER_DATA_FOLDER = os.path.join(DOWNLOAD_DIRECTORY, "virsorter")
+
 # Location of BioMetaDB on system. If not used, ensure to pass `-a` flag to run_pipedm.py when running
 BIOMETADB = "/path/to/BioMetaDB/dbdm.py"
+# Extracted interproscan package with binary from  https://github.com/ebi-pf-team/interproscan/wiki/HowToDownload
+INTERPROSCAN_FOLDER = "/path/to/interproscan"
 # Signalp software package, including binary, from  http://www.cbs.dtu.dk/cgi-bin/nph-sw_request?signalp
 SIGNALP_FOLDER = "/path/to/signalp-4.1"
 # RNAmmer software package, including binary, from  http://www.cbs.dtu.dk/cgi-bin/nph-sw_request?rnammer
