@@ -4,7 +4,7 @@
 ### Docker
 <pre><code>wget https://github.com/cjneely10/MetaSanity/blob/master/run_pipedm.py
 alias pipedm="/path/to/run_pipedm.py"
-docker pull cjneely10/MetaSanity:v0.0.3</code></pre>
+docker pull cjneely10/MetaSanity:v0.1.0</code></pre>
 ### Source code
 Clone or download this repository.
 <pre><code>cd /path/to/MetaSanity
