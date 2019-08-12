@@ -24,6 +24,7 @@ Ensure that BioMetaDB path is accurate, and that optional program binary paths a
 
 """
 
+# Path to database download location
 DOWNLOAD_DIRECTORY = "/path/to/databases"
 
 # Data downloaded from  https://data.ace.uq.edu.au/public/gtdbtk/
