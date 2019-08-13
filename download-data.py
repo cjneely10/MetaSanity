@@ -68,7 +68,7 @@ def kofamscan(outdir, *args, **kwargs):
 @make_dirs("peptidase")
 def peptidase(outdir, *args, **kwargs):
     # DBCAN_URL = "url"
-    # wget(DBCAN_URL, tar=True)
+    # wget(DBCAN_URL)
     # os.remove(os.path.basename(DBCAN_URL))
     MEROPS_URL = "https://www.dropbox.com/s/8pskp3hlkdnt6zm/MEROPS.pfam.hmm?dl=1"
     wget(MEROPS_URL)
