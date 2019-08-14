@@ -3,7 +3,7 @@
 ## Installation
 ### Docker
 <pre><code>wget https://github.com/cjneely10/MetaSanity/blob/master/run_pipedm.py
-alias pipedm="/path/to/run_pipedm.py"
+alias MetaSanity="/path/to/MetaSanity.py"
 docker pull cjneely10/MetaSanity:v0.1.0</code></pre>
 ### Source code
 Clone or download this repository.
@@ -11,7 +11,7 @@ Clone or download this repository.
 pip3 install -r requirements.txt
 python3 setup.py build_ext --inplace
 export PYTHONPATH=/path/to/MetaSanity:$PYTHONPATH
-alias pipedm="/path/to/MetaSanity/pipedm.py"</code></pre>
+alias MetaSanity="/path/to/MetaSanity/pipedm.py"</code></pre>
 Adding the export and alias statements to a user's `.bashrc` file will maintain these settings on next log-in.
 
 ### Dependencies
@@ -66,12 +66,12 @@ Some programs in each pipeline can have very high memory requirements (>100GB) o
 the system used to run the pipeline). Users are advised to use a program such as `screen` or `nohup` to run this pipeline, 
 as well as to redirect stderr to a separate file.
 
-## pipedm/run_pipedm
+## MetaSanity
 
 `pipedm.py` is the calling script for the standalone version of **MetaSanity**. `run_pipedm.py` is the calling script
 for the docker installation.
 
-<pre><code>usage: pipedm.py [-h] -d DIRECTORY -c CONFIG_FILE [-a] [-o OUTPUT_DIRECTORY]
+<pre><code>usage: MetaSanity.py [-h] -d DIRECTORY -c CONFIG_FILE [-a] [-o OUTPUT_DIRECTORY]
                  [-b BIOMETADB_PROJECT] [-t TYPE_FILE]
                  program
 
@@ -109,13 +109,13 @@ step for researchers.
 
 ### Usage differences - standalone script versus docker image
 
-Both `pipedm.py` and `run_pipedm.py` use the same set of command-line arguments to function. 
+Both `MetaSanity.py` and `pipedm.py` use the same set of command-line arguments to function. 
 
 - Docker installation
-    - Users must edit the `run_pipedm.py` script to provide paths to downloaded data. See the [wiki page](https://github.com/cjneely10/MetaSanity/wiki/2-Installation) for instructions.
+    - Users must edit the `MetaSanity.py` script to provide paths to downloaded data. See the [wiki page](https://github.com/cjneely10/MetaSanity/wiki/2-Installation) for instructions.
     - Users must use the config file templates found in `Sample/Config/Docker`.
 - Source code installation
-    - Users must edit the config file template found in `Sample/Config` to provide paths to working program installations.
+    - Users must edit the config file template found in `Sample/Config/SourceCode` to provide paths to working program installations.
 
 ## Available pipelines
 

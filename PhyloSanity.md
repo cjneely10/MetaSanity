@@ -17,7 +17,7 @@ An additional `.tsv` output file is generated.
 ## Example
 
 - Example
-    - `pipedm PhyloSanity -d fasta_folder/ -c metagenome_evaluation.ini -o eval 2>eval.err`
+    - `MetaSanity PhyloSanity -d fasta_folder/ -c metagenome_evaluation.ini -o eval 2>eval.err`
     - This command will use the fasta files in `fasta_folder/` in the evaluation pipeline. It will output to the folder
     `eval` and will use the config file entitled `metagenome_annotation.ini` to name the output database and table, and 
     to determine individual program arguments. Debugging and error messages will be saved to `eval.err`.

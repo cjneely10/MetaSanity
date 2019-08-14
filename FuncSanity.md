@@ -22,7 +22,7 @@ The peptidase pipe also requires the file `merops-as-pfams.txt`, which is availa
 
 ## Example
 
-- `pipedm FuncSanity -d fasta_folder/ -c metagenome_annotation.ini -o annot 2>annot.err`
+- `MetaSanity FuncSanity -d fasta_folder/ -c metagenome_annotation.ini -o annot 2>annot.err`
 - This command will use the fasta files in `fasta_folder/` in the annotation pipeline. It will output to the folder
 `annot` and will use the config file entitled `metagenome_annotation.ini` to name the output database and to determine 
 individual program arguments. Debugging and error messages will be saved to `annot.err`.
@@ -117,7 +117,7 @@ from the starting contigs.
 
 Peptidase predictions are incorporated into the **FuncSanity** pipeline, which allows users to provide additional information
 about domain and membrane types. The default settings run searches for gram- bacteria, but users may also search for gram+ and archaea. 
-This info for relevant genomes should be provided in a separate file and passed to `pipedm` from the command line using the `-t` flag. 
+This info for relevant genomes should be provided in a separate file and passed to `MetaSanity` from the command line using the `-t` flag. 
 Pipeline searches can be run with any combination of gram+/- and bacteria/archaea. The format of this file should include 
 the following info, separated by tabs, with one line per relevant fasta file passed to pipeline:
 
