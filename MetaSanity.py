@@ -38,7 +38,7 @@ PEPTIDASE_DATA_FOLDER = os.path.join(DOWNLOAD_DIRECTORY, "peptidase")
 # Extracted virsorter data from  https://github.com/simroux/VirSorter
 VIRSORTER_DATA_FOLDER = os.path.join(DOWNLOAD_DIRECTORY, "virsorter/virsorter-data")
 
-# Location of BioMetaDB on system. If not used, ensure to pass `-a` flag to run_pipedm.py when running
+# Location of BioMetaDB on system. If not used, ensure to pass `-a` flag to MetaSanity.py when running
 BIOMETADB = "/path/to/BioMetaDB/dbdm.py"
 # Extracted interproscan package with binary from  https://github.com/ebi-pf-team/interproscan/wiki/HowToDownload
 INTERPROSCAN_FOLDER = "/path/to/interproscan"
