@@ -321,7 +321,8 @@ if not ap.args.cancel_autocommit and os.path.exists(os.path.join(ap.args.output_
         )
     print("BioMetaDB project complete!")
 
-for prefix in out_prefixes:
-    os.remove(os.path.join(ap.args.output_directory, prefix + ".metagenome_annotation_tmp.tsv"))
-shutil.rmtree(os.path.join(ap.args.output_directory, "genomes"))
-shutil.rmtree(os.path.join(ap.args.output_directory, "splitfiles"))
+if ap.args.program == "MET_ANNOT":
+    for prefix in out_prefixes:
+        os.remove(os.path.join(ap.args.output_directory, prefix + ".metagenome_annotation_tmp.tsv"))
+    shutil.rmtree(os.path.join(ap.args.output_directory, "genomes"))
+    shutil.rmtree(os.path.join(ap.args.output_directory, "splitfiles"))
