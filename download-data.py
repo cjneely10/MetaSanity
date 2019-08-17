@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 import os
 import shutil
+import argparse
 import subprocess
+from argparse import RawTextHelpFormatter
 
 AVAILABLE_DATABASES = "gtdbtk,checkm,kofamscan,peptidase,virsorter"
 
@@ -100,7 +102,8 @@ def peptidase(outdir, *args, **kwargs):
     MEROPS_URL = "https://www.dropbox.com/s/8pskp3hlkdnt6zm/MEROPS.pfam.hmm?dl=1"
     wget(MEROPS_URL)
     shutil.move(os.path.basename(MEROPS_URL), os.path.basename(MEROPS_URL)[:-5])
-    MEROPS_AS_PFAMS_URL = "https://github.com/cjneely10/BioMetaPipeline/blob/master/Sample/Data/merops-as-pfams.txt"
+    MEROPS_AS_PFAMS_URL = "https://raw.githubusercontent.com/cjneely10/MetaSanity/master/Sample/Data/merops-as-pfams" \
+                          ".txt "
     wget(MEROPS_AS_PFAMS_URL)
 
 
