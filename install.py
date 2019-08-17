@@ -93,12 +93,14 @@ def config_pull(version):
 def pull_download_script():
     DOWNLOAD_SCRIPT_URL = "https://raw.githubusercontent.com/cjneely10/MetaSanity/master/download-data.py"
     subprocess.run(["wget", DOWNLOAD_SCRIPT_URL], check=True)
+    subprocess.run(["chmod", "+x", os.path.basename(DOWNLOAD_SCRIPT_URL)], check=True)
 
 
 @out_dir
 def download_metasanity():
     METASANITY_URL = "https://raw.githubusercontent.com/cjneely10/MetaSanity/master/MetaSanity.py"
     subprocess.run(["wget", METASANITY_URL], check=True)
+    subprocess.run(["chmod", "+x", os.path.basename(METASANITY_URL)], check=True)
 
 
 if __name__ == "__main__":
