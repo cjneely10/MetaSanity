@@ -1,10 +1,21 @@
 # MetaSanity
 
 ## Installation
-### Docker
-<pre><code>wget https://github.com/cjneely10/MetaSanity/blob/master/MetaSanity.py
-alias MetaSanity="/path/to/MetaSanity.py"
-docker pull cjneely10/MetaSanity:v0.1.0</code></pre>
+Download the install script from this repository using `wget https://github.com/cjneely10/MetaSanity/blob/master/install.py`.
+This script requires `python3` and the `argparse` package. `wget`, `git`, `docker`, and `pip3` are also required.
+The default download is the Docker version.
+
+<pre><code>usage: install.py [-h] -o OUTDIR [-v VERSION]
+
+Download MetaSanity package
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -o OUTDIR, --outdir OUTDIR
+                        Location to which to download MetaSanity package
+  -v VERSION, --version VERSION
+                        Default: docker</code></pre>
+
 ### Source code
 Clone or download this repository.
 <pre><code>cd /path/to/MetaSanity
@@ -17,11 +28,8 @@ Adding the export and alias statements to a user's `.bashrc` file will maintain 
 ### Dependencies
 
 See the [wiki page](https://github.com/cjneely10/MetaSanity/wiki/2-Installation) for instructions on installing either
-the standalone or docker version of **MetaSanity**. Python dependencies are best maintained within a separate Python 
-virtual environment. `BioMetaDB` and `MetaSanity` must be contained and built within the same python environment. 
-However, **MetaSanity** data pipelines are managed through config files that allow direct input of the paths to the 
-Python 2/3 environments that house external programs (such as `CheckM`). The docker version of this script only relies on
-the database files for these external programs, bypassing the need for the user to download individual programs
+the standalone or docker version of **MetaSanity**, as well as for installing all needed database files.
+Python dependencies are best maintained within a separate Python virtual environment. `BioMetaDB` and `MetaSanity` must be contained and built within the same python environment. 
 
 ## About
 
@@ -40,7 +48,7 @@ Users are highly recommended to cite all items that are output in this file.
 #### Config default files
 
 Each genome pipeline has an associated configuration file that is needed to properly call the underlying programs.
-Default files are available in the `Examples/Config` directory. To preserve these files for future use, users are recommended
+Default files are available in the `Sample/Config` directory. To preserve these files for future use, users are recommended
 to make edits only to copies of these default settings. Flags and arguments that are typically passed to individual programs
 can be provided here.
 
@@ -68,8 +76,7 @@ as well as to redirect stderr to a separate file.
 
 ## MetaSanity
 
-`pipedm.py` is the calling script for the standalone version of **MetaSanity**. `MetaSanity.py` is the calling script
-for the docker installation.
+`MetaSanity.py` is the calling script for the docker installation. `pipedm.py` is the calling script for the standalone version of **MetaSanity**. 
 
 <pre><code>usage: MetaSanity.py [-h] -d DIRECTORY -c CONFIG_FILE [-a] [-o OUTPUT_DIRECTORY]
                  [-b BIOMETADB_PROJECT] [-t TYPE_FILE]
@@ -130,5 +137,5 @@ Both `MetaSanity.py` and `pipedm.py` use the same set of command-line arguments 
     
 ### Licensing notes
 
-The use of `signalp` and `RNAmmer` requires an additional academic license agreement upon download. Binaries for these
+The use of `signalp` and `RNAmmer` requires accepting an additional academic license agreement upon download. Binaries for these
 programs are thus not distributed with **MetaSanity**.

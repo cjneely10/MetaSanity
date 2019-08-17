@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 import os
-import sys
-import shutil
 import argparse
 import subprocess
 from argparse import RawTextHelpFormatter
@@ -54,25 +52,45 @@ class ArgParse:
 @out_dir
 def clone_build_biometadb():
     BIOMETADB_URL = "https://github.com/cjneely10/BioMetaDB.git"
-    subprocess.run(["git", "clone", BIOMETADB_URL], check=True)
+    if not os.path.exists("BioMetaDB"):
+        subprocess.run(["git", "clone", BIOMETADB_URL], check=True)
+    else:
+        subprocess.run(["git", "pull", BIOMETADB_URL], check=True)
     os.chdir("BioMetaDB")
+    subprocess.run(["pip3", "install", "-r", "requirements.txt"])
     subprocess.run(["python3", "setup.py", "build_ext", "--inplace"], check=True)
 
 
 @out_dir
 def download_docker():
-    DOCKER_VERSION = "cjneely10/MetaSanity:v0.1.0"
+    DOCKER_VERSION = "cjneely10/metasanity:v0.1.0"
     subprocess.run(["docker", "pull", DOCKER_VERSION], check=True)
 
 
 @out_dir
-def config_pull():
-    os.makedirs("Sample/Config")
+def config_pull(version):
+    config_path = os.path.join("Sample/Config", version)
+    os.makedirs(config_path)
+    os.chdir(config_path)
+    if version == "docker":
+        subprocess.run(["wget",
+                        "https://github.com/cjneely10/MetaSanity/blob/master/Sample/Config/Docker/FuncSanity.ini"],
+                       check=True)
+        subprocess.run(["wget",
+                        "https://github.com/cjneely10/MetaSanity/blob/master/Sample/Config/Docker/PhyloSanity.ini"],
+                       check=True)
+
+
+@out_dir
+def pull_download_script():
+    DOWNLOAD_SCRIPT_URL = "https://github.com/cjneely10/MetaSanity/blob/master/download-data.py"
+    subprocess.run(["wget", DOWNLOAD_SCRIPT_URL], check=True)
 
 
 @out_dir
 def download_metasanity():
-    METASANITY_URL = "https://github.com/cjneely10/MetaSanity/blob/master/run_pipedm.py"
+    METASANITY_URL = "https://github.com/cjneely10/MetaSanity/blob/master/MetaSanity.py"
+    subprocess.run(["wget", METASANITY_URL], check=True)
 
 
 if __name__ == "__main__":
@@ -92,5 +110,6 @@ if __name__ == "__main__":
     # Download given version
     if ap.args.version == "docker":
         download_docker()
-    # Pull config version
-    config_pull()
+    # Download config files for version
+    config_pull(ap.args.version)
+    download_metasanity()
