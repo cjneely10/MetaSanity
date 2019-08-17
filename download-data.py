@@ -103,7 +103,7 @@ def peptidase(outdir, *args, **kwargs):
     wget(MEROPS_URL)
     shutil.move(os.path.basename(MEROPS_URL), os.path.basename(MEROPS_URL)[:-5])
     MEROPS_AS_PFAMS_URL = "https://raw.githubusercontent.com/cjneely10/MetaSanity/master/Sample/Data/merops-as-pfams" \
-                          ".txt "
+                          ".txt"
     wget(MEROPS_AS_PFAMS_URL)
 
 
