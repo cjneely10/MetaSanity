@@ -68,7 +68,7 @@ as well as to redirect stderr to a separate file.
 
 ## MetaSanity
 
-`pipedm.py` is the calling script for the standalone version of **MetaSanity**. `run_pipedm.py` is the calling script
+`pipedm.py` is the calling script for the standalone version of **MetaSanity**. `MetaSanity.py` is the calling script
 for the docker installation.
 
 <pre><code>usage: MetaSanity.py [-h] -d DIRECTORY -c CONFIG_FILE [-a] [-o OUTPUT_DIRECTORY]
