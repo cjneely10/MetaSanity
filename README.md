@@ -2,7 +2,7 @@
 
 ## Installation
 ### Docker
-<pre><code>wget https://github.com/cjneely10/MetaSanity/blob/master/run_pipedm.py
+<pre><code>wget https://github.com/cjneely10/MetaSanity/blob/master/MetaSanity.py
 alias MetaSanity="/path/to/MetaSanity.py"
 docker pull cjneely10/MetaSanity:v0.1.0</code></pre>
 ### Source code
