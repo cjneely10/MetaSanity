@@ -5,7 +5,7 @@ Download the install script from this repository.
 
 `wget https://raw.githubusercontent.com/cjneely10/MetaSanity/master/install.py`
 
-This script requires `python3` and the `argparse` package. `wget`, `git`, `docker`, and `pip3` are also required.
+This script requires `python3` and the `argparse` package. `wget`, `git`, `docker`, and `pip` are also required.
 
 <pre><code>usage: install.py [-h] -o OUTDIR [-v VERSION]
 
