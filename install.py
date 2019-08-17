@@ -50,12 +50,17 @@ class ArgParse:
 
 
 @out_dir
-def clone_build_biometadb():
+def clone_biometadb():
     BIOMETADB_URL = "https://github.com/cjneely10/BioMetaDB.git"
     if not os.path.exists("BioMetaDB"):
         subprocess.run(["git", "clone", BIOMETADB_URL], check=True)
     else:
+        os.chdir("BioMetaDB")
         subprocess.run(["git", "pull", BIOMETADB_URL], check=True)
+
+
+@out_dir
+def build_biometadb():
     os.chdir("BioMetaDB")
     subprocess.run(["pip3", "install", "-r", "requirements.txt"])
     subprocess.run(["python3", "setup.py", "build_ext", "--inplace"], check=True)
@@ -70,7 +75,8 @@ def download_docker():
 @out_dir
 def config_pull(version):
     config_path = os.path.join("Sample/Config", version)
-    os.makedirs(config_path)
+    if not os.path.exists(config_path):
+        os.makedirs(config_path)
     os.chdir(config_path)
     if version == "docker":
         subprocess.run(["wget",
@@ -105,8 +111,9 @@ if __name__ == "__main__":
     )
 
     OUTDIR = ap.args.outdir
-    # Pull BioMetaDB program and build
-    clone_build_biometadb()
+    # Get BioMetaDB
+    clone_biometadb()
+    build_biometadb()
     # Download given version
     if ap.args.version == "docker":
         download_docker()
