@@ -121,4 +121,5 @@ if __name__ == "__main__":
         download_docker()
     # Download config files for version
     config_pull(ap.args.version)
+    pull_download_script()
     download_metasanity()
