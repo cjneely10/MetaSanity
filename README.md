@@ -2,8 +2,7 @@
 
 ## Docker Installation
 Download the install script from this repository.
-
-<code><pre>wget https://github.com/cjneely10/MetaSanity/blob/master/install.py</pre></code>
+'wget https://github.com/cjneely10/MetaSanity/blob/master/install.py'
 
 This script requires `python3` and the `argparse` package. `wget`, `git`, `docker`, and `pip3` are also required.
 
