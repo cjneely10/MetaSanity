@@ -177,7 +177,7 @@ def metagenome_annotation(str directory, str config_file, bint cancel_autocommit
                     outfile=out_prefix,
                     run_edit=True,
                     added_flags=cfg.build_parameter_list_from_dict(ProdigalConstants.PRODIGAL),
-                ),
+                )
             )
             protein_file = os.path.join(output_directory,
                                         ProdigalConstants.OUTPUT_DIRECTORY,
@@ -207,12 +207,27 @@ def metagenome_annotation(str directory, str config_file, bint cancel_autocommit
                 diamond_file=os.path.join(output_directory, DiamondConstants.OUTPUT_DIRECTORY, out_prefix + ".tsv"),
                 calling_script_path=cfg.get(DiamondConstants.DIAMOND, ConfigManager.PATH),
             ),
+        ):
+            task_list.append(task)
+        if prokka and cfg.check_pipe_set("prokka", MetagenomeAnnotationConstants.PIPELINE_NAME):
             # For PROKKA adjusting
-            DiamondMakeDB(
+            task_list.append(
+                DiamondMakeDB(
                 output_directory=os.path.join(output_directory, PROKKAConstants.OUTPUT_DIRECTORY, DiamondConstants.OUTPUT_DIRECTORY),
                 prot_file=os.path.join(output_directory, PROKKAConstants.OUTPUT_DIRECTORY, out_prefix, out_prefix + ".fxa"),
                 calling_script_path=cfg.get(DiamondConstants.DIAMOND, ConfigManager.PATH),
-            ),
+                )
+            )
+        else:
+            # For PROKKA adjusting
+            task_list.append(
+                DiamondMakeDB(
+                output_directory=os.path.join(output_directory, PROKKAConstants.OUTPUT_DIRECTORY, DiamondConstants.OUTPUT_DIRECTORY),
+                prot_file=protein_file,
+                calling_script_path=cfg.get(DiamondConstants.DIAMOND, ConfigManager.PATH),
+                )
+            )
+        for task in (
             # Identify which PROKKA annotations match contigs corresponding to prodigal gene calls and save the subset
             Diamond(
                 outfile=out_prefix + ".rev.tsv",
