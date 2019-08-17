@@ -1,9 +1,7 @@
 # MetaSanity
 
-## Installation
-Download the install script from this repository.
-<pre><code>wget https://github.com/cjneely10/MetaSanity/blob/master/install.py</code></pre>
-
+## Docker Installation
+Download the install script from this repository using `wget https://github.com/cjneely10/MetaSanity/blob/master/install.py`.
 This script requires `python3` and the `argparse` package. `wget`, `git`, `docker`, and `pip3` are also required.
 The default download is the Docker version.
 
@@ -18,19 +16,9 @@ optional arguments:
   -v VERSION, --version VERSION
                         Default: docker</code></pre>
 
-### Source code
-Clone or download this repository.
-<pre><code>cd /path/to/MetaSanity
-pip3 install -r requirements.txt
-python3 setup.py build_ext --inplace
-export PYTHONPATH=/path/to/MetaSanity:$PYTHONPATH
-alias MetaSanity="/path/to/MetaSanity/pipedm.py"</code></pre>
-Adding the export and alias statements to a user's `.bashrc` file will maintain these settings on next log-in.
-
 ### Dependencies
 
-See the [wiki page](https://github.com/cjneely10/MetaSanity/wiki/2-Installation) for instructions on installing either
-the standalone or docker version of **MetaSanity**, as well as for installing all needed database files.
+See the [wiki page](https://github.com/cjneely10/MetaSanity/wiki/2-Installation) for installing all needed database files.
 Python dependencies are best maintained within a separate Python virtual environment. `BioMetaDB` and `MetaSanity` must be contained and built within the same python environment. 
 
 ## About
