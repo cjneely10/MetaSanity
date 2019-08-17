@@ -2,9 +2,36 @@
 import os
 import shutil
 import subprocess
-from MetaSanity.Accessories.arg_parse import ArgParse
 
 AVAILABLE_DATABASES = "gtdbtk,checkm,kofamscan,peptidase,virsorter"
+
+
+class ArgParse:
+
+    def __init__(self, arguments_list, description, *args, **kwargs):
+        """ Class for handling parsing of arguments and error handling
+
+        """
+        self.arguments_list = arguments_list
+        self.args = []
+        # Instantiate ArgumentParser
+        self.parser = argparse.ArgumentParser(formatter_class=RawTextHelpFormatter, description=description,
+                                              *args, **kwargs)
+        # Add all arguments stored in self.arguments_list
+        self._parse_arguments()
+        # Parse arguments
+        try:
+            self.args = self.parser.parse_args()
+        except:
+            exit(1)
+
+    def _parse_arguments(self):
+        """ Protected method for adding all arguments stored in self.arguments_list
+            Checks value of "require" and sets accordingly
+
+        """
+        for args in self.arguments_list:
+            self.parser.add_argument(*args[0], **args[1])
 
 
 def make_dirs(_dir):
