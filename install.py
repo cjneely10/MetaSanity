@@ -63,7 +63,7 @@ def clone_biometadb():
 def build_biometadb():
     os.chdir("BioMetaDB")
     subprocess.run(["pip3", "install", "-r", "requirements.txt"])
-    subprocess.run(["python3", "setup.py", "build_ext", "--inplace"], check=True)
+    subprocess.run(["./setup.py", "build_ext", "--inplace"], check=True)
 
 
 @out_dir
