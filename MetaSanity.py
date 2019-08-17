@@ -201,8 +201,8 @@ cfg.optionxform = str
 cfg.read(ap.args.config_file)
 
 met_list = {
-    "MET_EVAL": "metagenome_evaluation.list",
-    "MET_ANNOT": "metagenome_annotation.list"
+    "PhyloSanity": "metagenome_evaluation.list",
+    "FuncSanity": "metagenome_annotation.list"
 }
 
 prokka_add = []
@@ -265,7 +265,7 @@ out_prefixes = set({})
 
 if not ap.args.cancel_autocommit and os.path.exists(os.path.join(ap.args.output_directory, met_list[ap.args.program])):
     print("\nStoring results to database..........")
-    # Primary output file types from MET_ANNOT (with N = number of genomes):
+    # Primary output file types from FuncSanity (with N = number of genomes):
     # Set project name
     try:
         db_name = (ap.args.biometadb_project
@@ -275,7 +275,7 @@ if not ap.args.cancel_autocommit and os.path.exists(os.path.join(ap.args.output_
         db_name = "MetagenomeAnnotation"
 
     dbdm = GetDBDMCall(BIOMETADB, db_name, ap.args.cancel_autocommit, get_added_flags(cfg, "BIOMETADB"))
-    if ap.args.program == "MET_ANNOT":
+    if ap.args.program == "FuncSanity":
         for _file in (
                 # CAZy (1) - out/peptidase_results/combined_results/combined.cazy
                 os.path.join(ap.args.output_directory, "peptidase_results/combined_results/combined.cazy"),
@@ -312,7 +312,7 @@ if not ap.args.cancel_autocommit and os.path.exists(os.path.join(ap.args.output_
                 os.path.join(ap.args.output_directory, "%s.metagenome_annotation.tsv" % genome_prefix),
                 genome_prefix.lower(),
             )
-    elif ap.args.program == "MET_EVAL":
+    elif ap.args.program == "PhyloSanity":
         dbdm.run(
             "evaluation",
             os.path.join(ap.args.output_directory, "genomes"),
@@ -321,7 +321,7 @@ if not ap.args.cancel_autocommit and os.path.exists(os.path.join(ap.args.output_
         )
     print("BioMetaDB project complete!")
 
-if ap.args.program == "MET_ANNOT":
+if ap.args.program == "FuncSanity":
     for prefix in out_prefixes:
         os.remove(os.path.join(ap.args.output_directory, prefix + ".metagenome_annotation_tmp.tsv"))
     shutil.rmtree(os.path.join(ap.args.output_directory, "genomes"))
