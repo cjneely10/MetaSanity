@@ -84,6 +84,8 @@ class ConfigManager:
         :param _dict:
         :return:
         """
+        if _dict not in self.config.keys():
+            return []
         cdef list parameter_list = []
         cdef str def_key, key
         cdef int i
