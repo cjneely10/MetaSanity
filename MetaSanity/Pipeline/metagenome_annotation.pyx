@@ -149,9 +149,9 @@ def metagenome_annotation(str directory, str config_file, bint cancel_autocommit
             )
         )
 
-        # Integral task - prokka
+        # Integral task - prokka proteins use
         if cfg.check_pipe_set("prokka", MetagenomeAnnotationConstants.PIPELINE_NAME):
-            for task in (
+            task_list.append(
                 # PROKKA annotation pipeline
                 PROKKA(
                     calling_script_path=cfg.get(PROKKAConstants.PROKKA, ConfigManager.PATH),
@@ -160,20 +160,22 @@ def metagenome_annotation(str directory, str config_file, bint cancel_autocommit
                     fasta_file=fasta_file,
                     added_flags=cfg.build_parameter_list_from_dict(PROKKAConstants.PROKKA),
                     domain_type=(bact_arch_type.get(os.path.basename(fasta_file), (PeptidaseConstants.BACTERIA,))[0] if bact_arch_type else PeptidaseConstants.BACTERIA)
-                ),
-            ):
-                task_list.append(task)
-            if prokka:
-                protein_file = os.path.join(output_directory,
-                                            PROKKAConstants.OUTPUT_DIRECTORY,
-                                            out_prefix,
-                                            out_prefix + ".faa")
-            else:
-                protein_file = os.path.join(output_directory,
+                )
+            )
+
+        # Determine which protein calls to use
+        if prokka:
+            protein_file = os.path.join(output_directory,
+                                        PROKKAConstants.OUTPUT_DIRECTORY,
+                                        out_prefix,
+                                        out_prefix + ".faa")
+        else:
+            protein_file = os.path.join(output_directory,
                                         ProdigalConstants.OUTPUT_DIRECTORY,
                                         out_prefix + ProdigalConstants.PROTEIN_FILE_SUFFIX)
-        else:
-            # Integral task - predict proteins in contigs with prodigal
+
+        # Integral task - predict proteins in contigs with prodigal
+        if not prokka:
             task_list.append(
                 Prodigal(
                     output_directory=os.path.join(output_directory, ProdigalConstants.OUTPUT_DIRECTORY),
@@ -184,82 +186,92 @@ def metagenome_annotation(str directory, str config_file, bint cancel_autocommit
                     added_flags=cfg.build_parameter_list_from_dict(ProdigalConstants.PRODIGAL),
                 )
             )
-            protein_file = os.path.join(output_directory,
-                                        ProdigalConstants.OUTPUT_DIRECTORY,
-                                        out_prefix + ProdigalConstants.PROTEIN_FILE_SUFFIX)
         # Required task - extract sections of contigs corresponding to gene calls
         for task in (
-            DiamondMakeDB(
-                output_directory=os.path.join(output_directory, DiamondConstants.OUTPUT_DIRECTORY),
-                prot_file=protein_file,
-                calling_script_path=cfg.get(DiamondConstants.DIAMOND, ConfigManager.PATH),
-            ),
-            # Retrieve sections from contigs matching prodigal gene calls
-            Diamond(
-                outfile=out_prefix + ".tsv",
-                output_directory=os.path.join(output_directory, DiamondConstants.OUTPUT_DIRECTORY),
-                program="blastx",
-                diamond_db=os.path.join(output_directory, DiamondConstants.OUTPUT_DIRECTORY, get_prefix(protein_file)),
-                query_file=fasta_file,
-                evalue="1e-10",
-                calling_script_path=cfg.get(DiamondConstants.DIAMOND, ConfigManager.PATH),
-                added_flags=cfg.build_parameter_list_from_dict(DiamondConstants.DIAMOND),
-            ),
-            DiamondToFasta(
-                output_directory=os.path.join(output_directory, DiamondConstants.OUTPUT_DIRECTORY),
-                outfile=out_prefix + ".subset.fna",
-                fasta_file=fasta_file,
-                diamond_file=os.path.join(output_directory, DiamondConstants.OUTPUT_DIRECTORY, out_prefix + ".tsv"),
-                calling_script_path=cfg.get(DiamondConstants.DIAMOND, ConfigManager.PATH),
-            ),
+                DiamondMakeDB(
+                    output_directory=os.path.join(output_directory, DiamondConstants.OUTPUT_DIRECTORY),
+                    prot_file=protein_file,
+                    calling_script_path=cfg.get(DiamondConstants.DIAMOND, ConfigManager.PATH),
+                ),
+                # Retrieve sections from contigs matching prodigal gene calls
+                Diamond(
+                    outfile=out_prefix + ".tsv",
+                    output_directory=os.path.join(output_directory, DiamondConstants.OUTPUT_DIRECTORY),
+                    program="blastx",
+                    diamond_db=os.path.join(output_directory, DiamondConstants.OUTPUT_DIRECTORY, get_prefix(protein_file)),
+                    query_file=fasta_file,
+                    evalue="1e-10",
+                    calling_script_path=cfg.get(DiamondConstants.DIAMOND, ConfigManager.PATH),
+                    added_flags=cfg.build_parameter_list_from_dict(DiamondConstants.DIAMOND),
+                ),
+                DiamondToFasta(
+                    output_directory=os.path.join(output_directory, DiamondConstants.OUTPUT_DIRECTORY),
+                    outfile=out_prefix + ".subset.fna",
+                    fasta_file=fasta_file,
+                    diamond_file=os.path.join(output_directory, DiamondConstants.OUTPUT_DIRECTORY, out_prefix + ".tsv"),
+                    calling_script_path=cfg.get(DiamondConstants.DIAMOND, ConfigManager.PATH),
+                ),
         ):
             task_list.append(task)
+
+        # Integral task - Create Diamond database of prokka proteins to contigs
         if prokka and cfg.check_pipe_set("prokka", MetagenomeAnnotationConstants.PIPELINE_NAME):
             # For PROKKA adjusting
             task_list.append(
                 DiamondMakeDB(
-                output_directory=os.path.join(output_directory, PROKKAConstants.OUTPUT_DIRECTORY, DiamondConstants.OUTPUT_DIRECTORY),
-                prot_file=os.path.join(output_directory, PROKKAConstants.OUTPUT_DIRECTORY, out_prefix, out_prefix + ".fxa"),
-                calling_script_path=cfg.get(DiamondConstants.DIAMOND, ConfigManager.PATH),
+                    output_directory=os.path.join(output_directory, PROKKAConstants.OUTPUT_DIRECTORY, DiamondConstants.OUTPUT_DIRECTORY),
+                    prot_file=os.path.join(output_directory, PROKKAConstants.OUTPUT_DIRECTORY, out_prefix, out_prefix + ".fxa"),
+                    calling_script_path=cfg.get(DiamondConstants.DIAMOND, ConfigManager.PATH),
+                )
+            )
+        elif not prokka and cfg.check_pipe_set("prokka", MetagenomeAnnotationConstants.PIPELINE_NAME):
+            # For PROKKA adjusting
+            task_list.append(
+                DiamondMakeDB(
+                    output_directory=os.path.join(output_directory, PROKKAConstants.OUTPUT_DIRECTORY, DiamondConstants.OUTPUT_DIRECTORY),
+                    prot_file=protein_file,
+                    calling_script_path=cfg.get(DiamondConstants.DIAMOND, ConfigManager.PATH),
                 )
             )
         else:
             # For PROKKA adjusting
             task_list.append(
                 DiamondMakeDB(
-                output_directory=os.path.join(output_directory, PROKKAConstants.OUTPUT_DIRECTORY, DiamondConstants.OUTPUT_DIRECTORY),
-                prot_file=protein_file,
-                calling_script_path=cfg.get(DiamondConstants.DIAMOND, ConfigManager.PATH),
+                    output_directory=os.path.join(output_directory, PROKKAConstants.OUTPUT_DIRECTORY, DiamondConstants.OUTPUT_DIRECTORY),
+                    prot_file=protein_file,
+                    calling_script_path=cfg.get(DiamondConstants.DIAMOND, ConfigManager.PATH),
                 )
             )
-        for task in (
-            # Identify which PROKKA annotations match contigs corresponding to prodigal gene calls and save the subset
-            Diamond(
-                outfile=out_prefix + ".rev.tsv",
-                output_directory=os.path.join(output_directory, PROKKAConstants.OUTPUT_DIRECTORY, DiamondConstants.OUTPUT_DIRECTORY),
-                program="blastx",
-                diamond_db=os.path.join(output_directory, PROKKAConstants.OUTPUT_DIRECTORY, DiamondConstants.OUTPUT_DIRECTORY, out_prefix),
-                query_file=os.path.join(output_directory, DiamondConstants.OUTPUT_DIRECTORY, out_prefix + ".subset.fna"),
-                evalue="1e-20",
-                calling_script_path=cfg.get(DiamondConstants.DIAMOND, ConfigManager.PATH),
-                added_flags=cfg.build_parameter_list_from_dict(DiamondConstants.DIAMOND),
-            ),
-            # Write final prokka annotations
-            PROKKAMatcher(
-                output_directory=os.path.join(output_directory, PROKKAConstants.OUTPUT_DIRECTORY, DiamondConstants.OUTPUT_DIRECTORY),
-                outfile=out_prefix + ".prk-to-prd.tsv",
-                diamond_file=os.path.join(output_directory, PROKKAConstants.OUTPUT_DIRECTORY,
-                                          DiamondConstants.OUTPUT_DIRECTORY, out_prefix + ".rev.tsv"),
-                prokka_tsv=os.path.join(output_directory, PROKKAConstants.OUTPUT_DIRECTORY, out_prefix,
-                                        out_prefix + PROKKAConstants.AMENDED_RESULTS_SUFFIX),
-                suffix=".faa",
-                evalue="1e-20",
-                pident="98.5",
-                matches_file=os.path.join(output_directory, DiamondConstants.OUTPUT_DIRECTORY, out_prefix + ".subset.matches"),
-                calling_script_path="",
-            ),
-        ):
-            task_list.append(task)
+
+        if cfg.check_pipe_set("prokka", MetagenomeAnnotationConstants.PIPELINE_NAME):
+            for task in (
+                    # Identify which PROKKA annotations match contigs corresponding to prodigal gene calls and save the subset
+                    Diamond(
+                        outfile=out_prefix + ".rev.tsv",
+                        output_directory=os.path.join(output_directory, PROKKAConstants.OUTPUT_DIRECTORY, DiamondConstants.OUTPUT_DIRECTORY),
+                        program="blastx",
+                        diamond_db=os.path.join(output_directory, PROKKAConstants.OUTPUT_DIRECTORY, DiamondConstants.OUTPUT_DIRECTORY, out_prefix),
+                        query_file=os.path.join(output_directory, DiamondConstants.OUTPUT_DIRECTORY, out_prefix + ".subset.fna"),
+                        evalue="1e-20",
+                        calling_script_path=cfg.get(DiamondConstants.DIAMOND, ConfigManager.PATH),
+                        added_flags=cfg.build_parameter_list_from_dict(DiamondConstants.DIAMOND),
+                    ),
+                    # Write final prokka annotations
+                    PROKKAMatcher(
+                        output_directory=os.path.join(output_directory, PROKKAConstants.OUTPUT_DIRECTORY, DiamondConstants.OUTPUT_DIRECTORY),
+                        outfile=out_prefix + ".prk-to-prd.tsv",
+                        diamond_file=os.path.join(output_directory, PROKKAConstants.OUTPUT_DIRECTORY,
+                                                  DiamondConstants.OUTPUT_DIRECTORY, out_prefix + ".rev.tsv"),
+                        prokka_tsv=os.path.join(output_directory, PROKKAConstants.OUTPUT_DIRECTORY, out_prefix,
+                                                out_prefix + PROKKAConstants.AMENDED_RESULTS_SUFFIX),
+                        suffix=".faa",
+                        evalue="1e-20",
+                        pident="98.5",
+                        matches_file=os.path.join(output_directory, DiamondConstants.OUTPUT_DIRECTORY, out_prefix + ".subset.matches"),
+                        calling_script_path="",
+                    ),
+            ):
+                task_list.append(task)
 
         # Required task - split protein file into separate fasta files
         task_list.append(
@@ -279,56 +291,56 @@ def metagenome_annotation(str directory, str config_file, bint cancel_autocommit
         # Optional task - virsorter
         if cfg.check_pipe_set("virsorter", MetagenomeAnnotationConstants.PIPELINE_NAME):
             for task in (
-                # Virsorter annotation pipeline
-                VirSorter(
-                    output_directory=os.path.join(output_directory, VirSorterConstants.OUTPUT_DIRECTORY),
-                    fasta_file=fasta_file,
-                    calling_script_path=cfg.get(VirSorterConstants.VIRSORTER, ConfigManager.PATH),
-                    added_flags=cfg.build_parameter_list_from_dict(VirSorterConstants.VIRSORTER),
-                    wdir=os.path.abspath(os.path.join(output_directory, VirSorterConstants.OUTPUT_DIRECTORY, get_prefix(fasta_file))),
-                    is_docker=is_docker,
-                ),
-                # Store virsorter info to database
-                GetDBDMCall(
-                    cancel_autocommit=cancel_autocommit,
-                    table_name=out_prefix,
-                    alias=out_prefix,
-                    calling_script_path=cfg.get(BioMetaDBConstants.BIOMETADB, ConfigManager.PATH),
-                    db_name=biometadb_project,
-                    directory_name=os.path.join(output_directory, SplitFileConstants.OUTPUT_DIRECTORY, out_prefix + ".fna"),
-                    data_file=os.path.join(output_directory, VirSorterConstants.OUTPUT_DIRECTORY, get_prefix(fasta_file),
-                                           "virsorter-out", out_prefix + "." + VirSorterConstants.ADJ_OUT_FILE),
-                    added_flags=cfg.get_added_flags(BioMetaDBConstants.BIOMETADB),
-                    storage_string=out_prefix + " " + VirSorterConstants.STORAGE_STRING,
-                ),
+                    # Virsorter annotation pipeline
+                    VirSorter(
+                        output_directory=os.path.join(output_directory, VirSorterConstants.OUTPUT_DIRECTORY),
+                        fasta_file=fasta_file,
+                        calling_script_path=cfg.get(VirSorterConstants.VIRSORTER, ConfigManager.PATH),
+                        added_flags=cfg.build_parameter_list_from_dict(VirSorterConstants.VIRSORTER),
+                        wdir=os.path.abspath(os.path.join(output_directory, VirSorterConstants.OUTPUT_DIRECTORY, get_prefix(fasta_file))),
+                        is_docker=is_docker,
+                    ),
+                    # Store virsorter info to database
+                    GetDBDMCall(
+                        cancel_autocommit=cancel_autocommit,
+                        table_name=out_prefix,
+                        alias=out_prefix,
+                        calling_script_path=cfg.get(BioMetaDBConstants.BIOMETADB, ConfigManager.PATH),
+                        db_name=biometadb_project,
+                        directory_name=os.path.join(output_directory, SplitFileConstants.OUTPUT_DIRECTORY, out_prefix + ".fna"),
+                        data_file=os.path.join(output_directory, VirSorterConstants.OUTPUT_DIRECTORY, get_prefix(fasta_file),
+                                               "virsorter-out", out_prefix + "." + VirSorterConstants.ADJ_OUT_FILE),
+                        added_flags=cfg.get_added_flags(BioMetaDBConstants.BIOMETADB),
+                        storage_string=out_prefix + " " + VirSorterConstants.STORAGE_STRING,
+                    ),
             ):
                 task_list.append(task)
 
         # Optional task - kegg
         if cfg.check_pipe_set("kegg", MetagenomeAnnotationConstants.PIPELINE_NAME):
             for task in (
-                # Predict KEGG
-                KofamScan(
-                    output_directory=os.path.join(output_directory, KofamScanConstants.KEGG_DIRECTORY, KofamScanConstants.OUTPUT_DIRECTORY),
-                    calling_script_path=cfg.get(KofamScanConstants.KOFAMSCAN, ConfigManager.PATH),
-                    outfile=out_prefix,
-                    fasta_file=protein_file,
-                    added_flags=cfg.build_parameter_list_from_dict(KofamScanConstants.KOFAMSCAN),
-                ),
+                    # Predict KEGG
+                    KofamScan(
+                        output_directory=os.path.join(output_directory, KofamScanConstants.KEGG_DIRECTORY, KofamScanConstants.OUTPUT_DIRECTORY),
+                        calling_script_path=cfg.get(KofamScanConstants.KOFAMSCAN, ConfigManager.PATH),
+                        outfile=out_prefix,
+                        fasta_file=protein_file,
+                        added_flags=cfg.build_parameter_list_from_dict(KofamScanConstants.KOFAMSCAN),
+                    ),
             ):
                 task_list.append(task)
 
         # Optional task - interproscan
         if cfg.check_pipe_set("interproscan", MetagenomeAnnotationConstants.PIPELINE_NAME):
             for task in (
-                Interproscan(
-                    calling_script_path=cfg.get(InterproscanConstants.INTERPROSCAN, ConfigManager.PATH),
-                    output_directory=os.path.join(output_directory, InterproscanConstants.OUTPUT_DIRECTORY),
-                    fasta_file=protein_file,
-                    out_prefix=out_prefix,
-                    added_flags=cfg.build_parameter_list_from_dict(InterproscanConstants.INTERPROSCAN),
-                    applications=[val for val in cfg.get(InterproscanConstants.INTERPROSCAN, "--applications").split(",") if val != ""],
-                ),
+                    Interproscan(
+                        calling_script_path=cfg.get(InterproscanConstants.INTERPROSCAN, ConfigManager.PATH),
+                        output_directory=os.path.join(output_directory, InterproscanConstants.OUTPUT_DIRECTORY),
+                        fasta_file=protein_file,
+                        out_prefix=out_prefix,
+                        added_flags=cfg.build_parameter_list_from_dict(InterproscanConstants.INTERPROSCAN),
+                        applications=[val for val in cfg.get(InterproscanConstants.INTERPROSCAN, "--applications").split(",") if val != ""],
+                    ),
             ):
                 task_list.append(task)
 
@@ -336,83 +348,83 @@ def metagenome_annotation(str directory, str config_file, bint cancel_autocommit
         if cfg.check_pipe_set("peptidase", MetagenomeAnnotationConstants.PIPELINE_NAME):
             merops_dict = build_merops_dict(cfg.get(MEROPSConstants.MEROPS, ConfigManager.DATA_DICT))
             for task in (
-                # Begin peptidase portion of pipeline
-                # Search for CAZy
-                HMMSearch(
-                    added_flags=cfg.build_parameter_list_from_dict(HMMSearchConstants.HMMSEARCH),
-                    calling_script_path=cfg.get(HMMSearchConstants.HMMSEARCH, ConfigManager.PATH),
-                    output_directory=os.path.join(output_directory, PeptidaseConstants.OUTPUT_DIRECTORY, CAZYConstants.OUTPUT_DIRECTORY,
-                                                  HMMSearchConstants.OUTPUT_DIRECTORY),
-                    out_file=out_prefix + "." + CAZYConstants.HMM_FILE,
-                    fasta_file=protein_file,
-                    hmm_file=os.path.join(output_directory, PeptidaseConstants.OUTPUT_DIRECTORY, CAZYConstants.OUTPUT_DIRECTORY,
-                                          HMMConvertConstants.OUTPUT_DIRECTORY, cfg.get(CAZYConstants.CAZY, ConfigManager.DATA))
+                    # Begin peptidase portion of pipeline
+                    # Search for CAZy
+                    HMMSearch(
+                        added_flags=cfg.build_parameter_list_from_dict(HMMSearchConstants.HMMSEARCH),
+                        calling_script_path=cfg.get(HMMSearchConstants.HMMSEARCH, ConfigManager.PATH),
+                        output_directory=os.path.join(output_directory, PeptidaseConstants.OUTPUT_DIRECTORY, CAZYConstants.OUTPUT_DIRECTORY,
+                                                      HMMSearchConstants.OUTPUT_DIRECTORY),
+                        out_file=out_prefix + "." + CAZYConstants.HMM_FILE,
+                        fasta_file=protein_file,
+                        hmm_file=os.path.join(output_directory, PeptidaseConstants.OUTPUT_DIRECTORY, CAZYConstants.OUTPUT_DIRECTORY,
+                                              HMMConvertConstants.OUTPUT_DIRECTORY, cfg.get(CAZYConstants.CAZY, ConfigManager.DATA))
 
-                ),
-                # Assign CAZy info for genomes
-                CAZY(
-                    hmm_results=os.path.join(output_directory, PeptidaseConstants.OUTPUT_DIRECTORY, CAZYConstants.OUTPUT_DIRECTORY,
-                                             HMMSearchConstants.OUTPUT_DIRECTORY, out_prefix + "." + CAZYConstants.HMM_FILE),
-                    output_directory=os.path.join(output_directory, PeptidaseConstants.OUTPUT_DIRECTORY, CAZYConstants.OUTPUT_DIRECTORY),
-                    outfile=out_prefix + "." + CAZYConstants.ASSIGNMENTS,
-                    calling_script_path="",
-                    prot_suffix=os.path.splitext(ProdigalConstants.PROTEIN_FILE_SUFFIX)[1],
-                    genome_basename=os.path.basename(fasta_file),
-                ),
-                # Search for MEROPS
-                HMMSearch(
-                    added_flags=cfg.build_parameter_list_from_dict(HMMSearchConstants.HMMSEARCH),
-                    calling_script_path=cfg.get(HMMSearchConstants.HMMSEARCH, ConfigManager.PATH),
-                    output_directory=os.path.join(output_directory, PeptidaseConstants.OUTPUT_DIRECTORY, MEROPSConstants.OUTPUT_DIRECTORY,
-                                                  HMMSearchConstants.OUTPUT_DIRECTORY),
-                    out_file=out_prefix + "." + MEROPSConstants.HMM_FILE,
-                    fasta_file=protein_file,
-                    hmm_file=os.path.join(output_directory, PeptidaseConstants.OUTPUT_DIRECTORY, MEROPSConstants.OUTPUT_DIRECTORY,
-                                          HMMConvertConstants.OUTPUT_DIRECTORY, cfg.get(MEROPSConstants.MEROPS, ConfigManager.DATA)),
-                ),
-                # Assign MEROPS info for genomes
-                MEROPS(
-                    calling_script_path="",
-                    hmm_results=os.path.join(output_directory, PeptidaseConstants.OUTPUT_DIRECTORY, MEROPSConstants.OUTPUT_DIRECTORY,
-                                             HMMSearchConstants.OUTPUT_DIRECTORY, out_prefix + "." + MEROPSConstants.HMM_FILE),
-                    output_directory=os.path.join(output_directory, PeptidaseConstants.OUTPUT_DIRECTORY, MEROPSConstants.OUTPUT_DIRECTORY),
-                    outfile=out_prefix + "." + MEROPSConstants.MEROPS_PROTEIN_FILE_SUFFIX,
-                    prot_file=protein_file,
-                ),
-                # Run signalp
-                SignalP(
-                    calling_script_path=cfg.get(SignalPConstants.SIGNALP, ConfigManager.PATH),
-                    membrane_type=(bact_arch_type.get(os.path.basename(fasta_file), (0, PeptidaseConstants.GRAM_NEG))[1] if bact_arch_type else PeptidaseConstants.GRAM_NEG),
-                    output_directory=os.path.join(output_directory, PeptidaseConstants.OUTPUT_DIRECTORY, SignalPConstants.OUTPUT_DIRECTORY),
-                    outfile=out_prefix + SignalPConstants.RESULTS_SUFFIX,
-                    prot_file=protein_file,
-                    added_flags=cfg.build_parameter_list_from_dict(SignalPConstants.SIGNALP),
-                ),
-                # Run psortb
-                PSORTb(
-                    data_type=(bact_arch_type.get(os.path.basename(fasta_file), (0, PeptidaseConstants.GRAM_NEG))[1] if bact_arch_type else PeptidaseConstants.GRAM_NEG),
-                    domain_type=(bact_arch_type.get(os.path.basename(fasta_file), (PeptidaseConstants.BACTERIA,))[0] if bact_arch_type else PeptidaseConstants.BACTERIA),
-                    prot_file=protein_file,
-                    output_directory=os.path.join(output_directory, PeptidaseConstants.OUTPUT_DIRECTORY, PSORTbConstants.OUTPUT_DIRECTORY, out_prefix),
-                    calling_script_path=cfg.get(PSORTbConstants.PSORTB, ConfigManager.PATH),
-                    is_docker=is_docker,
-                    added_flags=cfg.build_parameter_list_from_dict(PSORTbConstants.PSORTB),
-                ),
-                # Parse signalp and psortb through merops to identify peptidases
-                Peptidase(
-                    calling_script_path="",
-                    psortb_results=os.path.join(output_directory, PeptidaseConstants.OUTPUT_DIRECTORY, PSORTbConstants.OUTPUT_DIRECTORY,
-                                                get_prefix(protein_file) + ".tbl"),
-                    signalp_results=os.path.join(output_directory, PeptidaseConstants.OUTPUT_DIRECTORY, SignalPConstants.OUTPUT_DIRECTORY,
-                                                 out_prefix + SignalPConstants.RESULTS_SUFFIX),
-                    merops_hmm_results=os.path.join(output_directory, PeptidaseConstants.OUTPUT_DIRECTORY, MEROPSConstants.OUTPUT_DIRECTORY,
-                                                    HMMSearchConstants.OUTPUT_DIRECTORY, out_prefix + "." + MEROPSConstants.HMM_FILE),
-                    output_directory=os.path.join(output_directory, PeptidaseConstants.OUTPUT_DIRECTORY),
-                    output_prefix=out_prefix,
-                    protein_suffix=os.path.splitext(ProdigalConstants.PROTEIN_FILE_SUFFIX)[1],
-                    genome_id_and_ext=os.path.basename(fasta_file),
-                    pfam_to_merops_dict=merops_dict,
-                ),
+                    ),
+                    # Assign CAZy info for genomes
+                    CAZY(
+                        hmm_results=os.path.join(output_directory, PeptidaseConstants.OUTPUT_DIRECTORY, CAZYConstants.OUTPUT_DIRECTORY,
+                                                 HMMSearchConstants.OUTPUT_DIRECTORY, out_prefix + "." + CAZYConstants.HMM_FILE),
+                        output_directory=os.path.join(output_directory, PeptidaseConstants.OUTPUT_DIRECTORY, CAZYConstants.OUTPUT_DIRECTORY),
+                        outfile=out_prefix + "." + CAZYConstants.ASSIGNMENTS,
+                        calling_script_path="",
+                        prot_suffix=os.path.splitext(ProdigalConstants.PROTEIN_FILE_SUFFIX)[1],
+                        genome_basename=os.path.basename(fasta_file),
+                    ),
+                    # Search for MEROPS
+                    HMMSearch(
+                        added_flags=cfg.build_parameter_list_from_dict(HMMSearchConstants.HMMSEARCH),
+                        calling_script_path=cfg.get(HMMSearchConstants.HMMSEARCH, ConfigManager.PATH),
+                        output_directory=os.path.join(output_directory, PeptidaseConstants.OUTPUT_DIRECTORY, MEROPSConstants.OUTPUT_DIRECTORY,
+                                                      HMMSearchConstants.OUTPUT_DIRECTORY),
+                        out_file=out_prefix + "." + MEROPSConstants.HMM_FILE,
+                        fasta_file=protein_file,
+                        hmm_file=os.path.join(output_directory, PeptidaseConstants.OUTPUT_DIRECTORY, MEROPSConstants.OUTPUT_DIRECTORY,
+                                              HMMConvertConstants.OUTPUT_DIRECTORY, cfg.get(MEROPSConstants.MEROPS, ConfigManager.DATA)),
+                    ),
+                    # Assign MEROPS info for genomes
+                    MEROPS(
+                        calling_script_path="",
+                        hmm_results=os.path.join(output_directory, PeptidaseConstants.OUTPUT_DIRECTORY, MEROPSConstants.OUTPUT_DIRECTORY,
+                                                 HMMSearchConstants.OUTPUT_DIRECTORY, out_prefix + "." + MEROPSConstants.HMM_FILE),
+                        output_directory=os.path.join(output_directory, PeptidaseConstants.OUTPUT_DIRECTORY, MEROPSConstants.OUTPUT_DIRECTORY),
+                        outfile=out_prefix + "." + MEROPSConstants.MEROPS_PROTEIN_FILE_SUFFIX,
+                        prot_file=protein_file,
+                    ),
+                    # Run signalp
+                    SignalP(
+                        calling_script_path=cfg.get(SignalPConstants.SIGNALP, ConfigManager.PATH),
+                        membrane_type=(bact_arch_type.get(os.path.basename(fasta_file), (0, PeptidaseConstants.GRAM_NEG))[1] if bact_arch_type else PeptidaseConstants.GRAM_NEG),
+                        output_directory=os.path.join(output_directory, PeptidaseConstants.OUTPUT_DIRECTORY, SignalPConstants.OUTPUT_DIRECTORY),
+                        outfile=out_prefix + SignalPConstants.RESULTS_SUFFIX,
+                        prot_file=protein_file,
+                        added_flags=cfg.build_parameter_list_from_dict(SignalPConstants.SIGNALP),
+                    ),
+                    # Run psortb
+                    PSORTb(
+                        data_type=(bact_arch_type.get(os.path.basename(fasta_file), (0, PeptidaseConstants.GRAM_NEG))[1] if bact_arch_type else PeptidaseConstants.GRAM_NEG),
+                        domain_type=(bact_arch_type.get(os.path.basename(fasta_file), (PeptidaseConstants.BACTERIA,))[0] if bact_arch_type else PeptidaseConstants.BACTERIA),
+                        prot_file=protein_file,
+                        output_directory=os.path.join(output_directory, PeptidaseConstants.OUTPUT_DIRECTORY, PSORTbConstants.OUTPUT_DIRECTORY, out_prefix),
+                        calling_script_path=cfg.get(PSORTbConstants.PSORTB, ConfigManager.PATH),
+                        is_docker=is_docker,
+                        added_flags=cfg.build_parameter_list_from_dict(PSORTbConstants.PSORTB),
+                    ),
+                    # Parse signalp and psortb through merops to identify peptidases
+                    Peptidase(
+                        calling_script_path="",
+                        psortb_results=os.path.join(output_directory, PeptidaseConstants.OUTPUT_DIRECTORY, PSORTbConstants.OUTPUT_DIRECTORY,
+                                                    get_prefix(protein_file) + ".tbl"),
+                        signalp_results=os.path.join(output_directory, PeptidaseConstants.OUTPUT_DIRECTORY, SignalPConstants.OUTPUT_DIRECTORY,
+                                                     out_prefix + SignalPConstants.RESULTS_SUFFIX),
+                        merops_hmm_results=os.path.join(output_directory, PeptidaseConstants.OUTPUT_DIRECTORY, MEROPSConstants.OUTPUT_DIRECTORY,
+                                                        HMMSearchConstants.OUTPUT_DIRECTORY, out_prefix + "." + MEROPSConstants.HMM_FILE),
+                        output_directory=os.path.join(output_directory, PeptidaseConstants.OUTPUT_DIRECTORY),
+                        output_prefix=out_prefix,
+                        protein_suffix=os.path.splitext(ProdigalConstants.PROTEIN_FILE_SUFFIX)[1],
+                        genome_id_and_ext=os.path.basename(fasta_file),
+                        pfam_to_merops_dict=merops_dict,
+                    ),
             ):
                 task_list.append(task)
         try:
