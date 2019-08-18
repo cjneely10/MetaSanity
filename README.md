@@ -7,7 +7,7 @@ Download the install script from this repository.
 
 This script requires `python3` and the `argparse` package. `wget`, `git`, `docker`, and `pip` are also required.
 
-<pre><code>usage: install.py [-h] -o OUTDIR [-v VERSION]
+<pre><code>usage: install.py [-h] [-o OUTDIR] [-v VERSION]
 
 Download MetaSanity package
 
