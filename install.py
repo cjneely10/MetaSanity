@@ -107,7 +107,7 @@ if __name__ == "__main__":
     ap = ArgParse(
         (
             (("-o", "--outdir"),
-             {"help": "Location to which to download MetaSanity package", "required": True}),
+             {"help": "Location to which to download MetaSanity package", "default": "MetaSanity"}),
             (("-v", "--version"),
              {"help": "Default: docker", "default": "docker"}),
         ),
