@@ -109,17 +109,17 @@ if __name__ == "__main__":
             (("-o", "--outdir"),
              {"help": "Location to which to download MetaSanity package, default MetaSanity", "default": "MetaSanity"}),
             (("-v", "--version"),
-             {"help": "Default: docker", "default": "docker"}),
+             {"help": "Default: Docker", "default": "Docker"}),
         ),
         description="Download MetaSanity package"
     )
-
+    assert ap.args.version in ("Docker",), "Incorrect version, select from: Docker"
     OUTDIR = ap.args.outdir
     # Get BioMetaDB
     clone_biometadb()
     build_biometadb()
     # Download given version
-    if ap.args.version == "docker":
+    if ap.args.version == "Docker":
         download_docker()
     # Download config files for version
     config_pull(ap.args.version)
