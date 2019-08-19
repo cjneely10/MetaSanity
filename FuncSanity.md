@@ -9,14 +9,15 @@ Users have the option of using prodigal gene calls or PROKKA-annotated gene call
 The peptidase pipe requires the latest `dbCAN` and `CAZy` HMM profiles, whose links are available on the main README.
 The peptidase pipe also requires the file `merops-as-pfams.txt`, which is available in `Sample/Data`. 
 
-- Required flags
+- Required arguments
     - --directory (-d): /path/to/directory of fasta files
     - --config_file (-c): /path/to/config.ini file matching template in Sample/Config
 - Optional flags
-    - --prokka (-p): Use prokka gene calls in downstream analysis 
+    - --prokka (-p): Use prokka gene calls in downstream analysis
+    - --cancel_autocommit (-a): Cancel creation/update of `BioMetaDB` project
+- Optional arguments
     - --output_directory (-o): Output prefix
     - --biometadb_project (-b): Name to assign to `BioMetaDB` project, or name of existing project to use
-    - --cancel_autocommit (-a): Cancel creation/update of `BioMetaDB` project
     - --type_file (-t): /path/to/type_file, formatted as `'file_name.fna\t[Archaea/Bacteria]\t[gram+/gram-]\n'`
         - This argument is only required if running the **peptidase** portion of the pipeline on non gram- bacteria.
 
