@@ -110,4 +110,4 @@ def metagenome_evaluation(str directory, str config_file, bint cancel_autocommit
     cfg.citation_generator.write(output_directory + "citations.txt")
     if remove_intermediates:
         shutil.rmtree(directory)
-    print("MET_EVAL pipeline complete!")
+    print("PhyloSanity pipeline complete!")

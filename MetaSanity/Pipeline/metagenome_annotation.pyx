@@ -625,4 +625,4 @@ def metagenome_annotation(str directory, str config_file, bint cancel_autocommit
             os.remove(os.path.join(output_directory, prefix + "." + MetagenomeAnnotationConstants.TMP_TSV_OUT))
         shutil.rmtree(directory)
         shutil.rmtree(os.path.join(output_directory, SplitFileConstants.OUTPUT_DIRECTORY))
-    print("MET_ANNOT pipeline complete!")
+    print("FuncSanity pipeline complete!")
