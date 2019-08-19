@@ -72,18 +72,19 @@ as well as to redirect stderr to a separate file.
 
 `MetaSanity.py` is the calling script for the docker installation. `pipedm.py` is the calling script for the standalone version of **MetaSanity**. 
 
-<pre><code>usage: MetaSanity.py [-h] -d DIRECTORY -c CONFIG_FILE [-a] [-o OUTPUT_DIRECTORY]
-                 [-b BIOMETADB_PROJECT] [-t TYPE_FILE]
-                 program
+<pre><code>usage: MetaSanity.py [-h] -d DIRECTORY -c CONFIG_FILE [-a]
+                     [-o OUTPUT_DIRECTORY] [-b BIOMETADB_PROJECT]
+                     [-t TYPE_FILE] [-p]
+                     program
 
-MetaSanity: Run meta/genome evaluation and annotation pipelines
+MetaSanity:	Run meta/genomes evaluation and annotation pipelines
 
 Available Programs:
 
 FuncSanity: Runs gene callers and annotation programs on MAGs
-                (Flags:  --directory --config_file --cancel_autocommit --output_directory --biometadb_project --type_file)
+		(Flags:  --directory --config_file --cancel_autocommit --output_directory --biometadb_project --type_file --prokka)
 PhyloSanity: Evaluates completion, contamination, and redundancy of MAGs
-                (Flags:  --directory --config_file --cancel_autocommit --output_directory --biometadb_project)
+		(Flags:  --directory --config_file --cancel_autocommit --output_directory --biometadb_project)
 
 positional arguments:
   program               Program to run
@@ -101,7 +102,8 @@ optional arguments:
   -b BIOMETADB_PROJECT, --biometadb_project BIOMETADB_PROJECT
                         /path/to/BioMetaDB_project (updates values of existing database)
   -t TYPE_FILE, --type_file TYPE_FILE
-                        /path/to/type_file formatted as 'file_name.fna\t[Archaea/Bacteria]\t[gram+/gram-]\n'</code></pre>
+                        /path/to/type_file formatted as 'file_name.fna\t[Archaea/Bacteria]\t[gram+/gram-]\n'
+  -p, --prokka          Use PROKKA gene calls instead of prodigal search</code></pre>
 
 The typical workflow involves creating a configuration file based on the templates in `Sample/Config`. This config
 file is then used to call the given pipeline by passing to each program any flags specified by the user. This setup
