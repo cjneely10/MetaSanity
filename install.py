@@ -74,11 +74,11 @@ def download_docker():
 
 @out_dir
 def config_pull(version):
-    config_path = os.path.join("Sample/Config", version)
+    config_path = os.path.join("Config", version)
     if not os.path.exists(config_path):
         os.makedirs(config_path)
     os.chdir(config_path)
-    if version == "docker":
+    if version == "Docker":
         subprocess.run(["wget",
                         "https://raw.githubusercontent.com/cjneely10/MetaSanity/master/Sample/Config/Docker"
                         "/FuncSanity.ini"],
