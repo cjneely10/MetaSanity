@@ -106,16 +106,6 @@ file is then used to call the given pipeline by passing to each program any flag
 allows users to customize the calling programs to better fit their needs, as well as provides a useful documentation
 step for researchers.
 
-### Usage differences - standalone script versus docker image
-
-Both `MetaSanity.py` and `pipedm.py` use the same set of command-line arguments to function. 
-
-- Docker installation
-    - Users must edit the `MetaSanity.py` script to provide paths to downloaded data. See the [wiki page](https://github.com/cjneely10/MetaSanity/wiki/2-Installation) for instructions.
-    - Users must use the config file templates found in `Sample/Config/Docker`.
-- Source code installation
-    - Users must edit the config file template found in `Sample/Config/SourceCode` to provide paths to working program installations.
-
 ## Available pipelines
 
 - [PhyloSanity](PhyloSanity.md)
