@@ -11,10 +11,9 @@ global OUTDIR
 def out_dir(func):
     def func_wrapper(*args, **kwargs):
         current_loc = os.getcwd()
-        outdir = OUTDIR
-        if not os.path.exists(outdir):
-            os.makedirs(outdir)
-        os.chdir(outdir)
+        if not os.path.exists(OUTDIR):
+            os.makedirs(OUTDIR)
+        os.chdir(OUTDIR)
         func(*args, **kwargs)
         os.chdir(current_loc)
 
