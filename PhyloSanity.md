@@ -64,8 +64,9 @@ of the pipeline to be rerun. By default, **PhyloSanity** parses results containe
 and contamination, redundancy, and, optionally, phylogeny, respectively.
 
 - Location: `Examples/Config/PhyloSanity.ini`
-<pre><code># PhyloSanity.ini
-# Default config file for running the PhyloSanity pipeline
+<pre><code># Docker/PhyloSanity.ini
+# Default config file for running the FuncSanity pipeline
+# DO NOT edit any PATH, DATA, or DATA_DICT variables
 # Users are recommended to edit copies of this file only
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -73,19 +74,18 @@ and contamination, redundancy, and, optionally, phylogeny, respectively.
 
 [CHECKM]
 PATH = /usr/local/bin/checkm
-DATA = /path/to/checkm-db
+# Do not remove this next flag
+--tmpdir = /home/appuser/tmp_dir
 --aai_strain = 0.95
 -t = 1
 --pplacer_threads = 1
 FLAGS = --reduced_tree
---tmpdir = /path/to/tmpdir
 
 [FASTANI]
-PATH = /usr/local/bin/fastANI
+PATH = /usr/bin/fastANI
 --fragLen = 1500
 
 [BIOMETADB]
-PATH = /path/to/BioMetaDB/dbdm.py
 --db_name = Metagenomes
 --table_name = evaluation
 --alias = eval
