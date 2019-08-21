@@ -142,12 +142,13 @@ The docker config file sections come pre-populated with the proper path argument
 with additional flags or by commenting out unwanted sections. 
 
 - Location: `Examples/Config/FuncSanity.ini` or `Examples/Config/Docker/FuncSanity.ini`
-<pre><code># FuncSanity.ini
+<pre><code># Docker/FuncSanity.ini
 # Default config file for running the FuncSanity pipeline
+# DO NOT edit any PATH, DATA, or DATA_DICT variables
 # Users are recommended to edit copies of this file only
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# The following **MUST** be set
+# The following pipes **MUST** be set
 
 [PRODIGAL]
 PATH = /usr/bin/prodigal
@@ -165,12 +166,11 @@ PATH = /usr/bin/hmmconvert
 PATH = /usr/bin/hmmpress
 
 [BIOMETADB]
-PATH = /path/to/BioMetaDB/dbdm.py
 --db_name = Metagenomes
 FLAGS = -s
 
 [DIAMOND]
-PATH = /path/to/diamond
+PATH = /usr/bin/diamond
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -183,52 +183,54 @@ PATH = /path/to/diamond
 # Peptidase annotation
 
 [CAZY]
-DATA = /path/to/dbCAN-fam-HMMs.txt
+DATA = /home/appuser/Peptidase/dbCAN-fam-HMMs.txt
 
 [MEROPS]
-DATA = /path/to/MEROPS.pfam.hmm
-DATA_DICT = /path/to/merops-as-pfams.txt
+DATA = /home/appuser/Peptidase/MEROPS.pfam.hmm
+DATA_DICT = /home/appuser/Peptidase/merops-as-pfams.txt
 
-[SIGNALP]
-PATH = /path/to/signalp
+# [SIGNALP]
+# PATH = /home/appuser/signalp/signalp
 
 [PSORTB]
-PATH = /path/to/psortb
+PATH = /usr/bin/psortb
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # KEGG pathway annotation
 
 [KOFAMSCAN]
-PATH = /path/to/kofamscan/exec_annotation
+PATH = /usr/bin/kofamscan
 --cpu = 1
 
 [BIODATA]
-PATH = /path/to/KEGGDecoder
+PATH = /home/appuser/BioData/KEGGDecoder
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # PROKKA
 
 [PROKKA]
-PATH = /path/to/prokka
-FLAGS = --addgenes,--addmrna,--usegenus,--metagenome,--rnammer
+PATH = /usr/bin/prokka
+FLAGS = --addgenes,--addmrna,--usegenus,--metagenome,--rnammer,--force
 --evalue = 1e-10
---cpus = 2
+--cpus = 1
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# InterproScan
+# # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# # InterproScan
 
-[INTERPROSCAN]
-PATH = /path/to/interproscan.sh
---applications = TIGRFAM,SFLD,SMART,SUPERFAMILY,Pfam,ProDom,Hamap,CDD,PANTHER
-FLAGS = --goterms,--iprlookup,--pathways
+# [INTERPROSCAN]
+# PATH = /usr/bin/interproscan
+# # Do not remove this next flag
+# --tempdir = /home/appuser/interpro_tmp
+# --applications = TIGRFAM,SFLD,SMART,SUPERFAMILY,Pfam,ProDom,Hamap,CDD,PANTHER
+# --cpu = 1
+# FLAGS = --goterms,--iprlookup,--pathways
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # VirSorter
 
 [VIRSORTER]
-PATH = /path/to/virsorter-data
---db = 2
---user = UID-of-user-from-etc/passwd-file</code></pre>
+PATH = /home/appuser/virsorter-data
+--db = 2</code></pre>
 
 - General Notes
     - Depending on the number of genomes, the completion time for this pipeline can vary from several hours to several days.
