@@ -1,0 +1,11 @@
+Current issue and bug report
+
+#1	PSORTb output
+	|Error on line 55 of PSORTb.run in shutil function
+	- No such file or directory: /home/appuser/wdir/out/peptidase_results/psortb_results/<OUT_PREFIX>/psortb_out
+	|Check for file existance and only delete if needed
+
+#2 Computational speed
+	|Very long run time, particularly in PSORTb pipe
+	|Begin batching operation
+	- Need to commit major refactor
