@@ -5,6 +5,7 @@ iss#    <short descr>
     - Notes
     |<solution>
     |<issue resolution>
+----------------------------------------------------------------------------------------------------------------
 
 iss1	PSORTb output
 	|Error on line 55 of PSORTb.run in shutil function
@@ -16,3 +17,7 @@ iss2	Computational speed
 	|Very long run time, particularly in PSORTb pipe
 	|Begin batching operation
 	- Need to commit major refactor
+
+iss3    Dual docker processes run automatically
+    |Launching `MetaSanity.py` results in two docker processes launching
+    - `MetaSanity.py` does not appear to have any points that would launch two processes
