@@ -38,7 +38,7 @@ PEPTIDASE_DATA_FOLDER = os.path.join(DOWNLOAD_DIRECTORY, "peptidase")
 # Extracted virsorter data from  https://github.com/simroux/VirSorter
 VIRSORTER_DATA_FOLDER = os.path.join(DOWNLOAD_DIRECTORY, "virsorter/virsorter-data")
 # Location of BioMetaDB on system. If not used, ensure to pass `-a` flag to MetaSanity.py when running
-BIOMETADB = BIOMETADB = os.path.join(os.path.dirname(DOWNLOAD_DIRECTORY), "BioMetaDB/dbdm.py")
+BIOMETADB = os.path.join(os.path.dirname(DOWNLOAD_DIRECTORY), "BioMetaDB/dbdm.py")
 
 # Extracted interproscan package with binary from  https://github.com/ebi-pf-team/interproscan/wiki/HowToDownload
 INTERPROSCAN_FOLDER = "/path/to/interproscan"
@@ -246,7 +246,7 @@ try:
             "-d", os.path.join("/home/appuser/wdir", ap.args.directory),
             "-o", os.path.join("/home/appuser/wdir", ap.args.output_directory),
             "-c", os.path.join("/home/appuser/wdir", ap.args.config_file),
-            "-t", ap.args.type_file,
+            "-t", (os.path.join("/home/appuser/wdir", ap.args.type_file) if ap.args.type_file != "None" else "None"),
             *prokka_add,
             # Notify that this was called from docker
             "-y",

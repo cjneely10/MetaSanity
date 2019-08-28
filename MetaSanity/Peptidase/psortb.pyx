@@ -51,12 +51,13 @@ class PSORTb(LuigiTaskClass):
                 check=True,
                 stdout=open(os.path.join(str(self.output_directory), "psortb_out"), "w"),
             )
-            # Move results up and rename. Remove docker-created directory and
-            shutil.move(
-                os.path.join(str(self.output_directory), "psortb_out"),
-                os.path.join(os.path.dirname(str(self.output_directory)), get_prefix(str(self.prot_file)) + ".tbl")
-            )
-            shutil.rmtree(str(self.output_directory))
+            # Move results up and rename. Remove docker-created directory
+            if os.path.exists(os.path.join(str(self.output_directory), "psortb_out")):
+                shutil.move(
+                    os.path.join(str(self.output_directory), "psortb_out"),
+                    os.path.join(os.path.dirname(str(self.output_directory)), get_prefix(str(self.prot_file)) + ".tbl")
+                )
+                shutil.rmtree(str(self.output_directory))
         # Version was called from standalone script
         else:
             subprocess.run(
