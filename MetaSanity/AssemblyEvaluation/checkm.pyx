@@ -30,14 +30,14 @@ class CheckM(LuigiTaskClass):
 
         :return:
         """
-        cdef str tmp_dir = "%s_%s_outdir" % (datetime.today().strftime("%Y%m%d"),
-                                             str(randint(1,1001)))
+        if not os.path.exists(str(self.output_directory)):
+            os.makedirs(str(self.output_directory))
+        cdef str tmp_dir = os.path.join(str(self.output_directory), "%s_%s_outdir" % (datetime.today().strftime("%Y%m%d"),
+                                             str(randint(1,1001))))
         if not os.path.exists(tmp_dir):
             os.makedirs(tmp_dir)
         cdef object tmp = open(os.path.join(tmp_dir, "tmp.txt"), "w")
         print("Running CheckM..........")
-        if not os.path.exists(str(self.output_directory)):
-            os.makedirs(str(self.output_directory))
         # # Setup database
         # subprocess.run(
         #     [

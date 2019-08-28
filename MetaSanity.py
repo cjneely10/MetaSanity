@@ -246,7 +246,7 @@ try:
             "-d", os.path.join("/home/appuser/wdir", ap.args.directory),
             "-o", os.path.join("/home/appuser/wdir", ap.args.output_directory),
             "-c", os.path.join("/home/appuser/wdir", ap.args.config_file),
-            "-t", ap.args.type_file,
+            "-t", (os.path.join("/home/appuser/wdir", ap.args.type_file) if ap.args.type_file != "None" else "None"),
             *prokka_add,
             # Notify that this was called from docker
             "-y",
