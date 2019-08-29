@@ -48,7 +48,9 @@ class CheckM(LuigiTaskClass):
         )
         subprocess.run(
             [
-                "checkm data setRoot",
+                "checkm",
+                "data",
+                "setRoot",
             ],
             stdin=db_set.stdout
         )
