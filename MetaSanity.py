@@ -14,7 +14,7 @@ MetaSanity calling script
 **********
 Prior to first run:
 
-If using the provided `download-data.py` script, provide its location as the variable DOWNLOAD_DIRECTORY.
+If using the provided `download-data.py` script, provide its download location as the variable DOWNLOAD_DIRECTORY.
 Otherwise, ensure that all path arguments are valid and that all required databases are downloaded.
 If a certain program will not be used, and the database files are not downloaded, provide any valid directory
 or leave the default values. Directory contents are never deleted and are only used to reference stored data.
