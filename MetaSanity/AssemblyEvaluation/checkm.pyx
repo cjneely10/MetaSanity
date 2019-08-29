@@ -38,22 +38,22 @@ class CheckM(LuigiTaskClass):
             os.makedirs(tmp_dir)
         cdef object tmp = open(os.path.join(tmp_dir, "tmp.txt"), "w")
         print("Running CheckM..........")
+        # db_set = subprocess.Popen(
+        #     [
+        #         "echo",
+        #         "/home/appuser/checkm\n/home/appuser/checkm",
+        #     ],
+        #     stdout=subprocess.PIPE,
+        # )
+        # subprocess.run(
+        #     [
+        #         "checkm",
+        #         "data",
+        #         "setRoot",
+        #     ],
+        #     stdin=db_set.stdout
+        # )
         # Run evaluation
-        db_set = subprocess.Popen(
-            [
-                "echo",
-                "/home/appuser/checkm\n/home/appuser/checkm",
-            ],
-            stdout=subprocess.PIPE,
-        )
-        subprocess.run(
-            [
-                "checkm",
-                "data",
-                "setRoot",
-            ],
-            stdin=db_set.stdout
-        )
         subprocess.run(
             [
                 str(self.calling_script_path),
