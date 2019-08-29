@@ -32,8 +32,8 @@ class CheckM(LuigiTaskClass):
         """
         if not os.path.exists(str(self.output_directory)):
             os.makedirs(str(self.output_directory))
-        cdef str tmp_dir = "%s_%s_outdir" % (datetime.today().strftime("%Y%m%d"),
-                                             str(randint(1,1001)))
+        cdef str tmp_dir = os.path.join(os.path.dirname(str(self.output_directory)),
+                                        "%s_%s_outdir" % (datetime.today().strftime("%Y%m%d"), str(randint(1,1001))))
         if not os.path.exists(tmp_dir):
             os.makedirs(tmp_dir)
         cdef object tmp = open(os.path.join(tmp_dir, "tmp.txt"), "w")
