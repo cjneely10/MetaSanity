@@ -8,6 +8,7 @@ from MetaSanity.AssemblyEvaluation.checkm import CheckM, CheckMConstants
 from MetaSanity.AssemblyEvaluation.gtdbtk import GTDBtk, GTDBTKConstants
 from MetaSanity.MetagenomeEvaluation.fastani import FastANI, FastANIConstants
 from MetaSanity.MetagenomeEvaluation.redundancy_checker import RedundancyParserTask
+from MetaSanity.PipelineManagement.citation_generator import CitationManagerConstants
 from MetaSanity.PipelineManagement.project_manager cimport project_check_and_creation
 from MetaSanity.PipelineManagement.project_manager import GENOMES
 
@@ -107,7 +108,7 @@ def metagenome_evaluation(str directory, str config_file, bint cancel_autocommit
         )
     )
     luigi.build(task_list, local_scheduler=True)
-    cfg.citation_generator.write(output_directory + "citations.txt")
+    cfg.citation_generator.write(os.path.join(output_directory, CitationManagerConstants.OUTPUT_FILE))
     if remove_intermediates:
         shutil.rmtree(directory)
     print("PhyloSanity pipeline complete!")
