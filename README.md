@@ -36,7 +36,7 @@ This wrapper script was built using the `luigi` Python package.
 
 #### Citations
 
-Running a pipeline will output a bibtex citation file and sample in-text citations for use in academic writing and research.
+Running a pipeline will output a sample citation file for use in academic writing and research.
 Users are highly recommended to cite all items that are output in this file.
 
 #### Config default files
