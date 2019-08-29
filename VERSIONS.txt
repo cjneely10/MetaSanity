@@ -1,0 +1,9 @@
+DCODES
+    C   Current version
+    B   Bug in version
+    D   Deprecated
+    P   Planned
+
+ID  PIPEDM  METASANITY  DCODE   NOTES
+1   0.0.3   0.1.0   C   "Recent adjustment to updated CheckM - validated working PhyloSanity"
+2   0.0.4   0.1.1   P   ""

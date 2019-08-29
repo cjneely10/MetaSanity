@@ -7,8 +7,8 @@ phylogeny, and redundancy. This will generate a final `BioMetaDB` project contai
 An additional `.tsv` output file is generated.
 
 - Required arguments
-    - --directory (-d): /path/to/directory of fasta files
-    - --config_file (-c): /path/to/config.ini file matching template in Examples/Config
+    - --directory (-d): directory of fasta files
+    - --config_file (-c): config.ini file matching template in Examples/Config
 - Optional flags
     - --biometadb_project (-b): Name to assign to `BioMetaDB` project, or name of existing project to use
     - --cancel_autocommit (-a): Cancel creation/update of `BioMetaDB` project

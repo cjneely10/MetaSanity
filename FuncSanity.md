@@ -10,8 +10,8 @@ The peptidase pipe requires the latest `dbCAN` and `CAZy` HMM profiles, whose li
 The peptidase pipe also requires the file `merops-as-pfams.txt`, which is available in `Sample/Data`. 
 
 - Required arguments
-    - --directory (-d): /path/to/directory of fasta files
-    - --config_file (-c): /path/to/config.ini file matching template in Sample/Config
+    - --directory (-d): directory of fasta files
+    - --config_file (-c): config.ini file matching template in Sample/Config
 - Optional flags
     - --prokka (-p): Use prokka gene calls in downstream analysis
     - --cancel_autocommit (-a): Cancel creation/update of `BioMetaDB` project
