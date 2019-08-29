@@ -6,18 +6,18 @@ iss#    <short descr>
     |<solution>
     |<issue resolution>
 ----------------------------------------------------------------------------------------------------------------
+version pipedm:v0.0.3 cjneely10/metasanity:v0.1.0
+iss1    PSORTb output
+        |Error on line 55 of PSORTb.run in shutil function
+        - No such file or directory: /home/appuser/wdir/out/peptidase_results/psortb_results/<OUT_PREFIX>/psortb_out
+        |Check for file existence and only delete if needed
+        |Runs check for file existence using if statement prior to running shutil.move operation
 
-iss1	PSORTb output
-	|Error on line 55 of PSORTb.run in shutil function
-	- No such file or directory: /home/appuser/wdir/out/peptidase_results/psortb_results/<OUT_PREFIX>/psortb_out
-	|Check for file existence and only delete if needed
-	|Runs check for file existence using if statement prior to running shutil.move operation
-
-iss2	Computational speed
-	|Very long run time, particularly in PSORTb pipe
-	|Begin batching operation
-	- Need to commit major refactor
+iss2    Computational speed
+        |Very long run time, particularly in PSORTb pipe
+        |Begin batching operation
+        - Need to commit major refactor
 
 iss3    Dual docker processes run automatically
-    |Launching `MetaSanity.py` results in two docker processes launching
-    - `MetaSanity.py` does not appear to have any points that would launch two processes
+        |Launching `MetaSanity.py` results in two docker processes launching
+        - `MetaSanity.py` does not appear to have any points that would launch two processes

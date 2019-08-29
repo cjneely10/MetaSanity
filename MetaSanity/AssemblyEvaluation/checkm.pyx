@@ -32,29 +32,36 @@ class CheckM(LuigiTaskClass):
         """
         if not os.path.exists(str(self.output_directory)):
             os.makedirs(str(self.output_directory))
-        cdef str tmp_dir = os.path.join(str(self.output_directory), "%s_%s_outdir" % (datetime.today().strftime("%Y%m%d"),
-                                             str(randint(1,1001))))
+        cdef str tmp_dir = os.path.join(os.path.dirname(str(self.output_directory)),
+                                        "%s_%s_outdir" % (datetime.today().strftime("%Y%m%d"), str(randint(1,1001))))
         if not os.path.exists(tmp_dir):
             os.makedirs(tmp_dir)
         cdef object tmp = open(os.path.join(tmp_dir, "tmp.txt"), "w")
         print("Running CheckM..........")
-        # # Setup database
+        # db_set = subprocess.Popen(
+        #     [
+        #         "echo",
+        #         "/home/appuser/checkm\n/home/appuser/checkm",
+        #     ],
+        #     stdout=subprocess.PIPE,
+        # )
         # subprocess.run(
         #     [
-        #         str(self.calling_script_path),
+        #         "checkm",
         #         "data",
         #         "setRoot",
-        #         str(self.data_folder),
         #     ],
-        #     check=True,
+        #     stdin=db_set.stdout
         # )
         # Run evaluation
-        result = subprocess.run(
-            [str(self.calling_script_path),
-             "lineage_wf",
-             *self.added_flags,
-             str(self.fasta_folder),
-             str(self.output_directory)],
+        subprocess.run(
+            [
+                str(self.calling_script_path),
+                "lineage_wf",
+                *self.added_flags,
+                str(self.fasta_folder),
+                str(self.output_directory)
+            ],
             check=True,
             stdout=tmp,
         )
