@@ -1,6 +1,5 @@
 # distutils: language = c++
-import os
-from checkm_parser cimport CheckMParser_cpp
+from libcpp.string cimport string
 from libcpp.vector cimport vector
 
 
@@ -9,17 +8,31 @@ cdef extern from "Python.h":
 
 
 cdef class CheckMParser:
-    cdef CheckMParser_cpp checkm_parser_cpp
+    cdef vector[vector[string]] records
 
     def __init__(self, str file_name):
-        if os.path.exists(file_name):
-            self.checkm_parser_cpp = CheckMParser_cpp(<string>PyUnicode_AsUTF8(file_name))
+        self.read_file(file_name)
 
-    def read_file(self):
-        self.checkm_parser_cpp.readFile()
+    def read_file(self, str file_name):
+        cdef bytes _line
+        cdef vector[string] line
+        R = open(file_name, "rb")
+        _line = next(R)
+        while not _line.startswith(b"-"):
+            _line = next(R)
+        _line = next(R)
+        _line = next(R)
+        _line = next(R)
+        while not _line.startswith(b"-"):
+            l = _line.split()
+            for _l in l:
+                line.push_back(_l)
+            self.records.push_back(line)
+            line.clear()
+            _line = next(R)
 
     def get_values(self):
-        cdef vector[vector[string]] values_in_file = self.checkm_parser_cpp.getValues()
+        cdef vector[vector[string]] values_in_file = self.records
         cdef size_t i
         # return return_list
         return [
@@ -31,7 +44,7 @@ cdef class CheckMParser:
         ]
 
     def get_values_as_dict(self):
-        cdef vector[vector[string]] values_in_file = self.checkm_parser_cpp.getValues()
+        cdef vector[vector[string]] values_in_file = self.records
         cdef size_t i
         cdef string val
         # return return_list
@@ -45,11 +58,9 @@ cdef class CheckMParser:
     @staticmethod
     def parse_dict(str file_name,):
         checkM = CheckMParser(file_name)
-        checkM.read_file()
         return checkM.get_values_as_dict()
 
     @staticmethod
     def parse_list(str file_name,):
         checkM = CheckMParser(file_name)
-        checkM.read_file()
         return checkM.get_values()
