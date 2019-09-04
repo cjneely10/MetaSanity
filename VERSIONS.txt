@@ -5,6 +5,6 @@ DCODES
     P   Planned
 
 ID  PIPEDM  METASANITY  DCODE   NOTES
-1   0.0.3   0.1.0   C   "Updated CheckM - validated working PhyloSanity"
+1   0.0.3   0.1.0   B   "Updated CheckM - validated working PhyloSanity; BUG - does not handle './' in cmd-line args"
 2   0.0.4   0.1.1   P   "Commit all MEROPS, note extracellular matches; Make 'genomes' pullable from everywhere; Combine pipelines"
 3   0.0.5   0.1.2   P   "Add flag storage and reload option; Batch-job option for calling pipeline"
