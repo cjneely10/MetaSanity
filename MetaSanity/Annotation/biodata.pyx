@@ -42,7 +42,7 @@ class BioData(LuigiTaskClass):
         cdef list calling_head = []
         if self.is_docker:
             out_path = ["-p", os.path.join(str(self.output_directory), "function_heatmap.svg")]
-            calling_head = ["python", str(self.calling_script_path) + "KEGG_decoder.py"]
+            calling_head = ["python", os.path.join(str(self.calling_script_path), "KEGG_decoder.py")]
         else:
             calling_head = ["KEGG-decoder",]
         # Combine mrna results
@@ -66,7 +66,7 @@ class BioData(LuigiTaskClass):
         subprocess.run(
             [
                 "python",
-                str(self.calling_script_path) + "KEGG_expander.py",
+                os.path.join(str(self.calling_script_path), "KEGG_expander.py"),
                 *out_path,
                 str(self.hmmsearch_file),
                 expander_outfile
@@ -79,7 +79,7 @@ class BioData(LuigiTaskClass):
         subprocess.run(
             [
                 "python",
-                str(self.calling_script_path) + "Decode_and_Expand.py",
+                os.path.join(str(self.calling_script_path), "Decode_and_Expand.py"),
                 *out_path,
                 decoder_outfile,
                 expander_outfile
