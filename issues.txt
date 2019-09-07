@@ -1,23 +1,42 @@
 Current issue and bug report
 TEMPLATE
+version pipedm:v# cjneely10/metasanity:v#
 iss#    <short descr>
-    |<description of error>
+    | <description of error>
     - Notes
-    |<solution>
-    |<issue resolution>
+    >>>
+    | <edit>
+    - Notes
+    | <issue resolution> OR |* <issue failure>
+    - Notes
+    <<<
 ----------------------------------------------------------------------------------------------------------------
 version pipedm:v0.0.3 cjneely10/metasanity:v0.1.0
 iss1    PSORTb output
-        |Error on line 55 of PSORTb.run in shutil function
+        | Error on line 55 of PSORTb.run in shutil function
         - No such file or directory: /home/appuser/wdir/out/peptidase_results/psortb_results/<OUT_PREFIX>/psortb_out
-        |Check for file existence and only delete if needed
-        |Runs check for file existence using if statement prior to running shutil.move operation
+        | Check for file existence and only delete if needed
+        | Runs check for file existence using if statement prior to running shutil.move operation
 
 iss2    Computational speed
-        |Very long run time, particularly in PSORTb pipe
-        |Begin batching operation
+        | Very long run time, particularly in PSORTb pipe
+        | Begin batching operation
         - Need to commit major refactor
+        |* Batching does not result in a significant speed reduction
 
 iss3    Dual docker processes run automatically
-        |Launching `MetaSanity.py` results in two docker processes launching
+        | Launching `MetaSanity.py` results in two docker processes launching
         - `MetaSanity.py` does not appear to have any points that would launch two processes
+        | Issue was due to docker processes not exiting properly when pipeline was exited prematurely
+        | This is a known docker issue
+
+iss4    Relative paths from cmd line
+        | Incorrectly handles "./" and "../" in command-line arguments
+        | Used `os.path.relpath()` to remove issue in "./" use
+        | Fixes issue, but still requires that files are in working directory.
+        - Noted in usage and blog posts
+
+iss5    BioData crashes when small number of genomes
+        | According to Ben, BioData fails when genome number, N, <=50
+        | Only ran euclidean predictions when N > 50
+        - Simple if statement
