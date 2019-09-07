@@ -7,7 +7,7 @@ iss#    <short descr>
     >>>
     | <edit>
     - Notes
-    | <issue resolution> OR |* <issue failure>
+    | <issue resolution> OR *| <issue failure>
     - Notes
     <<<
 ----------------------------------------------------------------------------------------------------------------
@@ -22,7 +22,7 @@ iss2    Computational speed
         | Very long run time, particularly in PSORTb pipe
         | Begin batching operation
         - Need to commit major refactor
-        |* Batching does not result in a significant speed reduction
+        *| Batching does not result in a significant speed reduction
 
 iss3    Dual docker processes run automatically
         | Launching `MetaSanity.py` results in two docker processes launching
@@ -40,3 +40,4 @@ iss5    BioData crashes when small number of genomes
         | According to Ben, BioData fails when genome number, N, <=50
         | Only ran euclidean predictions when N > 50
         - Simple if statement
+        | Tested on single genome - no more issues
