@@ -9,6 +9,7 @@ ID  PIPEDM  METASANITY  DCODE   NOTES
                             iss2; iss4; iss5"
 2   0.0.4   0.1.1   P   "Commit all MEROPS, note extracellular matches;
                             Make 'genomes' pullable from everywhere;
+                            Make PSORTb optional;
                             Combine pipelines"
 3   0.0.5   0.1.2   P   "Add flag storage and reload option;
                             Batch-job option for calling pipeline"
