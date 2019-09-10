@@ -102,7 +102,7 @@ CITATIONS = {
         "in-text": "KEGGDecoder $version$added_flags calculated KEGG pathway completion estimations (Graham, Heidelberg, & Tully, 2018)."
     },
     "$interproscan": {
-        "citation": "Jones, P., Binns, D., Chang, H. Y., Fraser, M., Li, W., McAnulla, C., … Hunter, S. (2014). InterProScan 5: genome-scale protein function classification. Bioinformatics (Oxford, England), 30(9), 1236–1240. doi:10.1093/bioinformatics/btu031",
+        "citation": "Jones, P., Binns, D., Chang, H. Y., Fraser, M., Li, W., McAnulla, C., … Hunter, S. (2014). InterProScan 5: genome-scale protein function classification. Bioinformatics (Oxford, England), 30(9), 1236–1240. doi:10.1093/bioinformatics/btu031.",
         "dependencies": [],
         "version": "5.32-71.0",
         "in-text": "InterProScan $version$added_flags calculated protein families and domains (Jones et al., 2014)."
@@ -131,7 +131,7 @@ CITATIONS = {
         "in-text": "RNAmmer $version$added_flags was integrated into the PROKKA annotation suite to detect ribosomal RNA (Lageson et al., 2007).",
     },
     "$virsorter": {
-        "citation": "Roux, S., Enault, F., Hurwitz, B. L., & Sullivan, M. B. (2015). VirSorter: mining viral signal from microbial genomic data. PeerJ, 3, e985. https://doi.org/10.7717/peerj.985",
+        "citation": "Roux, S., Enault, F., Hurwitz, B. L., & Sullivan, M. B. (2015). VirSorter: mining viral signal from microbial genomic data. PeerJ, 3, e985. https://doi.org/10.7717/peerj.985.",
         "dependencies": [],
         "version": "v1.0.5",
         "in-text": "Contigs with phage and prophage signatures were identified using VirSorter $version$added_flags (Roux, Enault, Hurwitz, & Sullivan, 2015)."
