@@ -11,6 +11,7 @@ ID  PIPEDM  METASANITY  DCODE   NOTES
                             Make 'genomes' pullable from everywhere;
                             Make PSORTb optional;
                             Combine pipelines;
-                            Confirm citations are okay."
+                            Confirm citations are okay;
+                            Add to existing citations file, or unique name"
 3   0.0.5   0.1.2   P   "Add flag storage and reload option;
                             Batch-job option for calling pipeline"
