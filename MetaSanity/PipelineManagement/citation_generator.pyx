@@ -108,7 +108,7 @@ CITATIONS = {
         "in-text": "InterProScan $version$added_flags calculated protein families and domains (Jones et al., 2014)."
     },
     "$prokka": {
-        "citation": "Seemann T. Prokka: rapid prokaryotic genome annotation. Bioinformatics 2014 Jul 15;30(14):2068-9. PMID:24642063",
+        "citation": "Seemann T. Prokka: rapid prokaryotic genome annotation. Bioinformatics 2014 Jul 15;30(14):2068-9. PMID:24642063.",
         "dependencies": [
             "$blast+",
             "$prodigal",
