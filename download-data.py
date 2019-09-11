@@ -57,7 +57,7 @@ def make_dirs(_dir):
     return decorator
 
 
-def wget(url, tar=False, gzip=False):
+def wget(url, file_name, tar=False, gzip=False):
     """ Function downloads a given url and decompresses it as needed
 
     :param url:
@@ -66,7 +66,7 @@ def wget(url, tar=False, gzip=False):
     :return:
     """
     assert not (tar and gzip), "Only tar or gzip allowed"
-    subprocess.run(["wget", url], check=True)
+    subprocess.run(["wget", url, "-O", file_name], check=True)
     if tar:
         subprocess.run(["tar", "-xzf", os.path.basename(url)], check=True)
         os.remove(os.path.basename(url))
@@ -77,40 +77,39 @@ def wget(url, tar=False, gzip=False):
 @make_dirs("gtdbtk")
 def gtdbtk(outdir, *args, **kwargs):
     RELEASE_URL = "https://data.ace.uq.edu.au/public/gtdb/data/releases/release89/89.0/gtdbtk_r89_data.tar.gz"
-    wget(RELEASE_URL, tar=True)
+    wget(RELEASE_URL, "gtdbtk_r89_data.tar.gz", tar=True)
 
 
 @make_dirs("checkm")
 def checkm(outdir, *args, **kwargs):
     RELEASE_URL = "https://data.ace.uq.edu.au/public/CheckM_databases/checkm_data_2015_01_16.tar.gz"
-    wget(RELEASE_URL, tar=True)
+    wget(RELEASE_URL, "checkm_data_2015_01_16.tar.gz", tar=True)
 
 
 @make_dirs("kofamscan")
 def kofamscan(outdir, *args, **kwargs):
     PROFILES_URL = "ftp://ftp.genome.jp/pub/db/kofam/profiles.tar.gz"
-    wget(PROFILES_URL, tar=True)
+    wget(PROFILES_URL, "profiles.tar.gz", tar=True)
     KO_LIST_URL = "ftp://ftp.genome.jp/pub/db/kofam/ko_list.gz"
-    wget(KO_LIST_URL, gzip=True)
+    wget(KO_LIST_URL, "ko_list.gz", gzip=True)
 
 
 @make_dirs("peptidase")
 def peptidase(outdir, *args, **kwargs):
     DBCAN_URL = "http://bcb.unl.edu/dbCAN2/download/dbCAN-HMMdb-V8.txt"
-    wget(DBCAN_URL)
+    wget(DBCAN_URL, "dbCAN-HMMdb-V8.txt")
     shutil.move(os.path.basename(DBCAN_URL), "dbCAN-fam-HMMs.txt")
     MEROPS_URL = "https://www.dropbox.com/s/8pskp3hlkdnt6zm/MEROPS.pfam.hmm?dl=1"
-    wget(MEROPS_URL)
-    shutil.move(os.path.basename(MEROPS_URL), os.path.basename(MEROPS_URL)[:-5])
+    wget(MEROPS_URL, "MEROPS.pfam.hmm")
     MEROPS_AS_PFAMS_URL = "https://raw.githubusercontent.com/cjneely10/MetaSanity/master/Sample/Data/merops-as-pfams" \
                           ".txt"
-    wget(MEROPS_AS_PFAMS_URL)
+    wget(MEROPS_AS_PFAMS_URL, "merops-as-pfams.txt")
 
 
 @make_dirs("virsorter")
 def virsorter(outdir, *args, **kwargs):
     RELEASE_URL = "https://zenodo.org/record/1168727/files/virsorter-data-v2.tar.gz"
-    wget(RELEASE_URL, tar=True)
+    wget(RELEASE_URL, "virsorter-data-v2.tar.gz", tar=True)
 
 
 if __name__ == "__main__":

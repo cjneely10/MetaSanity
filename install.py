@@ -80,25 +80,27 @@ def config_pull(version):
     if version == "Docker":
         subprocess.run(["wget",
                         "https://raw.githubusercontent.com/cjneely10/MetaSanity/master/Sample/Config/Docker"
-                        "/FuncSanity.ini"],
+                        "/FuncSanity.ini",
+                        "-O", "FuncSanity.ini"],
                        check=True)
         subprocess.run(["wget",
                         "https://raw.githubusercontent.com/cjneely10/MetaSanity/master/Sample/Config/Docker"
-                        "/PhyloSanity.ini"],
+                        "/PhyloSanity.ini",
+                        "-O", "PhyloSanity.ini"],
                        check=True)
 
 
 @out_dir
 def pull_download_script():
     DOWNLOAD_SCRIPT_URL = "https://raw.githubusercontent.com/cjneely10/MetaSanity/master/download-data.py"
-    subprocess.run(["wget", DOWNLOAD_SCRIPT_URL], check=True)
+    subprocess.run(["wget", DOWNLOAD_SCRIPT_URL, "-O", "download-data.py"], check=True)
     subprocess.run(["chmod", "+x", os.path.basename(DOWNLOAD_SCRIPT_URL)], check=True)
 
 
 @out_dir
 def download_metasanity():
     METASANITY_URL = "https://raw.githubusercontent.com/cjneely10/MetaSanity/master/MetaSanity.py"
-    subprocess.run(["wget", METASANITY_URL], check=True)
+    subprocess.run(["wget", METASANITY_URL, "-O", "MetaSanity.py"], check=True)
     subprocess.run(["chmod", "+x", os.path.basename(METASANITY_URL)], check=True)
 
 
