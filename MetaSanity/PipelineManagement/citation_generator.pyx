@@ -82,7 +82,7 @@ CITATIONS = {
         "in-text": ""
     },
     "$diamond": {
-        "citation": "Buchfink B, Xie C, Huson DH. Fast and sensitive protein alignment using DIAMOND. Nature Methods 12, 59-60 (2015). doi:10.1038/nmeth.3176",
+        "citation": "Buchfink B, Xie C, Huson DH. Fast and sensitive protein alignment using DIAMOND. Nature Methods 12, 59-60 (2015). doi:10.1038/nmeth.3176.",
         "dependencies": [],
         "version": "v0.9.23.124",
         "in-text": "Protein alignments were calculated using Diamond $version$added_flags (Buchfink, Xie, & Huson, 2015)."
@@ -94,7 +94,7 @@ CITATIONS = {
         "in-text": "KEGG ontology was predicted by kofamscan$added_flags (Aramaki et al., 2019)."
     },
     "$biodata": {
-        "citation": "Graham ED, Heidelberg JF, Tully BJ. (2018) Potential for primary productivity in a globally-distributed bacterial phototroph. ISME J 350, 1–6",
+        "citation": "Graham ED, Heidelberg JF, Tully BJ. (2018) Potential for primary productivity in a globally-distributed bacterial phototroph. ISME J 350, 1–6.",
         "dependencies": [
             "$hmmer"
         ],
@@ -143,7 +143,7 @@ CITATIONS = {
         "in-text": "PSORTb $version$added_flags computationally predicted extracellularity within the gene calls (Yu et al., 2010)."
     },
     "$signalp": {
-        "citation": "Nielsen H. (2017) Predicting Secretory Proteins with SignalP. In: Kihara D. (eds) Protein Function Prediction. Methods in Molecular Biology, vol 1611. Humana Press, New York, NY",
+        "citation": "Nielsen H. (2017) Predicting Secretory Proteins with SignalP. In: Kihara D. (eds) Protein Function Prediction. Methods in Molecular Biology, vol 1611. Humana Press, New York, NY.",
         "dependencies": [],
         "version": "4.1",
         "in-text": "SignalP $version$added_flags was integrated into the peptidase annotation pipeline to identify signal peptides (Nielson 2017).",
