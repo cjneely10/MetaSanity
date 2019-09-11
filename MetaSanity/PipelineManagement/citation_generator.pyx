@@ -6,7 +6,7 @@ Outputs a .txt file of sample in-text citations and references.
 """
 
 OUTPUT_ORDER = (
-    "$metsanity",
+    "$metasanity",
     "$checkm",
     "$fastani",
     "$gtdbtk",
@@ -24,11 +24,11 @@ OUTPUT_ORDER = (
 )
 
 CITATIONS = {
-    "$metsanity": {
+    "$metasanity": {
         "citation": "Neely C. 2020. MetaSanity: Pipeline for major biological analyses. https://github.com/cjneely10/MetaSanity.",
         "dependencies": [],
         "version": "latest",
-        "in-text": "The genomic analysis was completed using METsanity $version (Neely 2020)."
+        "in-text": "The genomic analysis was completed using MetaSanity $version (Neely 2020)."
     },
     "$checkm": {
         "citation": "Parks DH, Imelfort M, Skennerton CT, Hugenholtz P, Tyson GW. 2015. CheckM: assessing the quality of microbial genomes recovered from isolates, single cells, and metagenomes. Genome Research, 25: 1043–1055.",
@@ -166,7 +166,7 @@ cdef class CitationGenerator:
         cdef str name
         self.needed_citations = {}
         self.added_flags = {}
-        for name in ("$prodigal", "$hmmer", "$diamond", "$metsanity"):
+        for name in ("$prodigal", "$hmmer", "$diamond", "$metasanity"):
             self.needed_citations[name] = CITATIONS[name]
 
     def add(self, str program, list added_flags = []):
