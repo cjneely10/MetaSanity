@@ -254,7 +254,7 @@ def metagenome_annotation(str directory, str config_file, bint cancel_autocommit
             for task in (
                 DiamondMakeDB(
                     output_directory=os.path.join(output_directory, PROKKAConstants.OUTPUT_DIRECTORY, DiamondConstants.OUTPUT_DIRECTORY),
-                    prot_file=protein_file,
+                    prot_file=os.path.join(output_directory, PROKKAConstants.OUTPUT_DIRECTORY, out_prefix, out_prefix + ".fxa"),
                     calling_script_path=cfg.get(DiamondConstants.DIAMOND, ConfigManager.PATH),
                 ),
                 # Identify which PROKKA annotations match contigs corresponding to prodigal gene calls and save the subset
@@ -262,7 +262,7 @@ def metagenome_annotation(str directory, str config_file, bint cancel_autocommit
                     outfile=out_prefix + ".rev.tsv",
                     output_directory=os.path.join(output_directory, PROKKAConstants.OUTPUT_DIRECTORY, DiamondConstants.OUTPUT_DIRECTORY),
                     program="blastx",
-                    diamond_db=os.path.join(output_directory, PROKKAConstants.OUTPUT_DIRECTORY, DiamondConstants.OUTPUT_DIRECTORY, get_prefix(protein_file)),
+                    diamond_db=os.path.join(output_directory, PROKKAConstants.OUTPUT_DIRECTORY, DiamondConstants.OUTPUT_DIRECTORY, out_prefix),
                     query_file=os.path.join(output_directory, DiamondConstants.OUTPUT_DIRECTORY, out_prefix + ".subset.fna"),
                     evalue="1e-20",
                     calling_script_path=cfg.get(DiamondConstants.DIAMOND, ConfigManager.PATH),
