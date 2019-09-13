@@ -209,6 +209,8 @@ prokka_add = []
 if ap.args.prokka:
     prokka_add = ["--prokka"]
 
+cid_file_name = 'docker.pid'
+
 # Run docker version
 try:
     subprocess.run(
@@ -218,6 +220,8 @@ try:
             # user info
             "--user",
             subprocess.getoutput("id -u"),
+            "--cidfile",
+            cid_file_name,
             # Locale setup required for parsing files
             "-e",
             "LANG=C.UTF-8",
@@ -258,8 +262,11 @@ try:
         ],
         check=True,
     )
+    os.remove(cid_file_name)
 except KeyboardInterrupt:
     print("\nExiting...")
+    subprocess.run(["docker", "kill", open(cid_file_name, "rb").read()], check=True)
+    os.remove(cid_file_name)
     sys.exit(1)
 
 out_prefixes = set({})

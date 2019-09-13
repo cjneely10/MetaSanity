@@ -6,6 +6,6 @@ DCODES
 
 ID  PIPEDM  METASANITY  DCODE   NOTES
 1   0.0.3   0.1.0   C   "Updated CheckM - validated working PhyloSanity;
-                            iss2; iss4; iss5; iss6; iss7"
+                            iss1; iss2; iss4; iss5; iss6; iss7"
 3   0.1.0   0.2.0   P   "Add flag storage and reload option;
                             Batch-job option for calling pipeline"
