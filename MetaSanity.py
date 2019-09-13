@@ -265,9 +265,13 @@ try:
     os.remove(cid_file_name)
 except KeyboardInterrupt:
     print("\nExiting...")
-    subprocess.run(["docker", "kill", open(cid_file_name, "rb").read()], check=True)
-    os.remove(cid_file_name)
-    sys.exit(1)
+    try:
+        subprocess.run(["docker", "kill", open(cid_file_name, "rb").read()], check=True)
+        os.remove(cid_file_name)
+        sys.exit(1)
+    except KeyboardInterrupt:
+        os.remove(cid_file_name)
+        sys.exit(1)
 
 out_prefixes = set({})
 
