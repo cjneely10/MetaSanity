@@ -14,7 +14,7 @@ from MetaSanity.PipelineManagement.citation_generator import CitationGenerator
 pipelines = {
     "metagenome_annotation": {
         "required": ["PRODIGAL", "HMMSEARCH", "HMMCONVERT", "HMMPRESS", "DIAMOND"],
-        "peptidase": ["CAZY", "MEROPS", "PSORTB",],
+        "peptidase": ["CAZY", "MEROPS"],
         "kegg": ["KOFAMSCAN", "BIODATA",],
         "prokka": ["PROKKA",],
         "interproscan": ["INTERPROSCAN",],

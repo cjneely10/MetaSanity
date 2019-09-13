@@ -87,7 +87,7 @@ class Peptidase(LuigiTaskClass):
             for _line in merops_results:
                 line = _line.split(maxsplit=4)
                 # Only include collected ids
-                if line[0] in matched_protein_ids:
+                if not line[0].startswith(b"#"):
                     extracellular_pfams[line[0]] = line[3].split(b".")[0]
             merops_results.close()
         if extracellular_pfams:
@@ -104,9 +104,20 @@ class Peptidase(LuigiTaskClass):
                 str(self.output_prefix) + PeptidaseConstants.MEROPS_HITS_EXT,
                 ), "wb")
             # Write output table of proteins with extracellular matches
-            pfam_prot_out.write(b"ID\tMEROPS_Pfam\n")
+            pfam_prot_out.write(b"ID\tMEROPS_Pfam")
+            if matched_protein_ids:
+                pfam_prot_out.write(b"\tis_extracellular\n")
+            else:
+                pfam_prot_out.write(b"\n")
             for _id, pfam in extracellular_pfams.items():
-                pfam_prot_out.write(_id + <string>PyUnicode_AsUTF8(str(self.protein_suffix)) + b"\t" + pfam + b"\n")
+                pfam_prot_out.write(_id + <string>PyUnicode_AsUTF8(str(self.protein_suffix)) + b"\t" + pfam)
+                if matched_protein_ids:
+                    if _id in matched_protein_ids:
+                        pfam_prot_out.write(b"\t" + b"True" + b"\n")
+                    elif _id not in matched_protein_ids:
+                        pfam_prot_out.write(b"\t" + b"False" + b"\n")
+                else:
+                    pfam_prot_out.write(b"\n")
             pfam_prot_out.close()
             # Write count table of pfam hits for entire genomes
             extracellular_pfam_counts = <dict>Counter(extracellular_pfams.values())

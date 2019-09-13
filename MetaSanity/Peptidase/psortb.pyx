@@ -24,6 +24,7 @@ class PSORTb(LuigiTaskClass):
         return []
 
     def run(self):
+        if str(self.calling_script_path) == "None": return
         cdef str prot_file
         print("Running PSORTb..........")
         cdef list data_type_flags

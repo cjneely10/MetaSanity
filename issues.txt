@@ -41,3 +41,9 @@ iss5    BioData crashes when small number of genomes
         | Only ran euclidean predictions when N > 50
         - Simple if statement
         | Tested on single genome - no more issues
+
+iss6    Integrate MEROPS and extracellularity
+        | Currently, only extracellular hits are stored
+        - Request to store all MEROPS hits and notate extracellularity
+        | Made 'PSORTb' skip if not set; Collect all merops hits, write boolean value for those with signalp/psortb hits
+        |
