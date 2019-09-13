@@ -68,6 +68,12 @@ class CombineOutput(LuigiTaskClass):
                     else:
                         df = df.combine_first(pd.read_csv(_f, delimiter=str(self.delimiter), header=0, index_col="ID",
                                                           true_values=['True',], false_values=['False',]))
+                    # boolean_df = df.select_dtypes(bool)
+                    # booleanDictionary = {True: 'True', False: 'False'}
+                    # for column in boolean_df:
+                    #     df[column] = df[column].map(booleanDictionary)
+                if _df and "is_extracellular" in df.columns:
+                    df['is_extracellular'] = df['is_extracellular'].astype('bool')
                     # output_results.append()
                 # combined_results = combined_results.join(output_results)
                 if _df:
