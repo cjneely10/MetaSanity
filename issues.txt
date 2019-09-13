@@ -47,3 +47,8 @@ iss6    Integrate MEROPS and extracellularity
         - Request to store all MEROPS hits and notate extracellularity
         | Made 'PSORTb' skip if not set; Collect all merops hits, write boolean value for those with signalp/psortb hits
         | Test using no extracellular lookup, psortb, and signalp - no more issues
+
+iss7    Prevent citations file from being overwritten
+        | CitationGenerator only outputs file as "citations.txt"
+        | Added date and random number to name of citations file
+        | No more issues with overwriting previously generated files
