@@ -62,10 +62,12 @@ class CombineOutput(LuigiTaskClass):
                     # Gather tsv info
                     # files.append(os.path.basename(_f))
                     if not _df:
-                        df = pd.read_csv(_f, delimiter=str(self.delimiter), header=0, index_col="ID")
+                        df = pd.read_csv(_f, delimiter=str(self.delimiter), header=0, index_col="ID",
+                                         true_values=['True',], false_values=['False',])
                         _df = True
                     else:
-                        df = df.combine_first(pd.read_csv(_f, delimiter=str(self.delimiter), header=0, index_col="ID"))
+                        df = df.combine_first(pd.read_csv(_f, delimiter=str(self.delimiter), header=0, index_col="ID",
+                                                          true_values=['True',], false_values=['False',]))
                     # output_results.append()
                 # combined_results = combined_results.join(output_results)
                 if _df:
