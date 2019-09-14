@@ -1,6 +1,8 @@
 # cython: language_level=3
 
 import os
+import shutil
+
 import luigi
 from MetaSanity.Parsers.fasta_parser import FastaParser
 
@@ -14,8 +16,9 @@ class SplitFile(luigi.Task):
     out_dir = luigi.Parameter()
 
     def run(self):
-        if not os.path.isdir(str(self.out_dir)):
-            os.makedirs(str(self.out_dir))
+        if os.path.isdir(str(self.out_dir)):
+            shutil.rmtree(str(self.out_dir))
+        os.makedirs(str(self.out_dir))
         FastaParser.split(str(self.fasta_file), out_dir=str(self.out_dir))
 
     def output(self):

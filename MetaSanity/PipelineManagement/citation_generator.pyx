@@ -61,7 +61,7 @@ CITATIONS = {
             "$fasttree"
         ],
         "version": "v0.2.2",
-        "in-text": "Phylogeny was determined using GTDBtk $version$added_flags (Parks et al., 2018)."
+        "in-text": "Phylogeny was determined using GTDB-Tk $version$added_flags (Parks et al., 2018)."
     },
     "$fastani": {
         "citation": "Jain C, et al. 2019. High-throughput ANI Analysis of 90K Prokaryotic Genomes Reveals Clear Species Boundaries. Nat. Communications, doi: 10.1038/s41467-018-07641-9.",

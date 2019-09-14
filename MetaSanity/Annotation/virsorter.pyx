@@ -38,8 +38,8 @@ class VirSorter(LuigiTaskClass):
             del ending_flags[index_of_user + 1]
             del ending_flags[index_of_user]
         if self.is_docker:
-            if not os.path.exists(os.path.join(str(self.wdir), "virsorter-out")):
-                os.makedirs(os.path.join(str(self.wdir), "virsorter-out"))
+            # if not os.path.exists(os.path.join(str(self.wdir), "virsorter-out")):
+            #     os.makedirs(os.path.join(str(self.wdir), "virsorter-out"))
             if not os.path.exists(os.path.join(str(self.wdir), "virsorter-out", VirSorterConstants.DEFAULT_CSV_OUTFILE)):
                 subprocess.run(
                     [
