@@ -312,7 +312,7 @@ if not ap.args.cancel_autocommit and os.path.exists(os.path.join(ap.args.output_
             out_prefixes.add(genome_prefix)
             dbdm.run(
                 genome_prefix.lower(),
-                os.path.join(ap.args.output_directory, "splitfiles", genome_prefix),
+                os.path.join(ap.args.output_directory, "splitfiles", genome_prefix + ".fna"),
                 os.path.join(ap.args.output_directory, "virsorter_results", genome_prefix, "virsorter-out",
                              "%s.VIRSorter_adj_out.tsv" % genome_prefix),
                 genome_prefix.lower(),
