@@ -4,6 +4,7 @@ import sys
 import shutil
 import argparse
 import subprocess
+import pandas as pd
 from configparser import RawConfigParser
 from argparse import RawTextHelpFormatter
 
@@ -145,6 +146,66 @@ class GetDBDMCall:
             ],
             check=True,
         )
+
+
+def split_evaluation_file(eval_file):
+    """ Function takes the 'metagenome_evaluation.tsv' file and splits into N files
+    Checks for GTDB-Tk or CheckM data and creates column info as needed
+
+    :param eval_file:
+    :return:
+    """
+    R = open(eval_file, "r")
+    # Get header line and phylogeny location
+    header = next(R).rstrip("\r\n").split("\t")
+    phyl_loc = header.index("phylogeny")
+    # Determine if phylogeny is from CheckM or from GTDB-Tk
+    phyl = header[phyl_loc].split(";")
+    # Replace with split values as needed
+    is_checkm = False
+    if len(phyl) != 7:
+        header[phyl_loc] = "kingdom"
+        is_checkm = True
+    else:
+        header[phyl_loc:phyl_loc + 1] = "kingdom", "phylum", "class", "order", "family", "genus", "species"
+    # Read into each file
+    for line in R:
+        line = line.rstrip("\r\n").split("\t")
+        # Add parsed phylogeny info to list
+        if is_checkm:
+            line[phyl_loc] = line[phyl_loc].replace("k__", "")
+        else:
+            line[phyl_loc:phyl_loc] = [val.split("__")[1] for val in line[phyl_loc].split(";")]
+        # Each line in eval file gets own new file
+        W = open(line[0].split(".")[0] + ".metaeval.tsv", "w")
+        # Write header
+        W.write("\t".join(header)[:-1] + "\n")
+        # Write line up to phylogeny mark
+        W.write("\t".join(line)[:-1] + "\n")
+        W.close()
+
+
+def combine_pipeline_output(eval_file, annot_file, output_directory):
+    """ Function takes the individualized evaluation file and combines it with
+    the genome's associated annotation file, creates a file named '<annot_file>.2'
+
+    :return:
+    """
+    df = pd.read_csv(eval_file, delimiter="\t", header=0, index_col="ID",
+                     true_values=['True', ], false_value=['False', ])
+    df.combine_first(
+        pd.read_csv(annot_file, delimiter="\t", header=0, index_col="ID",
+                    true_values=['True', ], false_value=['False', ])
+    )
+    for val in ("is_extracellular", "is_complete", "is_contaminated", "is_nonredundant"):
+        df[val] = df[val].astype('bool')
+    df.to_csv(
+        os.path.join(output_directory, annot_file + ".2"),
+        sep="\t",
+        na_rep="None",
+        index=True,
+        index_label="ID",
+    )
 
 
 def get_added_flags(config, _dict):
@@ -317,6 +378,18 @@ if not ap.args.cancel_autocommit and os.path.exists(os.path.join(ap.args.output_
                              "%s.VIRSorter_adj_out.tsv" % genome_prefix),
                 genome_prefix.lower(),
             )
+            # Combine results of FuncSanity with PhyloSanity, if needed
+            eval_file = os.path.join(ap.args.output_directory, met_list["PhyloSanity"])
+            if os.path.exists(eval_file):
+                split_evaluation_file(eval_file)
+                old_file = os.path.join(ap.args.output_directory,
+                                        "%s.metagenome_annotation.tsv" % genome_prefix)
+                combine_pipeline_output(eval_file,
+                                        old_file,
+                                        ap.args.output_directory)
+                shutil.move(os.path.join(ap.args.output_directory,
+                                         "%s.metagenome_annotation.tsv.2" % genome_prefix),
+                            old_file)
             # Combined Results (N) - out/*.metagenome_annotation.tsv
             dbdm.run(
                 genome_prefix.lower(),
