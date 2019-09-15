@@ -192,6 +192,40 @@ def split_evaluation_file(eval_file, output_dir):
         W.close()
 
 
+def split_phylo_in_evaluation_file(eval_file, output_dir):
+    """ Function takes the 'metagenome_evaluation.tsv' file and corrects the phylogeny
+
+    :param eval_file:
+    :return:
+    """
+    R = open(eval_file, "r")
+    W = open(os.path.join(output_dir, eval_file + ".2"), "w")
+    # Get header line and phylogeny location
+    header = next(R).rstrip("\r\n").split("\t")
+    phyl_loc = header.index("phylogeny")
+    # Determine if phylogeny is from CheckM or from GTDB-Tk
+    phyl = header[phyl_loc].split(";")
+    # Replace with split values as needed
+    is_checkm = False
+    if len(phyl) != 7:
+        header[phyl_loc] = "kingdom"
+        is_checkm = True
+    else:
+        header[phyl_loc:phyl_loc + 1] = "kingdom", "phylum", "class", "order", "family", "genus", "species"
+    W.write("\t".join(header) + "\n")
+    # Read into each file
+    for line in R:
+        line = line.rstrip("\r\n").split("\t")
+        # Add parsed phylogeny info to list
+        if is_checkm:
+            line[phyl_loc] = line[phyl_loc].replace("k__", "")
+        else:
+            line[phyl_loc:phyl_loc] = [val.split("__")[1] for val in line[phyl_loc].split(";")]
+        # Write corrected line
+        W.write("\t".join(line) + "\n")
+        W.close()
+
+
 def combine_pipeline_output(eval_file, annot_file):
     """ Function takes the individualized evaluation file and combines it with
     the genome's associated annotation file, creates a file named '<annot_file>.2'
@@ -416,7 +450,7 @@ if not ap.args.cancel_autocommit and os.path.exists(os.path.join(ap.args.output_
         # annot_files = [os.path.join(ap.args.output_directory, "%s.metagenome_annotation.tsv") % f
         #                for f in genome_prefixes
         #                if os.path.exists(os.path.join(ap.args.output_directory, "%s.metagenome_annotation.tsv") % f)]
-        # eval_file = os.path.join(ap.args.output_directory, "metagenome_evaluation.tsv")
+        eval_file = os.path.join(ap.args.output_directory, "metagenome_evaluation.tsv")
         # if annot_files:
         #     # Split evaluation file by header and line
         #     split_evaluation_file(eval_file, ap.args.output_directory)
@@ -432,7 +466,7 @@ if not ap.args.cancel_autocommit and os.path.exists(os.path.join(ap.args.output_
         #     # Delete intermediary files
         #     for val in glob.glob(os.path.join(ap.args.output_directory, "*%s" % COMBINED_SUFFIX)):
         #         os.remove(val)
-
+        split_phylo_in_evaluation_file(eval_file, ap.args.output_directory)
         dbdm.run(
             "evaluation",
             os.path.join(ap.args.output_directory, "genomes"),
