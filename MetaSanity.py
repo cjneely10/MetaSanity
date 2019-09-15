@@ -200,11 +200,10 @@ def combine_pipeline_output(eval_file, annot_file):
     """
     df = pd.read_csv(eval_file, delimiter="\t", header=0, index_col="ID",
                      true_values=['True', ], false_values=['False', ])
-    df.combine_first(
+    df = df.combine_first(
         pd.read_csv(annot_file, delimiter="\t", header=0, index_col="ID",
                     true_values=['True', ], false_values=['False', ])
     )
-    print(df)
     for val in ("is_extracellular", "is_complete", "is_contaminated", "is_nonredundant"):
         if val in df.columns:
             df[val] = df[val].astype('bool')
@@ -388,22 +387,22 @@ if not ap.args.cancel_autocommit and os.path.exists(os.path.join(ap.args.output_
                 genome_prefix.lower(),
             )
             # Combine results of FuncSanity with PhyloSanity, if needed
-            eval_file = os.path.join(ap.args.output_directory, "metagenome_evaluation.tsv")
-            if os.path.exists(eval_file):
-                # Split evaluation file by header and line
-                split_evaluation_file(eval_file, ap.args.output_directory)
-                # Location of old file
-                old_file = os.path.join(ap.args.output_directory,
-                                        "%s.metagenome_annotation.tsv" % genome_prefix)
-                # Combine split eval file with old file
-                combine_pipeline_output(os.path.join(ap.args.output_directory, genome_prefix + COMBINED_SUFFIX),
-                                        old_file)
-                # Rename new file to old file name
-                shutil.move(old_file + ".2",
-                            old_file)
-                # Delete intermediary files
-                for val in glob.glob(os.path.join(ap.args.output_directory, "*%s" % COMBINED_SUFFIX)):
-                    os.remove(val)
+            # eval_file = os.path.join(ap.args.output_directory, "metagenome_evaluation.tsv")
+            # if os.path.exists(eval_file):
+            #     # Split evaluation file by header and line
+            #     split_evaluation_file(eval_file, ap.args.output_directory)
+            #     # Location of old file
+            #     old_file = os.path.join(ap.args.output_directory,
+            #                             "%s.metagenome_annotation.tsv" % genome_prefix)
+            #     # Combine split eval file with old file
+            #     combine_pipeline_output(os.path.join(ap.args.output_directory, genome_prefix + COMBINED_SUFFIX),
+            #                             old_file)
+            #     # Rename new file to old file name
+            #     shutil.move(old_file + ".2",
+            #                 old_file)
+            #     # Delete intermediary files
+            #     for val in glob.glob(os.path.join(ap.args.output_directory, "*%s" % COMBINED_SUFFIX)):
+            #         os.remove(val)
             # Combined Results (N) - out/*.metagenome_annotation.tsv
             dbdm.run(
                 genome_prefix.lower(),
@@ -412,27 +411,27 @@ if not ap.args.cancel_autocommit and os.path.exists(os.path.join(ap.args.output_
                 genome_prefix.lower(),
             )
     elif ap.args.program == "PhyloSanity":
-        genome_prefixes = {os.path.splitext(os.path.basename(line.rstrip("\r\n")))[0]
-                           for line in open(os.path.join(ap.args.output_directory, met_list[ap.args.program]))}
-        annot_files = [os.path.join(ap.args.output_directory, "%s.metagenome_annotation.tsv") % f
-                       for f in genome_prefixes
-                       if os.path.exists(os.path.join(ap.args.output_directory, "%s.metagenome_annotation.tsv") % f)]
-        eval_file = os.path.join(ap.args.output_directory, "metagenome_evaluation.tsv")
-        if annot_files:
-            # Split evaluation file by header and line
-            split_evaluation_file(eval_file, ap.args.output_directory)
-            # Location of old file
-            # Combine split eval file with old file
-            for f in annot_files:
-                gen_pref = os.path.splitext(os.path.basename(f))[0]
-                combine_pipeline_output(os.path.join(ap.args.output_directory, gen_pref + COMBINED_SUFFIX),
-                                        f)
-                # Rename new file to old file name
-                shutil.move(f + ".2",
-                            f)
-            # Delete intermediary files
-            for val in glob.glob(os.path.join(ap.args.output_directory, "*%s" % COMBINED_SUFFIX)):
-                os.remove(val)
+        # genome_prefixes = {os.path.splitext(os.path.basename(line.rstrip("\r\n")))[0]
+        #                    for line in open(os.path.join(ap.args.output_directory, met_list[ap.args.program]))}
+        # annot_files = [os.path.join(ap.args.output_directory, "%s.metagenome_annotation.tsv") % f
+        #                for f in genome_prefixes
+        #                if os.path.exists(os.path.join(ap.args.output_directory, "%s.metagenome_annotation.tsv") % f)]
+        # eval_file = os.path.join(ap.args.output_directory, "metagenome_evaluation.tsv")
+        # if annot_files:
+        #     # Split evaluation file by header and line
+        #     split_evaluation_file(eval_file, ap.args.output_directory)
+        #     # Location of old file
+        #     # Combine split eval file with old file
+        #     for f in annot_files:
+        #         gen_pref = os.path.splitext(os.path.basename(f))[0]
+        #         combine_pipeline_output(os.path.join(ap.args.output_directory, gen_pref + COMBINED_SUFFIX),
+        #                                 f)
+        #         # Rename new file to old file name
+        #         shutil.move(f + ".2",
+        #                     f)
+        #     # Delete intermediary files
+        #     for val in glob.glob(os.path.join(ap.args.output_directory, "*%s" % COMBINED_SUFFIX)):
+        #         os.remove(val)
 
         dbdm.run(
             "evaluation",
