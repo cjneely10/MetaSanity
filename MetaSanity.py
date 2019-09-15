@@ -29,6 +29,15 @@ Ensure that BioMetaDB path is accurate, and that optional program binary paths a
 # Path to database download location
 DOWNLOAD_DIRECTORY = "/path/to/databases"
 
+# # Optional program paths
+# Extracted interproscan package with binary from  https://github.com/ebi-pf-team/interproscan/wiki/HowToDownload
+INTERPROSCAN_FOLDER = "/path/to/interproscan"
+# Signalp software package, including binary, from  http://www.cbs.dtu.dk/cgi-bin/nph-sw_request?signalp
+SIGNALP_FOLDER = "/path/to/signalp-4.1"
+# RNAmmer software package, including binary, from  http://www.cbs.dtu.dk/cgi-bin/nph-sw_request?rnammer
+RNAMMER_FOLDER = "/path/to/rnammer-1.2.src"
+
+# # Only edit below if your database files were not gathered using the download-data.py script
 # Data downloaded from  https://data.ace.uq.edu.au/public/gtdbtk/
 GTDBTK_FOLDER = os.path.join(DOWNLOAD_DIRECTORY, "gtdbtk/release89")
 # Extracted checkm data from  https://data.ace.uq.edu.au/public/CheckM_databases/
@@ -42,12 +51,6 @@ VIRSORTER_DATA_FOLDER = os.path.join(DOWNLOAD_DIRECTORY, "virsorter/virsorter-da
 # Location of BioMetaDB on system. If not used, ensure to pass `-a` flag to MetaSanity.py when running
 BIOMETADB = os.path.join(os.path.dirname(DOWNLOAD_DIRECTORY), "BioMetaDB/dbdm.py")
 
-# Extracted interproscan package with binary from  https://github.com/ebi-pf-team/interproscan/wiki/HowToDownload
-INTERPROSCAN_FOLDER = "/path/to/interproscan"
-# Signalp software package, including binary, from  http://www.cbs.dtu.dk/cgi-bin/nph-sw_request?signalp
-SIGNALP_FOLDER = "/path/to/signalp-4.1"
-# RNAmmer software package, including binary, from  http://www.cbs.dtu.dk/cgi-bin/nph-sw_request?rnammer
-RNAMMER_FOLDER = "/path/to/rnammer-1.2.src"
 
 # MetaSanity version
 DOCKER_IMAGE = "cjneely10/metasanity:v0.1.0"
@@ -152,7 +155,7 @@ class GetDBDMCall:
 COMBINED_SUFFIX = ".combpipe.tsv"
 
 
-def split_evaluation_file(eval_file):
+def split_evaluation_file(eval_file, output_dir):
     """ Function takes the 'metagenome_evaluation.tsv' file and splits into N files
     Checks for GTDB-Tk or CheckM data and creates column info as needed
 
@@ -181,30 +184,32 @@ def split_evaluation_file(eval_file):
         else:
             line[phyl_loc:phyl_loc] = [val.split("__")[1] for val in line[phyl_loc].split(";")]
         # Each line in eval file gets own new file
-        W = open(os.path.basename(eval_file) + line[0].split(".")[0] + COMBINED_SUFFIX, "w")
+        W = open(os.path.join(output_dir, line[0].split(".")[0] + COMBINED_SUFFIX), "w")
         # Write header
-        W.write("\t".join(header)[:-1] + "\n")
+        W.write("\t".join(header) + "\n")
         # Write line up to phylogeny mark
-        W.write("\t".join(line)[:-1] + "\n")
+        W.write("\t".join(line) + "\n")
         W.close()
 
 
-def combine_pipeline_output(eval_file, annot_file, output_directory):
+def combine_pipeline_output(eval_file, annot_file):
     """ Function takes the individualized evaluation file and combines it with
     the genome's associated annotation file, creates a file named '<annot_file>.2'
 
     :return:
     """
     df = pd.read_csv(eval_file, delimiter="\t", header=0, index_col="ID",
-                     true_values=['True', ], false_value=['False', ])
+                     true_values=['True', ], false_values=['False', ])
     df.combine_first(
         pd.read_csv(annot_file, delimiter="\t", header=0, index_col="ID",
-                    true_values=['True', ], false_value=['False', ])
+                    true_values=['True', ], false_values=['False', ])
     )
+    print(df)
     for val in ("is_extracellular", "is_complete", "is_contaminated", "is_nonredundant"):
-        df[val] = df[val].astype('bool')
+        if val in df.columns:
+            df[val] = df[val].astype('bool')
     df.to_csv(
-        os.path.join(output_directory, annot_file + ".2"),
+        annot_file + ".2",
         sep="\t",
         na_rep="None",
         index=True,
@@ -386,17 +391,15 @@ if not ap.args.cancel_autocommit and os.path.exists(os.path.join(ap.args.output_
             eval_file = os.path.join(ap.args.output_directory, "metagenome_evaluation.tsv")
             if os.path.exists(eval_file):
                 # Split evaluation file by header and line
-                split_evaluation_file(eval_file)
+                split_evaluation_file(eval_file, ap.args.output_directory)
                 # Location of old file
                 old_file = os.path.join(ap.args.output_directory,
                                         "%s.metagenome_annotation.tsv" % genome_prefix)
                 # Combine split eval file with old file
                 combine_pipeline_output(os.path.join(ap.args.output_directory, genome_prefix + COMBINED_SUFFIX),
-                                        old_file,
-                                        ap.args.output_directory)
+                                        old_file)
                 # Rename new file to old file name
-                shutil.move(os.path.join(ap.args.output_directory,
-                                         "%s%s.2" % (genome_prefix, COMBINED_SUFFIX)),
+                shutil.move(old_file + ".2",
                             old_file)
                 # Delete intermediary files
                 for val in glob.glob(os.path.join(ap.args.output_directory, "*%s" % COMBINED_SUFFIX)):
@@ -412,23 +415,20 @@ if not ap.args.cancel_autocommit and os.path.exists(os.path.join(ap.args.output_
         genome_prefixes = {os.path.splitext(os.path.basename(line.rstrip("\r\n")))[0]
                            for line in open(os.path.join(ap.args.output_directory, met_list[ap.args.program]))}
         annot_files = [os.path.join(ap.args.output_directory, "%s.metagenome_annotation.tsv") % f
-                       for f in genome_prefixes]
+                       for f in genome_prefixes
+                       if os.path.exists(os.path.join(ap.args.output_directory, "%s.metagenome_annotation.tsv") % f)]
         eval_file = os.path.join(ap.args.output_directory, "metagenome_evaluation.tsv")
         if annot_files:
             # Split evaluation file by header and line
-            split_evaluation_file(eval_file)
+            split_evaluation_file(eval_file, ap.args.output_directory)
             # Location of old file
-            old_files = [os.path.join(ap.args.output_directory, "%s.metagenome_annotation.tsv" % f)
-                         for f in annot_files]
             # Combine split eval file with old file
-            for f in old_files:
+            for f in annot_files:
                 gen_pref = os.path.splitext(os.path.basename(f))[0]
                 combine_pipeline_output(os.path.join(ap.args.output_directory, gen_pref + COMBINED_SUFFIX),
-                                        f,
-                                        ap.args.output_directory)
+                                        f)
                 # Rename new file to old file name
-                shutil.move(os.path.join(ap.args.output_directory,
-                                         "%s%s.2" % (gen_pref, COMBINED_SUFFIX)),
+                shutil.move(f + ".2",
                             f)
             # Delete intermediary files
             for val in glob.glob(os.path.join(ap.args.output_directory, "*%s" % COMBINED_SUFFIX)):

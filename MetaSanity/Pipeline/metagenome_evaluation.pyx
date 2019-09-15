@@ -108,7 +108,10 @@ def metagenome_evaluation(str directory, str config_file, bint cancel_autocommit
         )
     )
     luigi.build(task_list, local_scheduler=True)
-    cfg.citation_generator.write(os.path.join(output_directory, CitationManagerConstants.OUTPUT_FILE))
+    cfg.citation_generator.write(os.path.join(output_directory,
+                                              "%s.%s.%s" % (datetime.today().strftime("%Y%m%d"),
+                                                            str(randint(1, 1001)),
+                                                            CitationManagerConstants.OUTPUT_FILE,)))
     if remove_intermediates:
         shutil.rmtree(directory)
     print("PhyloSanity pipeline complete!")
