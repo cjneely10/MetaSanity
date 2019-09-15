@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os
 import sys
+import glob
 import shutil
 import argparse
 import subprocess
@@ -177,7 +178,7 @@ def split_evaluation_file(eval_file):
         else:
             line[phyl_loc:phyl_loc] = [val.split("__")[1] for val in line[phyl_loc].split(";")]
         # Each line in eval file gets own new file
-        W = open(line[0].split(".")[0] + ".metaeval.tsv", "w")
+        W = open(os.path.basename(eval_file) + line[0].split(".")[0] + ".metaeval.tsv", "w")
         # Write header
         W.write("\t".join(header)[:-1] + "\n")
         # Write line up to phylogeny mark
@@ -381,15 +382,22 @@ if not ap.args.cancel_autocommit and os.path.exists(os.path.join(ap.args.output_
             # Combine results of FuncSanity with PhyloSanity, if needed
             eval_file = os.path.join(ap.args.output_directory, met_list["PhyloSanity"])
             if os.path.exists(eval_file):
+                # Split evaluation file by header and line
                 split_evaluation_file(eval_file)
+                # Location of old file
                 old_file = os.path.join(ap.args.output_directory,
                                         "%s.metagenome_annotation.tsv" % genome_prefix)
-                combine_pipeline_output(eval_file,
+                # Combine split eval file with old file
+                combine_pipeline_output(os.path.join(ap.args.output_directory, genome_prefix + ".meteval.tsv"),
                                         old_file,
                                         ap.args.output_directory)
+                # Rename new file to old file name
                 shutil.move(os.path.join(ap.args.output_directory,
                                          "%s.metagenome_annotation.tsv.2" % genome_prefix),
                             old_file)
+                # Delete intermediary files
+                for val in glob.glob(os.path.join(ap.args.output_directory, "*.meteval.tsv")):
+                    os.remove(val)
             # Combined Results (N) - out/*.metagenome_annotation.tsv
             dbdm.run(
                 genome_prefix.lower(),
