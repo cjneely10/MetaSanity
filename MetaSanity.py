@@ -226,17 +226,21 @@ def split_phylo_in_evaluation_file(eval_file):
     W = open(eval_file + ".2", "w")
     # Get header line and phylogeny location
     header = next(R).rstrip("\r\n").split("\t")
+    line = next(R).rstrip("\r\n").split("\t")
     phyl_loc = header.index("phylogeny")
     # Determine if phylogeny is from CheckM or from GTDB-Tk
-    phyl = header[phyl_loc].split(";")
+    phyl = line[phyl_loc].split(";")
     # Replace with split values as needed
     is_checkm = False
     if len(phyl) == 1:
         header[phyl_loc] = "kingdom"
+        line[phyl_loc] = line[phyl_loc].replace("k__", "")
         is_checkm = True
     else:
         header[phyl_loc:phyl_loc + 1] = "kingdom", "phylum", "class", "order", "family", "genus", "species"
+        line[phyl_loc:phyl_loc] = [val.split("__")[1] for val in line[phyl_loc].split(";")]
     W.write("\t".join(header) + "\n")
+    W.write("\t".join(line) + "\n")
     # Read into each file
     for line in R:
         line = line.rstrip("\r\n").split("\t")
