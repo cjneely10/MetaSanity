@@ -37,10 +37,10 @@ all outputs into a single queryable database – all within an easily distribute
 The database is constructed through the two branches of the MetaSanity pipeline.
 
 ### [PhyloSanity](PhyloSanity.md)
-Evaluate MAGs for completion and contamination using `CheckM`, and evaluate set of passed genomes for redundancy using `FastANI`. Optionally predict phylogeny using `GTDBtk`. A final BioMetaDB project is generated, or updated, with a table that provides a summary of the results.
+Evaluate MAGs for completion and contamination using CheckM, and evaluate set of passed genomes for redundancy using FastANI. Optionally predict phylogeny using GTDB-Tk. A final BioMetaDB project is generated, or updated, with a table that provides a summary of the results.
 
 ### [FuncSanity](FuncSanity.md)
-Provides functional annotation options through Prokka, KEGG, InterProScan, the carbohydrate-active enzymes (CAZy) database, and the MEROPS database. Optionally, MEROPS matches can be filtered to target predicted outer membrane and extracellular proteins. KEGG results are processed through KEGG-Decoder to provide visual heatmaps of metabolic functions and pathways BioMetaDB – the powerhouse behind MetaSanity, all outputs are queryable.
+Provides functional annotation options through PROKKA, KEGG, InterProScan, the carbohydrate-active enzymes (CAZy) database, and the MEROPS database. Optionally, MEROPS matches can be filtered to target predicted outer membrane and extracellular proteins using PSORTb and SignalP. KEGG results are processed through KEGG-Decoder to provide visual heatmaps of metabolic functions and pathways BioMetaDB – the powerhouse behind MetaSanity, all outputs are queryable.
 
 ### BioMetaDB
 
@@ -133,5 +133,4 @@ step for researchers.
     
 ### Licensing notes
 
-The use of `signalp` and `RNAmmer` requires accepting an additional academic license agreement upon download. Binaries for these
-programs are thus not distributed with **MetaSanity**.
+The use of `signalp` and `RNAmmer` requires accepting an additional academic license agreement upon download. Binaries for these programs are thus not distributed with **MetaSanity**.
