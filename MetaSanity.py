@@ -231,7 +231,7 @@ def split_phylo_in_evaluation_file(eval_file):
     phyl = header[phyl_loc].split(";")
     # Replace with split values as needed
     is_checkm = False
-    if len(phyl) != 7:
+    if len(phyl) == 1:
         header[phyl_loc] = "kingdom"
         is_checkm = True
     else:
@@ -247,7 +247,7 @@ def split_phylo_in_evaluation_file(eval_file):
             line[phyl_loc:phyl_loc] = [val.split("__")[1] for val in line[phyl_loc].split(";")]
         # Write corrected line
         W.write("\t".join(line) + "\n")
-        W.close()
+    W.close()
     shutil.move(eval_file + ".2", eval_file)
 
 
