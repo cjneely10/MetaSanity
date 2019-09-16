@@ -32,6 +32,36 @@ run common evaluation and annotation programs and create a `BioMetaDB` project w
 
 This wrapper script was built using the `luigi` Python package. 
 
+MetaSanity provides a unified workflow for genome assessment and functional annotation that combines
+all outputs into a single queryable database – all within an easily distributed Docker image
+The database is constructed through the two branches of the MetaSanity pipeline.
+
+### [PhyloSanity](PhyloSanity.md)
+Evaluate MAGs for completion and contamination using `CheckM`, and evaluate set of passed genomes for redundancy using `FastANI`. Optionally predict phylogeny using `GTDBtk`. A final BioMetaDB project is generated, or updated, with a table that provides a summary of the results.
+
+### [FuncSanity](FuncSanity.md)
+Provides functional annotation options through Prokka, KEGG, InterProScan, the carbohydrate-active enzymes (CAZy) database, and the MEROPS database. Optionally, MEROPS matches can be filtered to target predicted outer membrane and extracellular proteins. KEGG results are processed through KEGG-Decoder to provide visual heatmaps of metabolic functions and pathways BioMetaDB – the powerhouse behind MetaSanity, all outputs are queryable.
+
+### BioMetaDB
+
+**MetaSanity** outputs a **BioMetaDB** project containing the completed results. By passing the `-a` flag, users can 
+omit the creation or update of a given **BioMetaDB** project. Each pipeline outputs a final `.tsv` file of the results of
+each individual pipe.
+
+Multiple pipelines can be run using the same project - the results of each pipeline are stored as a new database table,
+and re-running a pipeline will update the existing table within the **BioMetaDB** project.
+
+### Examples 
+Output a list, FASTA contigs, or FASTA proteins for:
+
+- all genomes &gt;90% complete from the Family Pelagibacteraceae
+- all genomes that contain extracellular MEROPS-detected peptidases
+- all protein sequences of the nifH (K02588) in genomes &gt;70% complete with &lt;10% contamination
+
+Installation can be performed at the user level by the user, limiting the need for contacting
+University IT and (except for the memory intensive programs like GTDB-Tk) can be run locally
+on many laptops.
+
 ## Usage Best Practices
 
 #### Citations
@@ -52,15 +82,6 @@ Although the data pipeline is made to run from start to finish, skipping complet
 ("pipe") can be rerun if needed. Delete the pipe's output directory and call the given pipeline as listed in the `pipedm`
  section. If a **BioMetaDB** project is provided in the config file or passed as a command-line argument, its contents 
  will also be updated with the new results of this pipeline.
-
-#### BioMetaDB
-
-**MetaSanity** outputs a **BioMetaDB** project containing the completed results. By passing the `-a` flag, users can 
-omit the creation or update of a given **BioMetaDB** project. Each pipeline outputs a final `.tsv` file of the results of
-each individual pipe.
-
-Multiple pipelines can be run using the same project - the results of each pipeline are stored as a new database table,
-and re-running a pipeline will update the existing table within the **BioMetaDB** project.
 
 #### Memory usage and time to completion estimates
 
@@ -109,17 +130,6 @@ The typical workflow involves creating a configuration file based on the templat
 file is then used to call the given pipeline by passing to each program any flags specified by the user. This setup
 allows users to customize the calling programs to better fit their needs, as well as provides a useful documentation
 step for researchers.
-
-## Available pipelines
-
-- [PhyloSanity](PhyloSanity.md)
-    - Evaluate MAGs for completion and contamination using `CheckM`, and evaluate set of passed genomes for redundancy
-    using `FastANI`. Optionally predict phylogeny using `GTDBtk`.
-    A final BioMetaDB project is generated, or updated, with a table that provides a summary of the results.
-- [FuncSanity](FuncSanity.md)
-    - Structurally and functionally annotate MAGs using several available annotation programs. Identify peptidase proteins,
-    determine KEGG pathways, run PROKKA pipeline, predict viral sequences, and run interproscan.
-    A final BioMetaDB project is generated, or updated, with a table that provides a summary of the results.
     
 ### Licensing notes
 
