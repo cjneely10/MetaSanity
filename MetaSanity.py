@@ -237,8 +237,8 @@ def split_phylo_in_evaluation_file(eval_file):
         line[phyl_loc] = line[phyl_loc].replace("k__", "")
         is_checkm = True
     else:
-        header[phyl_loc:phyl_loc + 1] = "kingdom", "phylum", "class", "order", "family", "genus", "species"
-        line[phyl_loc:phyl_loc] = [val.split("__")[1] for val in line[phyl_loc].split(";")]
+        header[phyl_loc:phyl_loc + 1] = "domain", "kingdom", "phylum", "class", "order", "family", "genus", "species"
+        line[phyl_loc:phyl_loc + 1] = [val.split("__")[1] for val in line[phyl_loc].replace(" ", "\t").split(";")]
     W.write("\t".join(header) + "\n")
     W.write("\t".join(line) + "\n")
     # Read into each file
@@ -248,7 +248,7 @@ def split_phylo_in_evaluation_file(eval_file):
         if is_checkm:
             line[phyl_loc] = line[phyl_loc].replace("k__", "")
         else:
-            line[phyl_loc:phyl_loc] = [val.split("__")[1] for val in line[phyl_loc].split(";")]
+            line[phyl_loc:phyl_loc + 1] = [val.split("__")[1] for val in line[phyl_loc].replace(" ", "\t").split(";")]
         # Write corrected line
         W.write("\t".join(line) + "\n")
     W.close()
