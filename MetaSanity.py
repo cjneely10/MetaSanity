@@ -417,6 +417,7 @@ if not ap.args.cancel_autocommit and os.path.exists(os.path.join(ap.args.output_
         for genome_prefix in (os.path.splitext(os.path.basename(line.rstrip("\r\n")))[0]
                               for line in open(os.path.join(ap.args.output_directory, met_list[ap.args.program]))):
             # Virsorter out (N) - out/virsorter_results/*/virsorter-out/*.VIRSorter_adj_out.tsv
+            print("\nStoring %s to database.........." % genome_prefix)
             out_prefixes.add(genome_prefix)
             dbdm.run(
                 genome_prefix.lower(),
