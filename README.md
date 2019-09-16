@@ -17,7 +17,7 @@ Download MetaSanity package
 optional arguments:
   -h, --help            show this help message and exit
   -o OUTDIR, --outdir OUTDIR
-                        Location to which to download MetaSanity package
+                        Location to which to download MetaSanity package, default MetaSanity
   -v VERSION, --version VERSION
                         Default: docker</code></pre>
 
