@@ -79,8 +79,7 @@ can be provided here.
 #### Re-running steps in the pipeline
 
 Although the data pipeline is made to run from start to finish, skipping completed steps as they are found, each major step 
-("pipe") can be rerun if needed. Delete the pipe's output directory and call the given pipeline as listed in the `pipedm`
- section. If a **BioMetaDB** project is provided in the config file or passed as a command-line argument, its contents 
+("pipe") can be rerun if needed. Delete the pipe's output directory and rerun the `MetaSanity.py` script. If a **BioMetaDB** project is provided in the config file or passed as a command-line argument, its contents 
  will also be updated with the new results of this pipeline.
 
 #### Memory usage and time to completion estimates

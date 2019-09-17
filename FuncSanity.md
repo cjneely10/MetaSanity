@@ -122,7 +122,9 @@ This info for relevant genomes should be provided in a separate file and passed 
 Pipeline searches can be run with any combination of gram+/- and bacteria/archaea. The format of this file should include 
 the following info, separated by tabs, with one line per relevant fasta file passed to pipeline:
 
-<pre><code>[fasta-file]\t[bacteria/archaea]\t[gram+/gram-]\n</code></pre> 
+<pre><code>[fasta-file]\t[Bacteria/Archaea]\t[gram+/gram-]\n</code></pre> 
+Example:
+`example-fasta-file.fna\tArchaea\tgram+\n`
 
 This file is only required if running the **peptidase** portion of the pipeline on non gram- bacteria.
     
@@ -130,7 +132,6 @@ This file is only required if running the **peptidase** portion of the pipeline 
 
 The **FuncSanity** default config file allows for paths to calling programs to be set, as well as for program-level flags 
 to be provided. Note that individual flags (e.g. those that are passed without arguments) are set using `FLAGS`. 
-Ensure that all paths are valid (the bash command `which <COMMAND>` is useful for locating program paths).
 
 Users may select which portions of the **FuncSanity** pipeline that they wish to run. **FuncSanity** determines valid pipes
 from the user-provided config file and builds its pipeline accordingly.
@@ -192,8 +193,8 @@ DATA_DICT = /home/appuser/Peptidase/merops-as-pfams.txt
 # [SIGNALP]
 # PATH = /home/appuser/signalp/signalp
 
-[PSORTB]
-PATH = /usr/bin/psortb
+# [PSORTB]
+# PATH = /usr/bin/psortb
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # KEGG pathway annotation
@@ -230,18 +231,17 @@ FLAGS = --addgenes,--addmrna,--usegenus,--metagenome,--rnammer,--force
 
 [VIRSORTER]
 PATH = /home/appuser/virsorter-data
---db = 2</code></pre>
+--db = 2
+--ncpu = 1</code></pre>
 
 - General Notes
     - Depending on the number of genomes, the completion time for this pipeline can vary from several hours to several days.
     - `BioData` requires a valid `pip` installation as well as a downloaded copy of the github repository.
     - As this script will create multiple tables in a **BioMetaDB** project, neither the flag `--table_name` nor `--alias`
      should be provided in the relevant section of the config script. 
-    - The `virsorter` pipe offers the ability to pass user info to its calling program, `docker`, thus removing the need to 
-    run using root.
 
 ### A note on flags
 
 In general, program flags/arguments that filter or reduce output are supported, and thus can be provided in the user-passed
-config file. However, flags that change the output of individual programs may cause unsuspected issues, and thus are not
-recommended.
+config file. **However, flags that change the output of individual programs may cause unsuspected issues, and thus are not
+recommended.**

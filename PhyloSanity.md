@@ -50,8 +50,7 @@ An additional `.tsv` output file is generated.
 
 The **PhyloSanity** pipeline involves the use of `CheckM`, `GTDBtk`, and `FastANI`. Its default config file allows for
 paths to these calling programs to be set, as well as for program-level flags to be passed. Note that individual flags
-(e.g. those that are passed without arguments) are set using `FLAGS`. Ensure that all paths are valid (the bash command
-`which <COMMAND>` is useful for locating program paths).
+(e.g. those that are passed without arguments) are set using `FLAGS`.
 
 ### Configuring a pipeline
 
