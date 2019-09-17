@@ -380,6 +380,14 @@ except KeyboardInterrupt:
     except KeyboardInterrupt:
         os.remove(cid_file_name)
         sys.exit(1)
+    except FileNotFoundError:
+        sys.exit(1)
+except subprocess.CalledProcessError:
+    try:
+        os.remove(cid_file_name)
+        sys.exit(1)
+    except FileNotFoundError:
+        sys.exit(1)
 
 out_prefixes = set({})
 
