@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
 import os
 import sys
-import glob
 import shutil
 import argparse
 import subprocess
-import pandas as pd
 from configparser import RawConfigParser
 from argparse import RawTextHelpFormatter
 
