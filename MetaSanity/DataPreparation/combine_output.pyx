@@ -116,7 +116,6 @@ def filter_complete_list_with_prefixes(list complete_file_list, tuple prefixes =
         return complete_file_list
     for _file in complete_file_list:
         for prefix in prefixes:
-            print(prefix, os.path.splitext(os.path.basename(_file))[0])
             if os.path.basename(_file).split(".")[0] == prefix:
                 out_list.append(_file)
     return out_list
