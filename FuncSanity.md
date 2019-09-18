@@ -117,9 +117,9 @@ from the starting contigs.
 ## FuncSanity type file - Peptidase Annotation
 
 Peptidase predictions are incorporated into the **FuncSanity** pipeline, which allows users to provide additional information
-about domain and membrane types. The default settings run searches for gram- bacteria, but users may also search for gram+ and archaea. 
+about domain and membrane types. The default settings run searches for gram negative bacteria, but users may also search for gram positive bacteria and archaea. 
 This info for relevant genomes should be provided in a separate file and passed to `MetaSanity` from the command line using the `-t` flag. 
-Pipeline searches can be run with any combination of gram+/- and bacteria/archaea. The format of this file should include 
+Pipeline searches can be run with any combination of gram +/- and bacteria/archaea. The format of this file should include 
 the following info, separated by tabs, with one line per relevant fasta file passed to pipeline:
 
 <pre><code>[fasta-file]\t[Bacteria/Archaea]\t[gram+/gram-]\n</code></pre> 
