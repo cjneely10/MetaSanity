@@ -64,7 +64,8 @@ class CombineOutput(LuigiTaskClass):
                     else:
                         df = df.combine_first(pd.read_csv(_f, delimiter=str(self.delimiter), header=0, index_col="ID"))
                 if _df and "is_extracellular" in df.columns:
-                    df['is_extracellular'] = df['is_extracellular'].astype('bool')
+
+                    df['is_extracellular'] = df['is_extracellular'].fillna(False).astype(bool)
                 if _df:
                     df.to_csv(
                         os.path.join(str(self.output_directory), output_file),
