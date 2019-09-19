@@ -114,7 +114,7 @@ class Peptidase(LuigiTaskClass):
                 if matched_protein_ids:
                     if _id in matched_protein_ids:
                         pfam_prot_out.write(b"\t" + b"True" + b"\n")
-                    elif _id not in matched_protein_ids:
+                    else:
                         pfam_prot_out.write(b"\t" + b"False" + b"\n")
                 else:
                     pfam_prot_out.write(b"\n")

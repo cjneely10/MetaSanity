@@ -59,12 +59,10 @@ class CombineOutput(LuigiTaskClass):
                 for _f in filter_complete_list_with_prefixes(build_complete_file_list(directory, suffixes), prefixes):
                     # Gather tsv info
                     if not _df:
-                        df = pd.read_csv(_f, delimiter=str(self.delimiter), header=0, index_col="ID",
-                                         true_values=['True',], false_values=['False',])
+                        df = pd.read_csv(_f, delimiter=str(self.delimiter), header=0, index_col="ID")
                         _df = True
                     else:
-                        df = df.combine_first(pd.read_csv(_f, delimiter=str(self.delimiter), header=0, index_col="ID",
-                                                          true_values=['True',], false_values=['False',]))
+                        df = df.combine_first(pd.read_csv(_f, delimiter=str(self.delimiter), header=0, index_col="ID"))
                 if _df and "is_extracellular" in df.columns:
                     df['is_extracellular'] = df['is_extracellular'].astype('bool')
                 if _df:
