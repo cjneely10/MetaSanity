@@ -235,7 +235,7 @@ def split_phylo_in_evaluation_file(eval_file):
         line[phyl_loc] = line[phyl_loc].replace("k__", "")
         is_checkm = True
     else:
-        header[phyl_loc:phyl_loc + 1] = "domain", "kingdom", "phylum", "class", "order", "family", "genus", "species"
+        header[phyl_loc:phyl_loc + 1] = "domain", "kingdom", "phylum", "_class", "_order", "family", "genus", "species"
         line[phyl_loc:phyl_loc + 1] = [val.split("__")[1] for val in line[phyl_loc].replace(" ", "\t").split(";")]
     W.write("\t".join(header) + "\n")
     W.write("\t".join(line) + "\n")
