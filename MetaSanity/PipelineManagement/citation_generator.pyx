@@ -37,7 +37,7 @@ CITATIONS = {
             "$prodigal",
             "$HMMER"
         ],
-        "version": "v1.0.13",
+        "version": "v1.0.18",
         "in-text": "CheckM $version$added_flags was used to estimate genome completion and contamination (Parks, Imelfort, Skennerton, Hugenholtz, & Tyson, 2015)."
     },
     "$pplacer": {
@@ -60,7 +60,7 @@ CITATIONS = {
             "$prodigal",
             "$fasttree"
         ],
-        "version": "v0.2.2",
+        "version": "v0.3.2",
         "in-text": "Phylogeny was determined using GTDB-Tk $version$added_flags (Parks et al., 2018)."
     },
     "$fastani": {
@@ -104,7 +104,7 @@ CITATIONS = {
     "$interproscan": {
         "citation": "Jones, P., Binns, D., Chang, H. Y., Fraser, M., Li, W., McAnulla, C., … Hunter, S. (2014). InterProScan 5: genome-scale protein function classification. Bioinformatics (Oxford, England), 30(9), 1236–1240. doi:10.1093/bioinformatics/btu031.",
         "dependencies": [],
-        "version": "5.32-71.0",
+        "version": "",
         "in-text": "InterProScan $version$added_flags calculated protein families and domains (Jones et al., 2014)."
     },
     "$prokka": {
@@ -119,13 +119,13 @@ CITATIONS = {
         "in-text": "PROKKA $version$added_flags provided whole genome annotation (Seeman 2014)."
     },
     "$blast+": {
-        "citation": "Camacho C et al. BLAST+: architecture and applications. BMC Bioinformatics. 2009 Dec 15;10:421.",
+        "citation": 'Camacho C., Coulouris G., Avagyan V., Ma N., Papadopoulos J., Bealer K., & Madden T.L. (2008) "BLAST+: architecture and applications." BMC Bioinformatics 10:421 https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-10-421.',
         "dependencies": [],
         "version": "2.7.1",
         "in-text": ""
     },
     "$rnammer": {
-        "citation": "Lagesen K et al. RNAmmer: consistent and rapid annotation of ribosomal RNA genes. Nucleic Acids Res. 2007;35(9):3100-8.",
+        "citation": "Lagesen, K., Hallin, P., Rødland, E. A., Staerfeldt, H. H., Rognes, T., & Ussery, D. W. (2007). RNAmmer: consistent and rapid annotation of ribosomal RNA genes. Nucleic acids research, 35(9), 3100–3108. doi:10.1093/nar/gkm160. ",
         "dependencies": [],
         "version": "1.2",
         "in-text": "RNAmmer $version$added_flags was integrated into the PROKKA annotation suite to detect ribosomal RNA (Lageson et al., 2007).",
