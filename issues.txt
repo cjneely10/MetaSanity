@@ -52,3 +52,10 @@ iss7    Prevent citations file from being overwritten
         | CitationGenerator only outputs file as "citations.txt"
         | Added date and random number to name of citations file
         | No more issues with overwriting previously generated files
+
+iss8    Overprediction of extracellularity
+        | Peptidase determine >90% MEROPS hits to be extracellular
+        - Noted as high by Ben
+        | Adjusted accordingly - default all None or n/a set as False
+        - Issue with pandas parsing - treated 'n/a' as True.
+        | Issue resolved, nothing further

@@ -2,16 +2,16 @@
 
 ## About
 
-**PhyloSanity** uses `CheckM`, `GTDBtk`, and `FastANI` to evaluate prokaryotic meta/genome completion, contamination,
-phylogeny, and redundancy. This will generate a final `BioMetaDB` project containing the results of this pipeline.
+**PhyloSanity** uses CheckM, GTDB-Tk, and FastANI to evaluate prokaryotic meta/genome completion, contamination,
+phylogeny, and redundancy. This will generate a final **BioMetaDB** project containing the results of this pipeline.
 An additional `.tsv` output file is generated.
 
 - Required arguments
     - --directory (-d): directory of fasta files
     - --config_file (-c): config.ini file matching template in Examples/Config
 - Optional flags
-    - --biometadb_project (-b): Name to assign to `BioMetaDB` project, or name of existing project to use
-    - --cancel_autocommit (-a): Cancel creation/update of `BioMetaDB` project
+    - --biometadb_project (-b): Name to assign to **BioMetaDB** project, or name of existing project to use
+    - --cancel_autocommit (-a): Cancel creation/update of **BioMetaDB** project
 - Optional arguments
     - --output_directory (-o): Output prefix
     
@@ -23,34 +23,39 @@ An additional `.tsv` output file is generated.
     `eval` and will use the config file entitled `metagenome_annotation.ini` to name the output database and table, and 
     to determine individual program arguments. Debugging and error messages will be saved to `eval.err`.
     - View a summary of the results of this pipeline using `dbdm SUMMARIZE -c Metagenomes/ -t evaluation`
-<pre><code>SUMMARIZE:	View summary of all tables in database
- Project root directory:	Metagenomes
- Name of database:		Metagenomes.db
+<pre><code>SUMMARIZE:   View summary of all tables in database
+ Project root directory:    Metagenomes
+ Name of database:      Metagenomes.db
 
 *******************************************************************************************
-             Table Name:        evaluation
-        Number of Records:      201
+         Table Name:    evaluation  
+    Number of Records:          10/10        
 
-             Column Name        Average                 Std Dev
+            Database    Average                 Std Dev     
 
-              completion        83.504                  85.167
-           contamination        2.231                   3.246
+          completion    92.882                  4.817       
+       contamination    3.365                   2.574       
 -------------------------------------------------------------------------------------------
 
-             Column Name        Most Frequent           Num             Count Non-Null
+            Database    Most Frequent           Number      Total Count 
 
-             is_complete        True                    196             201
-         is_contaminated        False                   176             201
-        is_non_redundant        True                    139             201
-               phylogeny        k__Bacteria             201             201
-        redundant_copies        []                      99              201
+              _class    Phycisphaerales         4           10          
+              _order    SM1A02                  4           10          
+              domain    Bacteria                10          10          
+              family    Gimesia                 2           10          
+               genus    Gimesia                 2           10          
+         is_complete    True                    10          10          
+     is_contaminated    False                   7           10          
+    is_non_redundant    True                    10          10          
+             kingdom    Planctomycetota         10          10          
+              phylum    Phycisphaerae           4           10          
+    redundant_copies    []                      10          10          
+             species    maris                   1           10          
 -------------------------------------------------------------------------------------------</code></pre>
     
 ## PhyloSanity config file
 
-The **PhyloSanity** pipeline involves the use of `CheckM`, `GTDBtk`, and `FastANI`. Its default config file allows for
-paths to these calling programs to be set, as well as for program-level flags to be passed. Note that individual flags
-(e.g. those that are passed without arguments) are set using `FLAGS`.
+The **PhyloSanity** default config file allows program-level flags to be passed. Note that individual flags (e.g. those that are passed without arguments) are set using `FLAGS`.
 
 ### Configuring a pipeline
 
@@ -110,13 +115,11 @@ PATH = /usr/local/bin/gtdbtk
 --cpus = 1</code></pre>
 
 - General Notes
-    - `CheckM` and `GTDBtk` are both high memory-usage programs, often exceeding 100 GB. Use caution when multithreading.
-    - `CheckM` writes to a temporary directory which may have separate user-rights, depending on the system on which it
-    is installed. Users are advised to explicitly set the `--tmpdir` flag in `CHECKM` to a user-owned path.
+    - CheckM and GTDBtk are both high memory-usage programs, often exceeding 100 GB. Use caution when multithreading. CheckM is required to run this pipeline.
     
 ### A note on flags
 
 In general, program flags/arguments that filter or reduce output are supported, and thus can be provided in the user-passed
-config file. However, flags that change the output of individual programs may cause unsuspected issues, and thus are not
-recommended.
+config file. **However, flags that change the output of individual programs (e.g. reordering, changing delimiter, etc.) may cause unsuspected issues, and thus are not
+recommended.**
     
