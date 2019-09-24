@@ -5,7 +5,7 @@ import subprocess
 from argparse import RawTextHelpFormatter
 
 
-global OUTDIR
+global OUTDIR, VERSION
 
 
 def out_dir(func):
@@ -104,27 +104,43 @@ def download_metasanity():
     subprocess.run(["chmod", "+x", os.path.basename(METASANITY_URL)], check=True)
 
 
+def docker():
+    download_docker()
+
+
+def biometadb():
+    clone_biometadb()
+    build_biometadb()
+
+
+def scripts():
+    config_pull(VERSION)
+    pull_download_script()
+    download_metasanity()
+
+
 if __name__ == "__main__":
     ap = ArgParse(
         (
             (("-o", "--outdir"),
              {"help": "Location to which to download MetaSanity package, default MetaSanity", "default": "MetaSanity"}),
-            (("-v", "--version"),
-             {"help": "Default: Docker", "default": "Docker"}),
             (("-s", "--sections"),
-             {"help": "Comma-separated list to download. Select from: metasanity,biometadb,scripts,all", "default": "all"}),
+             {"help": "Comma-separated list to download. Select from: docker,biometadb,scripts,all", "default": "all"}),
         ),
         description="Download MetaSanity package"
     )
-    assert ap.args.version in ("Docker",), "Incorrect version, select from: Docker"
+
     OUTDIR = ap.args.outdir
-    # Get BioMetaDB
-    clone_biometadb()
-    build_biometadb()
-    # Download given version
-    if ap.args.version == "Docker":
-        download_docker()
-    # Download config files for version
-    config_pull(ap.args.version)
-    pull_download_script()
-    download_metasanity()
+    sections = ap.args.sections.split(",")
+
+    if sections[0] == 'all':
+        docker()
+        biometadb()
+        scripts()
+        exit(0)
+    for section in sections:
+        try:
+            locals()[section]()
+        except KeyError:
+            print("%s not available" % section)
+    exit(0)
