@@ -27,7 +27,7 @@ individual program arguments. Debugging and error messages will be saved to `ann
 well as an individual table for each genome provided that describes annotations for each protein sequence identified
 from the starting contigs.
 
-Below is an example of an annotations database table that was generated for the genome of TOBG-CPC-51. Below it is an except of the table summarizing putative metabolic functions and raw peptidase counts for the entire genome set.
+Below is an example of an annotations database table that was generated for the genome of TOBG-CPC-51.
 
 - View the summary table using `dbdm SUMMARIZE -c Metagenomes/ -t tobg-cpc-51`
 
@@ -57,6 +57,8 @@ Below is an example of an annotations database table that was generated for the 
        merops_pfam  PF00082               9           132         
             prokka  atsA_12               19          567         
 -------------------------------------------------------------------------------------------</code></pre>
+
+This is an excerpt of the table summarizing putative metabolic functions and raw peptidase counts for the entire genome set. Large sections of it have been omitted below.
 
 - View the summary table using `dbdm SUMMARIZE -c Metagenomes/ -t functions`
 
