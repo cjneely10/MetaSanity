@@ -111,6 +111,8 @@ if __name__ == "__main__":
              {"help": "Location to which to download MetaSanity package, default MetaSanity", "default": "MetaSanity"}),
             (("-v", "--version"),
              {"help": "Default: Docker", "default": "Docker"}),
+            (("-s", "--sections"),
+             {"help": "Comma-separated list to download. Select from: metasanity,biometadb,scripts,all", "default": "all"}),
         ),
         description="Download MetaSanity package"
     )
