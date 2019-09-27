@@ -58,6 +58,7 @@ class Peptidase(LuigiTaskClass):
         cdef list line, pfams, merops,
         cdef set matched_protein_ids = set()
         cdef dict extracellular_pfams = {}
+        cdef set unknown_prots = set()
         cdef dict extracellular_pfam_counts, merops_counts, adj_merops_pfam_dict
         if psortb_data is not None:
             # Gather psortb ids assigned as "Extracellular" or "Cell Wall"
@@ -67,6 +68,8 @@ class Peptidase(LuigiTaskClass):
                 line = _line.split(maxsplit=2)
                 if line[1] in (b"Extracellular", b"Cellwall"):
                     matched_protein_ids.add(line[0])
+                elif line[1] in (b"Unknown",):
+                    unknown_prots.add(line[10])
             psortb_data.close()
         if signalp_results is not None:
             # Gather signalp ids assigned "Y"
@@ -75,7 +78,7 @@ class Peptidase(LuigiTaskClass):
             next(signalp_results)
             for _line in signalp_results:
                 line = _line.split(maxsplit=10)
-                if line[9] == b"Y":
+                if line[9] == b"Y" and line[0] in unknown_prots:
                     matched_protein_ids.add(line[0])
             signalp_results.close()
         if merops_results is not None:
@@ -145,15 +148,3 @@ class Peptidase(LuigiTaskClass):
             merops_count_out.write(b"\n")
             merops_count_out.close()
         print("Peptidase identification complete!")
-
-    def output(self):
-        return luigi.LocalTarget(os.path.join(
-            str(self.output_directory),
-            str(self.output_prefix) + PeptidaseConstants.EXTRACELLULAR_MATCHES_BYPROT_EXT,
-        )), luigi.LocalTarget(os.path.join(
-            str(self.output_directory),
-            str(self.output_prefix) + PeptidaseConstants.EXTRACELLULAR_MATCHES_EXT,
-        )), luigi.LocalTarget(os.path.join(
-            str(self.output_directory),
-            str(self.output_prefix) + PeptidaseConstants.MEROPS_HITS_EXT,
-        ))
