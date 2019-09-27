@@ -55,32 +55,76 @@ class CombineOutput(LuigiTaskClass):
                 _file.close()
             # Gathers headers by first lines, minus first value, to write final output.
             else:
-                _df = False
+                # _df = False
+                tsv = None
                 for _f in filter_complete_list_with_prefixes(build_complete_file_list(directory, suffixes), prefixes):
-                    # Gather tsv info
-                    if not _df:
-                        df = pd.read_csv(_f, delimiter=str(self.delimiter), header=0, index_col="ID")
-                        _df = True
+                    if tsv is None:
+                        tsv = TSVJoiner(_f)
                     else:
-                        df = df.combine_first(pd.read_csv(_f, delimiter=str(self.delimiter), header=0, index_col="ID"))
-                if _df and "is_extracellular" in df.columns:
+                        tsv.read_tsv(_f)
+                tsv.write_tsv(os.path.join(str(self.output_directory), output_file))
+                    # # Gather tsv info
+                    # if not _df:
+                    #     df = pd.read_csv(_f, delimiter=str(self.delimiter), header=0, index_col="ID")
+                    #     _df = True
+                    # else:
+                    #     df = df.combine_first(pd.read_csv(_f, delimiter=str(self.delimiter), header=0, index_col="ID"))
+                # if _df and "is_extracellular" in df.columns:
+                #
+                #     df['is_extracellular'] = df['is_extracellular'].fillna(False).astype(bool)
+                # if _df:
+                #     df.to_csv(
+                #         os.path.join(str(self.output_directory), output_file),
+                #         sep="\t",
+                #         na_rep=str(self.na_rep),
+                #         index=True,
+                #         index_label="ID",
+                #     )
 
-                    df['is_extracellular'] = df['is_extracellular'].fillna(False).astype(bool)
-                if _df:
-                    df.to_csv(
-                        os.path.join(str(self.output_directory), output_file),
-                        sep="\t",
-                        na_rep=str(self.na_rep),
-                        index=True,
-                        index_label="ID",
-                    )
 
-    # def output(self):
-    #     return [
-    #         luigi.LocalTarget(os.path.join(str(self.output_directory), directory, output_file))
-    #         for directory, prefixes, suffixes, output_file
-    #         in self.directories
-    #     ]
+class TSVJoiner:
+    def __init__(self, str tsv_file_path):
+        self.header = set()
+        self.data = {}
+        self.read_tsv(tsv_file_path)
+
+    def _join_header(self, list header):
+        cdef str _h
+        for _h in header:
+            self.header.add(_h)
+
+    def read_tsv(self, str tsv_file_path):
+        cdef object R = open(tsv_file_path, "r")
+        header = next(R).rstrip("\r\n").split("\t")
+        cdef int header_len = len(header)
+        data = None
+        cdef str _line
+        self._join_header(header[1:])
+        for _line in R:
+            line = _line.rstrip("\r\n").split("\t")
+            data = self.data.get(line[0], None)
+            if data is None:
+                self.data[line[0]] = {}
+            for i in range(1,header_len):
+                self.data[line[0]][header[i]] = line[i]
+        R.close()
+
+    def write_tsv(self, str out_tsv_path):
+        W = open(out_tsv_path, "w")
+        header_list = list(self.header)
+        cdef str head
+        cdef str _id
+        _out = ""
+        W.write("ID\t")
+        for head in header_list:
+            _out += head + "\t"
+        W.write(_out[:-1] + "\n")
+        for _id in self.data.keys():
+            _out = _id + "\t"
+            for head in header_list:
+                _out += self.data[_id].get(head, "None") + "\t"
+            W.write(_out[:-1] + "\n")
+        W.close()
 
 
 def build_complete_file_list(str base_path, tuple suffixes):
