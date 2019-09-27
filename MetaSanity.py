@@ -231,7 +231,7 @@ def split_phylo_in_evaluation_file(eval_file):
     # Replace with split values as needed
     is_checkm = False
     if len(phyl) == 1:
-        header[phyl_loc] = "kingdom"
+        header[phyl_loc] = "domain"
         line[phyl_loc] = line[phyl_loc].replace("k__", "")
         is_checkm = True
     else:
