@@ -83,12 +83,12 @@ def download_docker():
 
 
 @out_dir
-def config_pull(version):
-    config_path = os.path.join("Config", version)
+def config_pull():
+    config_path = os.path.join("Config", VERSION)
     if not os.path.exists(config_path):
         os.makedirs(config_path)
     os.chdir(config_path)
-    if version == "Docker":
+    if VERSION == "Docker":
         subprocess.run(["wget",
                         "https://raw.githubusercontent.com/cjneely10/MetaSanity/master/Sample/Config/Docker"
                         "/FuncSanity.ini",
@@ -137,11 +137,14 @@ if __name__ == "__main__":
              {"help": "Location to which to download MetaSanity package, default MetaSanity", "default": "MetaSanity"}),
             (("-s", "--sections"),
              {"help": "Comma-separated list to download. Select from: docker,biometadb,scripts,all", "default": "all"}),
+            (("-t", "--download_type"),
+             {"help": "Download type. Default Docker", "default": "Docker"}),
         ),
         description="Download MetaSanity package"
     )
 
     OUTDIR = ap.args.outdir
+    VERSION = ap.args.download_type
     sections = ap.args.sections.split(",")
 
     if sections[0] == 'all':
