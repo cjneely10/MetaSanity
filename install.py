@@ -63,6 +63,7 @@ def clone_biometadb():
     BIOMETADB_URL = "https://github.com/cjneely10/BioMetaDB.git"
     if not os.path.exists("BioMetaDB"):
         subprocess.run(["git", "clone", BIOMETADB_URL], check=True)
+        os.chdir("BioMetaDB")
     else:
         os.chdir("BioMetaDB")
         subprocess.run(["git", "pull", BIOMETADB_URL], check=True)
