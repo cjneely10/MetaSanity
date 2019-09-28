@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os
 import argparse
+import shutil
 import subprocess
 from argparse import RawTextHelpFormatter
 
@@ -61,11 +62,10 @@ class ArgParse:
 @out_dir
 def clone_biometadb():
     BIOMETADB_URL = "https://github.com/cjneely10/BioMetaDB.git"
-    if not os.path.exists("BioMetaDB"):
-        subprocess.run(["git", "clone", BIOMETADB_URL], check=True)
-    else:
-        os.chdir("BioMetaDB")
-        subprocess.run(["git", "pull", BIOMETADB_URL], check=True)
+    if os.path.exists("BioMetaDB"):
+        shutil.rmtree("BioMetaDB")
+    subprocess.run(["git", "clone", BIOMETADB_URL], check=True)
+    os.chdir("BioMetaDB")
     subprocess.run(["git", "checkout", versions[CURRENT_VERSION]["biometadb"]], check=True)
 
 
@@ -83,12 +83,12 @@ def download_docker():
 
 
 @out_dir
-def config_pull(version):
-    config_path = os.path.join("Config", version)
+def config_pull():
+    config_path = os.path.join("Config", VERSION)
     if not os.path.exists(config_path):
         os.makedirs(config_path)
     os.chdir(config_path)
-    if version == "Docker":
+    if VERSION == "Docker":
         subprocess.run(["wget",
                         "https://raw.githubusercontent.com/cjneely10/MetaSanity/master/Sample/Config/Docker"
                         "/FuncSanity.ini",
@@ -125,7 +125,7 @@ def biometadb():
 
 
 def scripts():
-    config_pull(VERSION)
+    config_pull()
     pull_download_script()
     download_metasanity()
 
@@ -137,11 +137,14 @@ if __name__ == "__main__":
              {"help": "Location to which to download MetaSanity package, default MetaSanity", "default": "MetaSanity"}),
             (("-s", "--sections"),
              {"help": "Comma-separated list to download. Select from: docker,biometadb,scripts,all", "default": "all"}),
+            (("-t", "--download_type"),
+             {"help": "Download type. Default Docker", "default": "Docker"}),
         ),
         description="Download MetaSanity package"
     )
 
     OUTDIR = ap.args.outdir
+    VERSION = ap.args.download_type
     sections = ap.args.sections.split(",")
 
     if sections[0] == 'all':
