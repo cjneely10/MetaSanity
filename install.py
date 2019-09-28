@@ -8,6 +8,17 @@ from argparse import RawTextHelpFormatter
 global OUTDIR, VERSION
 
 
+versions = {
+    "v1": {
+        "biometadb": "v0.1.0",
+        "metasanity_docker": "v0.1.0",
+        "pipedm": "v0.3.0"
+    }
+}
+
+CURRENT_VERSION = "v1"
+
+
 def out_dir(func):
     def func_wrapper(*args, **kwargs):
         current_loc = os.getcwd()
@@ -56,6 +67,7 @@ def clone_biometadb():
     else:
         os.chdir("BioMetaDB")
         subprocess.run(["git", "pull", BIOMETADB_URL], check=True)
+    subprocess.run(["git", "checkout", versions[CURRENT_VERSION]["biometadb"]], check=True)
 
 
 @out_dir

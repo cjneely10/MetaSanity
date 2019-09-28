@@ -4,9 +4,9 @@ DCODES
     D   Deprecated
     P   Planned
 
-ID  PIPEDM  METASANITY  DCODE   NOTES
-1   0.0.3   0.1.0   C   "Updated CheckM - validated working PhyloSanity;
-                            iss1; iss2; iss4; iss5; iss6; iss7"
-2   0.1.0   0.1.1   P   "Add flag storage and reload option;
-							Remove need for genome directory if running 2nd step in workflow;
-                            Batch-job option for calling pipeline"
+ID  PACKAGE  PIPEDM  METASANITY  BIOMETADB  DCODE   NOTES
+1   v1    0.0.3   0.1.0   0.1.0    C   "Updated CheckM - validated working PhyloSanity;
+                                        iss1; iss2; iss4; iss5; iss6; iss7"
+2   v2    0.1.0   0.1.1   0.1.0    P   "Add flag storage and reload option;
+							            Remove need for genome directory if running 2nd step in workflow;
+                                        Batch-job option for calling pipeline"
