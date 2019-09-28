@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os
 import argparse
+import shutil
 import subprocess
 from argparse import RawTextHelpFormatter
 
@@ -61,12 +62,10 @@ class ArgParse:
 @out_dir
 def clone_biometadb():
     BIOMETADB_URL = "https://github.com/cjneely10/BioMetaDB.git"
-    if not os.path.exists("BioMetaDB"):
-        subprocess.run(["git", "clone", BIOMETADB_URL], check=True)
-        os.chdir("BioMetaDB")
-    else:
-        os.chdir("BioMetaDB")
-        subprocess.run(["git", "pull", BIOMETADB_URL], check=True)
+    if os.path.exists("BioMetaDB"):
+        shutil.rmtree("BioMetaDB")
+    subprocess.run(["git", "clone", BIOMETADB_URL], check=True)
+    os.chdir("BioMetaDB")
     subprocess.run(["git", "checkout", versions[CURRENT_VERSION]["biometadb"]], check=True)
 
 
