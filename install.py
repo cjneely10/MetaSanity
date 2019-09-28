@@ -125,7 +125,7 @@ def biometadb():
 
 
 def scripts():
-    config_pull(VERSION)
+    config_pull()
     pull_download_script()
     download_metasanity()
 
