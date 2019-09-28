@@ -17,12 +17,12 @@ cdef void parse_virsorter_to_dbdm_tsv(str virsorter_file, str fasta_file, str ou
     :return: 
     """
     cdef dict vir_cats = {
-        "1": "num_phage_contigs_1",
-        "2": "num_phage_contigs_2",
-        "3": "num_phage_contigs_3",
-        "4": "num_prophages_1",
-        "5": "num_prophages_2",
-        "6": "num_prophages_3"
+        "1": "phage_contig_1",
+        "2": "phage_contig_2",
+        "3": "phage_contig_3",
+        "4": "prophage_1",
+        "5": "prophage_2",
+        "6": "prophage_3"
     }
     cdef object P = open(virsorter_file, "rb")
     cdef object W
