@@ -50,6 +50,11 @@ VIRSORTER_DATA_FOLDER = os.path.join(DOWNLOAD_DIRECTORY, "virsorter/virsorter-da
 BIOMETADB = os.path.join(os.path.dirname(DOWNLOAD_DIRECTORY), "BioMetaDB/dbdm.py")
 
 
+# Confirm path existence
+for val in (GTDBTK_FOLDER, CHECKM_FOLDER, KOFAM_FOLDER, PEPTIDASE_DATA_FOLDER, VIRSORTER_DATA_FOLDER, BIOMETADB):
+    assert os.path.exists(val), "Path does not exist: %s" % val
+
+
 # MetaSanity version
 DOCKER_IMAGE = "cjneely10/metasanity:v0.1.0"
 
