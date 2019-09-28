@@ -79,7 +79,7 @@ def build_biometadb():
 
 @out_dir
 def download_docker():
-    DOCKER_VERSION = "cjneely10/metasanity:v0.1.0"
+    DOCKER_VERSION = "cjneely10/metasanity:%s" % versions[CURRENT_VERSION]["metasanity_docker"]
     subprocess.run(["docker", "pull", DOCKER_VERSION], check=True)
 
 
