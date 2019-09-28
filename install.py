@@ -12,7 +12,7 @@ versions = {
     "v1": {
         "biometadb": "v0.1.0",
         "metasanity_docker": "v0.1.0",
-        "pipedm": "v0.3.0"
+        "pipedm": "v0.0.3"
     }
 }
 
