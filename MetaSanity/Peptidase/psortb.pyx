@@ -56,7 +56,7 @@ class PSORTb(LuigiTaskClass):
             if os.path.exists(os.path.join(str(self.output_directory), "psortb_out")):
                 shutil.move(
                     os.path.join(str(self.output_directory), "psortb_out"),
-                    os.path.join(os.path.dirname(str(self.output_directory)), get_prefix(str(self.prot_file)) + ".tbl")
+                    os.path.join(os.path.dirname(str(self.output_directory)), str(self.prot_file).split(".")[0] + ".tbl")
                 )
                 shutil.rmtree(str(self.output_directory))
         # Version was called from standalone script
