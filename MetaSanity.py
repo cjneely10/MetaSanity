@@ -187,7 +187,12 @@ def split_phylo_in_evaluation_file(eval_file):
         if is_checkm:
             line[phyl_loc] = line[phyl_loc].replace("k__", "")
         else:
-            line[phyl_loc:phyl_loc + 1] = [val.split("__")[1] for val in line[phyl_loc].replace(" ", "\t").split(";")]
+            intermediary_data = [val.split("__")[1] for val in line[phyl_loc].replace(" ", "\t").split(";")]
+            len__int = len(intermediary_data)
+            if len__int < 8:
+                for i in range(8 - len__int + 1):
+                    intermediary_data.append(intermediary_data[:-1])
+            line[phyl_loc:phyl_loc + 1] = intermediary_data
         # Write corrected line
         W.write("\t".join(line) + "\n")
     W.close()
