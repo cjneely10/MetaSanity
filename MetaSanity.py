@@ -176,8 +176,8 @@ def split_phylo_in_evaluation_file(eval_file):
         line[phyl_loc] = line[phyl_loc].replace("k__", "")
         is_checkm = True
     else:
-        header[phyl_loc:phyl_loc + 1] = "domain", "kingdom", "phylum", "_class", "_order", "family", "genus", "species"
-        line[phyl_loc:phyl_loc + 1] = [val.split("__")[1] for val in line[phyl_loc].replace(" ", "\t").split(";")]
+        header[phyl_loc:phyl_loc + 1] = "domain", "phylum", "_class", "_order", "family", "genus", "species"
+        line = _line_split(line, phyl_loc)
     W.write("\t".join(header) + "\n")
     W.write("\t".join(line) + "\n")
     # Read into each file
@@ -187,16 +187,18 @@ def split_phylo_in_evaluation_file(eval_file):
         if is_checkm:
             line[phyl_loc] = line[phyl_loc].replace("k__", "")
         else:
-            intermediary_data = [val.split("__")[1] for val in line[phyl_loc].replace(" ", "\t").split(";")]
-            len__int = len(intermediary_data)
-            if len__int < 8:
-                for i in range(8 - len__int + 1):
-                    intermediary_data.append(intermediary_data[-1])
-            line[phyl_loc:phyl_loc + 1] = intermediary_data
+            line = _line_split(line, phyl_loc)
         # Write corrected line
         W.write("\t".join(line) + "\n")
     W.close()
     shutil.move(eval_file + ".2", eval_file)
+
+
+def _line_split(line, phyl_loc):
+    int_data = [val.split("__")[1] if val.split("__")[1] != "" else "None" for val in line[phyl_loc].split(";")]
+    int_data[-1] = (int_data[-1].split(" ")[1] if int_data[-1].split(" ") != ["None"] else "None")
+    line[phyl_loc:phyl_loc + 1] = int_data
+    return line
 
 
 def get_added_flags(config, _dict):
