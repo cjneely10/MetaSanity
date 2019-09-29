@@ -467,7 +467,7 @@ def metagenome_annotation(str directory, str config_file, bint cancel_autocommit
                 Peptidase(
                     calling_script_path="",
                     psortb_results=os.path.join(output_directory, PeptidaseConstants.OUTPUT_DIRECTORY, PSORTbConstants.OUTPUT_DIRECTORY,
-                                                get_prefix(protein_file) + ".tbl"),
+                                                out_prefix + ".tbl"),
                     signalp_results=os.path.join(output_directory, PeptidaseConstants.OUTPUT_DIRECTORY, SignalPConstants.OUTPUT_DIRECTORY,
                                                  out_prefix + SignalPConstants.RESULTS_SUFFIX),
                     merops_hmm_results=os.path.join(output_directory, PeptidaseConstants.OUTPUT_DIRECTORY, MEROPSConstants.OUTPUT_DIRECTORY,
