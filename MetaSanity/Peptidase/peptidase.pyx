@@ -69,7 +69,7 @@ class Peptidase(LuigiTaskClass):
                 if line[1] in (b"Extracellular", b"Cellwall"):
                     matched_protein_ids.add(line[0])
                 elif line[1] in (b"Unknown",):
-                    unknown_prots.add(line[10])
+                    unknown_prots.add(line[1])
             psortb_data.close()
         if signalp_results is not None:
             # Gather signalp ids assigned "Y"
