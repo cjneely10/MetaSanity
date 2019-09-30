@@ -25,9 +25,9 @@ OUTPUT_ORDER = (
 
 CITATIONS = {
     "$metasanity": {
-        "citation": "Neely C. 2020. MetaSanity: Pipeline for major biological analyses. https://github.com/cjneely10/MetaSanity.",
+        "citation": "Neely CJ, Graham ED, Tully BJ 2019. MetaSanity: An integrated, customizable microbial genome evaluation and annotation pipeline. https://github.com/cjneely10/MetaSanity.",
         "dependencies": [],
-        "version": "latest",
+        "version": "v1",
         "in-text": "The genomic analysis was completed using MetaSanity $version (Neely 2020)."
     },
     "$checkm": {
