@@ -450,14 +450,14 @@ def metagenome_annotation(str directory, str config_file, bint cancel_autocommit
                     membrane_type=(bact_arch_type.get(os.path.basename(fasta_file), (0, PeptidaseConstants.GRAM_NEG))[1] if bact_arch_type else PeptidaseConstants.GRAM_NEG),
                     output_directory=os.path.join(output_directory, PeptidaseConstants.OUTPUT_DIRECTORY, SignalPConstants.OUTPUT_DIRECTORY),
                     outfile=out_prefix + SignalPConstants.RESULTS_SUFFIX,
-                    prot_file=protein_file,
+                    prot_file=os.path.join(output_directory, PeptidaseConstants.OUTPUT_DIRECTORY, MEROPSConstants.OUTPUT_DIRECTORY, out_prefix + "." + MEROPSConstants.MEROPS_PROTEIN_FILE_SUFFIX),
                     added_flags=cfg.build_parameter_list_from_dict(SignalPConstants.SIGNALP),
                 ),
                 # Run psortb
                 PSORTb(
                     data_type=(bact_arch_type.get(os.path.basename(fasta_file), (0, PeptidaseConstants.GRAM_NEG))[1] if bact_arch_type else PeptidaseConstants.GRAM_NEG),
                     domain_type=(bact_arch_type.get(os.path.basename(fasta_file), (PeptidaseConstants.BACTERIA,))[0] if bact_arch_type else PeptidaseConstants.BACTERIA),
-                    prot_file=protein_file,
+                    prot_file=os.path.join(output_directory, PeptidaseConstants.OUTPUT_DIRECTORY, MEROPSConstants.OUTPUT_DIRECTORY, out_prefix + "." + MEROPSConstants.MEROPS_PROTEIN_FILE_SUFFIX),
                     output_directory=os.path.join(output_directory, PeptidaseConstants.OUTPUT_DIRECTORY, PSORTbConstants.OUTPUT_DIRECTORY, out_prefix),
                     calling_script_path=cfg.get(PSORTbConstants.PSORTB, ConfigManager.PATH),
                     is_docker=is_docker,
@@ -467,7 +467,7 @@ def metagenome_annotation(str directory, str config_file, bint cancel_autocommit
                 Peptidase(
                     calling_script_path="",
                     psortb_results=os.path.join(output_directory, PeptidaseConstants.OUTPUT_DIRECTORY, PSORTbConstants.OUTPUT_DIRECTORY,
-                                                get_prefix(protein_file) + ".tbl"),
+                                                out_prefix + ".tbl"),
                     signalp_results=os.path.join(output_directory, PeptidaseConstants.OUTPUT_DIRECTORY, SignalPConstants.OUTPUT_DIRECTORY,
                                                  out_prefix + SignalPConstants.RESULTS_SUFFIX),
                     merops_hmm_results=os.path.join(output_directory, PeptidaseConstants.OUTPUT_DIRECTORY, MEROPSConstants.OUTPUT_DIRECTORY,
@@ -674,10 +674,10 @@ def metagenome_annotation(str directory, str config_file, bint cancel_autocommit
                 )
 
     luigi.build(task_list, local_scheduler=True)
-    cfg.citation_generator.write(os.path.join(output_directory,
-                                              "%s.%s.%s" % (datetime.today().strftime("%Y%m%d"),
-                                                            str(randint(1, 1001)),
-                                                            CitationManagerConstants.OUTPUT_FILE,)))
+    # cfg.citation_generator.write(os.path.join(output_directory,
+    #                                           "%s.%s.%s" % (datetime.today().strftime("%Y%m%d"),
+    #                                                         str(randint(1, 1001)),
+    #                                                         CitationManagerConstants.OUTPUT_FILE,)))
     # Remove directories that were added as part of the pipeline
     if remove_intermediates:
         for prefix in out_prefixes:

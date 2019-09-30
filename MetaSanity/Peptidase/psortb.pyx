@@ -56,7 +56,7 @@ class PSORTb(LuigiTaskClass):
             if os.path.exists(os.path.join(str(self.output_directory), "psortb_out")):
                 shutil.move(
                     os.path.join(str(self.output_directory), "psortb_out"),
-                    os.path.join(os.path.dirname(str(self.output_directory)), get_prefix(str(self.prot_file)) + ".tbl")
+                    os.path.join(os.path.dirname(str(self.output_directory)), get_prefix(str(self.prot_file)).split(".")[0] + ".tbl")
                 )
                 shutil.rmtree(str(self.output_directory))
         # Version was called from standalone script
@@ -76,10 +76,10 @@ class PSORTb(LuigiTaskClass):
             # Move results up and rename. Remove docker-created directory and
             shutil.move(
                 glob.glob(os.path.join(str(self.output_directory), "*.txt"))[0],
-                os.path.join(os.path.dirname(str(self.output_directory)), get_prefix(str(self.prot_file)) + ".tbl")
+                os.path.join(os.path.dirname(str(self.output_directory)), get_prefix(str(self.prot_file)).split(".")[0] + ".tbl")
             )
             shutil.rmtree(str(self.output_directory))
         print("PSORTb complete!")
 
     def output(self):
-        return luigi.LocalTarget(os.path.join(os.path.dirname(str(self.output_directory)), get_prefix(str(self.prot_file)) + ".tbl"))
+        return luigi.LocalTarget(os.path.join(os.path.dirname(str(self.output_directory)), get_prefix(str(self.prot_file)).split(".")[0] + ".tbl"))

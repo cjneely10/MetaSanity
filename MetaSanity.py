@@ -50,6 +50,11 @@ VIRSORTER_DATA_FOLDER = os.path.join(DOWNLOAD_DIRECTORY, "virsorter/virsorter-da
 BIOMETADB = os.path.join(os.path.dirname(DOWNLOAD_DIRECTORY), "BioMetaDB/dbdm.py")
 
 
+# Confirm path existence
+for val in (GTDBTK_FOLDER, CHECKM_FOLDER, KOFAM_FOLDER, PEPTIDASE_DATA_FOLDER, VIRSORTER_DATA_FOLDER, BIOMETADB):
+    assert os.path.exists(val), "Path does not exist: %s" % val
+
+
 # MetaSanity version
 DOCKER_IMAGE = "cjneely10/metasanity:v0.1.0"
 
@@ -150,70 +155,6 @@ class GetDBDMCall:
         )
 
 
-COMBINED_SUFFIX = ".combpipe.tsv"
-
-
-# def split_evaluation_file(eval_file, output_dir):
-#     """ Function takes the 'metagenome_evaluation.tsv' file and splits into N files
-#     Checks for GTDB-Tk or CheckM data and creates column info as needed
-#
-#     :param eval_file:
-#     :return:
-#     """
-#     R = open(eval_file, "r")
-#     # Get header line and phylogeny location
-#     header = next(R).rstrip("\r\n").split("\t")
-#     phyl_loc = header.index("phylogeny")
-#     # Determine if phylogeny is from CheckM or from GTDB-Tk
-#     phyl = header[phyl_loc].split(";")
-#     # Replace with split values as needed
-#     is_checkm = False
-#     if len(phyl) != 7:
-#         header[phyl_loc] = "kingdom"
-#         is_checkm = True
-#     else:
-#         header[phyl_loc:phyl_loc + 1] = "kingdom", "phylum", "class", "order", "family", "genus", "species"
-#     # Read into each file
-#     for line in R:
-#         line = line.rstrip("\r\n").split("\t")
-#         # Add parsed phylogeny info to list
-#         if is_checkm:
-#             line[phyl_loc] = line[phyl_loc].replace("k__", "")
-#         else:
-#             line[phyl_loc:phyl_loc] = [val.split("__")[1] for val in line[phyl_loc].split(";")]
-#         # Each line in eval file gets own new file
-#         W = open(os.path.join(output_dir, line[0].split(".")[0] + COMBINED_SUFFIX), "w")
-#         # Write header
-#         W.write("\t".join(header) + "\n")
-#         # Write line up to phylogeny mark
-#         W.write("\t".join(line) + "\n")
-#         W.close()
-
-
-# def combine_pipeline_output(eval_file, annot_file):
-#     """ Function takes the individualized evaluation file and combines it with
-#     the genome's associated annotation file, creates a file named '<annot_file>.2'
-#
-#     :return:
-#     """
-#     df = pd.read_csv(eval_file, delimiter="\t", header=0, index_col="ID",
-#                      true_values=['True', ], false_values=['False', ])
-#     df = df.combine_first(
-#         pd.read_csv(annot_file, delimiter="\t", header=0, index_col="ID",
-#                     true_values=['True', ], false_values=['False', ])
-#     )
-#     for val in ("is_extracellular", "is_complete", "is_contaminated", "is_nonredundant"):
-#         if val in df.columns:
-#             df[val] = df[val].astype('bool')
-#     df.to_csv(
-#         annot_file + ".2",
-#         sep="\t",
-#         na_rep="None",
-#         index=True,
-#         index_label="ID",
-#     )
-
-
 def split_phylo_in_evaluation_file(eval_file):
     """ Function takes the 'metagenome_evaluation.tsv' file and corrects the phylogeny
 
@@ -235,8 +176,8 @@ def split_phylo_in_evaluation_file(eval_file):
         line[phyl_loc] = line[phyl_loc].replace("k__", "")
         is_checkm = True
     else:
-        header[phyl_loc:phyl_loc + 1] = "domain", "kingdom", "phylum", "_class", "_order", "family", "genus", "species"
-        line[phyl_loc:phyl_loc + 1] = [val.split("__")[1] for val in line[phyl_loc].replace(" ", "\t").split(";")]
+        header[phyl_loc:phyl_loc + 1] = "domain", "phylum", "_class", "_order", "family", "genus", "species"
+        line = _line_split(line, phyl_loc)
     W.write("\t".join(header) + "\n")
     W.write("\t".join(line) + "\n")
     # Read into each file
@@ -246,11 +187,18 @@ def split_phylo_in_evaluation_file(eval_file):
         if is_checkm:
             line[phyl_loc] = line[phyl_loc].replace("k__", "")
         else:
-            line[phyl_loc:phyl_loc + 1] = [val.split("__")[1] for val in line[phyl_loc].replace(" ", "\t").split(";")]
+            line = _line_split(line, phyl_loc)
         # Write corrected line
         W.write("\t".join(line) + "\n")
     W.close()
     shutil.move(eval_file + ".2", eval_file)
+
+
+def _line_split(line, phyl_loc):
+    int_data = [val.split("__")[1] if val.split("__")[1] != "" else "None" for val in line[phyl_loc].split(";")]
+    int_data[-1] = (int_data[-1].split(" ")[1] if int_data[-1].split(" ") != ["None"] else "None")
+    line[phyl_loc:phyl_loc + 1] = int_data
+    return line
 
 
 def get_added_flags(config, _dict):
@@ -432,23 +380,6 @@ if not ap.args.cancel_autocommit and os.path.exists(os.path.join(ap.args.output_
                              "%s.VIRSorter_adj_out.tsv" % genome_prefix),
                 genome_prefix.lower(),
             )
-            # Combine results of FuncSanity with PhyloSanity, if needed
-            # eval_file = os.path.join(ap.args.output_directory, "metagenome_evaluation.tsv")
-            # if os.path.exists(eval_file):
-            #     # Split evaluation file by header and line
-            #     split_evaluation_file(eval_file, ap.args.output_directory)
-            #     # Location of old file
-            #     old_file = os.path.join(ap.args.output_directory,
-            #                             "%s.metagenome_annotation.tsv" % genome_prefix)
-            #     # Combine split eval file with old file
-            #     combine_pipeline_output(os.path.join(ap.args.output_directory, genome_prefix + COMBINED_SUFFIX),
-            #                             old_file)
-            #     # Rename new file to old file name
-            #     shutil.move(old_file + ".2",
-            #                 old_file)
-            #     # Delete intermediary files
-            #     for val in glob.glob(os.path.join(ap.args.output_directory, "*%s" % COMBINED_SUFFIX)):
-            #         os.remove(val)
             # Combined Results (N) - out/*.metagenome_annotation.tsv
             dbdm.run(
                 genome_prefix.lower(),
@@ -457,27 +388,7 @@ if not ap.args.cancel_autocommit and os.path.exists(os.path.join(ap.args.output_
                 genome_prefix.lower(),
             )
     elif ap.args.program == "PhyloSanity":
-        # genome_prefixes = {os.path.splitext(os.path.basename(line.rstrip("\r\n")))[0]
-        #                    for line in open(os.path.join(ap.args.output_directory, met_list[ap.args.program]))}
-        # annot_files = [os.path.join(ap.args.output_directory, "%s.metagenome_annotation.tsv") % f
-        #                for f in genome_prefixes
-        #                if os.path.exists(os.path.join(ap.args.output_directory, "%s.metagenome_annotation.tsv") % f)]
         eval_file = os.path.join(ap.args.output_directory, "metagenome_evaluation.tsv")
-        # if annot_files:
-        #     # Split evaluation file by header and line
-        #     split_evaluation_file(eval_file, ap.args.output_directory)
-        #     # Location of old file
-        #     # Combine split eval file with old file
-        #     for f in annot_files:
-        #         gen_pref = os.path.splitext(os.path.basename(f))[0]
-        #         combine_pipeline_output(os.path.join(ap.args.output_directory, gen_pref + COMBINED_SUFFIX),
-        #                                 f)
-        #         # Rename new file to old file name
-        #         shutil.move(f + ".2",
-        #                     f)
-        #     # Delete intermediary files
-        #     for val in glob.glob(os.path.join(ap.args.output_directory, "*%s" % COMBINED_SUFFIX)):
-        #         os.remove(val)
         split_phylo_in_evaluation_file(eval_file)
         dbdm.run(
             "evaluation",

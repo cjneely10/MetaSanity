@@ -1,11 +1,22 @@
 #!/usr/bin/env python3
 import os
 import argparse
+import shutil
 import subprocess
 from argparse import RawTextHelpFormatter
 
 
 global OUTDIR, VERSION
+
+
+versions = {
+    "v1": {
+        "biometadb": "v0.1.0",
+        "metasanity_docker": "v0.1.0",
+    }
+}
+
+CURRENT_VERSION = "v1"
 
 
 def out_dir(func):
@@ -51,11 +62,11 @@ class ArgParse:
 @out_dir
 def clone_biometadb():
     BIOMETADB_URL = "https://github.com/cjneely10/BioMetaDB.git"
-    if not os.path.exists("BioMetaDB"):
-        subprocess.run(["git", "clone", BIOMETADB_URL], check=True)
-    else:
-        os.chdir("BioMetaDB")
-        subprocess.run(["git", "pull", BIOMETADB_URL], check=True)
+    if os.path.exists("BioMetaDB"):
+        shutil.rmtree("BioMetaDB")
+    subprocess.run(["git", "clone", BIOMETADB_URL], check=True)
+    os.chdir("BioMetaDB")
+    subprocess.run(["git", "checkout", versions[CURRENT_VERSION]["biometadb"]], check=True)
 
 
 @out_dir
@@ -67,17 +78,17 @@ def build_biometadb():
 
 @out_dir
 def download_docker():
-    DOCKER_VERSION = "cjneely10/metasanity:v0.1.0"
+    DOCKER_VERSION = "cjneely10/metasanity:%s" % versions[CURRENT_VERSION]["metasanity_docker"]
     subprocess.run(["docker", "pull", DOCKER_VERSION], check=True)
 
 
 @out_dir
-def config_pull(version):
-    config_path = os.path.join("Config", version)
+def config_pull():
+    config_path = os.path.join("Config", VERSION)
     if not os.path.exists(config_path):
         os.makedirs(config_path)
     os.chdir(config_path)
-    if version == "Docker":
+    if VERSION == "Docker":
         subprocess.run(["wget",
                         "https://raw.githubusercontent.com/cjneely10/MetaSanity/master/Sample/Config/Docker"
                         "/FuncSanity.ini",
@@ -94,14 +105,12 @@ def config_pull(version):
 def pull_download_script():
     DOWNLOAD_SCRIPT_URL = "https://raw.githubusercontent.com/cjneely10/MetaSanity/master/download-data.py"
     subprocess.run(["wget", DOWNLOAD_SCRIPT_URL, "-O", "download-data.py"], check=True)
-    subprocess.run(["chmod", "+x", os.path.basename(DOWNLOAD_SCRIPT_URL)], check=True)
 
 
 @out_dir
 def download_metasanity():
     METASANITY_URL = "https://raw.githubusercontent.com/cjneely10/MetaSanity/master/MetaSanity.py"
     subprocess.run(["wget", METASANITY_URL, "-O", "MetaSanity.py"], check=True)
-    subprocess.run(["chmod", "+x", os.path.basename(METASANITY_URL)], check=True)
 
 
 def docker():
@@ -114,7 +123,7 @@ def biometadb():
 
 
 def scripts():
-    config_pull(VERSION)
+    config_pull()
     pull_download_script()
     download_metasanity()
 
@@ -126,11 +135,14 @@ if __name__ == "__main__":
              {"help": "Location to which to download MetaSanity package, default MetaSanity", "default": "MetaSanity"}),
             (("-s", "--sections"),
              {"help": "Comma-separated list to download. Select from: docker,biometadb,scripts,all", "default": "all"}),
+            (("-t", "--download_type"),
+             {"help": "Download type. Default Docker", "default": "Docker"}),
         ),
         description="Download MetaSanity package"
     )
 
     OUTDIR = ap.args.outdir
+    VERSION = ap.args.download_type
     sections = ap.args.sections.split(",")
 
     if sections[0] == 'all':
