@@ -65,11 +65,6 @@ on many laptops.
 
 ## Usage Best Practices
 
-#### Citations
-
-Running a pipeline will output a sample citation file for use in academic writing and research.
-Users are highly recommended to cite all items that are output in this file.
-
 #### Config default files
 
 Each genome pipeline has an associated configuration file that is needed to properly call the underlying programs.
