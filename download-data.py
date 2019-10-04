@@ -66,7 +66,10 @@ def wget(url, file_name, tar=False, gzip=False):
     :return:
     """
     assert not (tar and gzip), "Only tar or gzip allowed"
-    subprocess.run(["wget", url, "-O", file_name], check=True)
+    try:
+        subprocess.run(["wget", url, "-O", file_name], check=True)
+    except subprocess.CalledProcessError:
+        print("Unable to reach hosting institution URL %s" % url)
     if tar:
         subprocess.run(["tar", "-xzf", os.path.basename(url)], check=True)
         os.remove(os.path.basename(url))
