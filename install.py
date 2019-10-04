@@ -13,6 +13,7 @@ versions = {
     "v1": {
         "biometadb": "v0.1.0",
         "metasanity_docker": "v0.1.0",
+        "pipedm": "v0.0.3",
     }
 }
 
@@ -91,21 +92,23 @@ def config_pull():
     if VERSION == "Docker":
         for _file in ("FuncSanity.ini", "Complete-FuncSanity.ini", "PhyloSanity.ini", "Complete-PhyloSanity.ini"):
             subprocess.run(["wget",
-                            "https://raw.githubusercontent.com/cjneely10/MetaSanity/master/Sample/Config/Docker"
-                            "/%s" % _file,
+                            "https://raw.githubusercontent.com/cjneely10/MetaSanity/%s/Sample/Config/Docker/%s" %
+                            (versions[CURRENT_VERSION]["pipedm"], _file),
                             "-O", _file],
                            check=True)
 
 
 @out_dir
 def pull_download_script():
-    DOWNLOAD_SCRIPT_URL = "https://raw.githubusercontent.com/cjneely10/MetaSanity/master/download-data.py"
+    DOWNLOAD_SCRIPT_URL = "https://raw.githubusercontent.com/cjneely10/MetaSanity/%s/download-data.py" % \
+                          versions[CURRENT_VERSION]["pipedm"]
     subprocess.run(["wget", DOWNLOAD_SCRIPT_URL, "-O", "download-data.py"], check=True)
 
 
 @out_dir
 def download_metasanity():
-    METASANITY_URL = "https://raw.githubusercontent.com/cjneely10/MetaSanity/master/MetaSanity.py"
+    METASANITY_URL = "https://raw.githubusercontent.com/cjneely10/MetaSanity/%s/MetaSanity.py" % \
+                          versions[CURRENT_VERSION]["pipedm"]
     subprocess.run(["wget", METASANITY_URL, "-O", "MetaSanity.py"], check=True)
 
 
