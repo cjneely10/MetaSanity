@@ -70,6 +70,7 @@ def wget(url, file_name, tar=False, gzip=False):
         subprocess.run(["wget", url, "-O", file_name], check=True)
     except subprocess.CalledProcessError:
         print("Unable to reach hosting institution URL %s" % url)
+        return
     if tar:
         subprocess.run(["tar", "-xzf", os.path.basename(url)], check=True)
         os.remove(os.path.basename(url))
