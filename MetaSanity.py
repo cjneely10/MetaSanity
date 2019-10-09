@@ -339,6 +339,7 @@ else:
             [
                 "python3",
                 PIPEDM_PATH,
+                ap.args.program,
                 "-d", os.path.relpath(ap.args.directory),
                 "-o", os.path.relpath(ap.args.output_directory),
                 "-c", os.path.relpath(ap.args.config_file),
