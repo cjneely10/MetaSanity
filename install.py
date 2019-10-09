@@ -96,6 +96,13 @@ def config_pull():
                             (versions[CURRENT_VERSION]["pipedm"], _file),
                             "-O", _file],
                            check=True)
+    if VERSION == "SourceCode":
+        for _file in ("FuncSanity.ini", "PhyloSanity.ini"):
+            subprocess.run(["wget",
+                            "https://raw.githubusercontent.com/cjneely10/MetaSanity/%s/Sample/Config/SourceCode/%s" %
+                            (versions[CURRENT_VERSION]["pipedm"], _file),
+                            "-O", _file],
+                           check=True)
 
 
 @out_dir
@@ -135,7 +142,7 @@ if __name__ == "__main__":
             (("-s", "--sections"),
              {"help": "Comma-separated list to download. Select from: docker,biometadb,scripts,all", "default": "all"}),
             (("-t", "--download_type"),
-             {"help": "Download type. Default Docker", "default": "Docker"}),
+             {"help": "Download type. Select from: Docker,SourceCode", "default": "Docker"}),
         ),
         description="Download MetaSanity package"
     )
