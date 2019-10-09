@@ -26,6 +26,8 @@ Ensure that BioMetaDB path is accurate, and that optional program binary paths a
 
 # Path to database download location
 DOWNLOAD_DIRECTORY = "/path/to/databases"
+# (Optional Source Code installation) Path to pipedm.py - Be sure to change the BIOMETADB path below manually
+PIPEDM_PATH = "/path/to/MetaSanity/pipedm.py"
 
 # # Optional program paths
 # Extracted interproscan package with binary from  https://github.com/ebi-pf-team/interproscan/wiki/HowToDownload
@@ -261,73 +263,90 @@ if ap.args.prokka:
 cid_file_name = 'docker.pid'
 
 # Run docker version
-try:
-    subprocess.run(
-        [
-            "docker",
-            "run",
-            # user info
-            "--user",
-            subprocess.getoutput("id -u"),
-            "--cidfile",
-            cid_file_name,
-            # Locale setup required for parsing files
-            "-e",
-            "LANG=C.UTF-8",
-            # CheckM
-            "-v", CHECKM_FOLDER + ":/home/appuser/checkm",
-            # GTDBtk
-            "-v", GTDBTK_FOLDER + ":/home/appuser/gtdbtk/db",
-            # kofamscan
-            "-v", KOFAM_FOLDER + ":/home/appuser/kofamscan/db",
-            # Peptidase storage
-            "-v", PEPTIDASE_DATA_FOLDER + ":/home/appuser/Peptidase",
-            # Interproscan
-            "-v", INTERPROSCAN_FOLDER + ":/home/appuser/interproscan-5.32-71.0",
-            # Volume to access genomes
-            "-v", VIRSORTER_DATA_FOLDER + ":/home/appuser/virsorter-data",
-            # Volume to access signalp binary
-            "-v", SIGNALP_FOLDER + ":/home/appuser/signalp",
-            # Volume to access rnammer binary
-            "-v", RNAMMER_FOLDER + ":/home/appuser/rnammer",
-            # Change output directory here
-            "-v", os.getcwd() + ":/home/appuser/wdir",
-            # "-it",
-            "--rm",
-            DOCKER_IMAGE,
-            ap.args.program,
-            "-d", os.path.join("/home/appuser/wdir", os.path.relpath(ap.args.directory)),
-            "-o", os.path.join("/home/appuser/wdir", os.path.relpath(ap.args.output_directory)),
-            "-c", os.path.join("/home/appuser/wdir", os.path.relpath(ap.args.config_file)),
-            "-t", (os.path.join("/home/appuser/wdir", os.path.relpath(ap.args.type_file))
-                   if ap.args.type_file != "None" else "None"),
-            *prokka_add,
-            # Notify that this was called from docker
-            "-y",
-            # Cancel autocommit from docker
-            "-a",
-            # Don't remove intermediary files
-            "-z"
-        ],
-        check=True,
-    )
-    os.remove(cid_file_name)
-except KeyboardInterrupt:
-    print("\nExiting...")
+if PIPEDM_PATH == "/path/to/MetaSanity/pipedm.py":
     try:
-        subprocess.run(["docker", "kill", open(cid_file_name, "rb").read()], check=True)
+        subprocess.run(
+            [
+                "docker",
+                "run",
+                # user info
+                "--user",
+                subprocess.getoutput("id -u"),
+                "--cidfile",
+                cid_file_name,
+                # Locale setup required for parsing files
+                "-e",
+                "LANG=C.UTF-8",
+                # CheckM
+                "-v", CHECKM_FOLDER + ":/home/appuser/checkm",
+                # GTDBtk
+                "-v", GTDBTK_FOLDER + ":/home/appuser/gtdbtk/db",
+                # kofamscan
+                "-v", KOFAM_FOLDER + ":/home/appuser/kofamscan/db",
+                # Peptidase storage
+                "-v", PEPTIDASE_DATA_FOLDER + ":/home/appuser/Peptidase",
+                # Interproscan
+                "-v", INTERPROSCAN_FOLDER + ":/home/appuser/interproscan-5.32-71.0",
+                # Volume to access genomes
+                "-v", VIRSORTER_DATA_FOLDER + ":/home/appuser/virsorter-data",
+                # Volume to access signalp binary
+                "-v", SIGNALP_FOLDER + ":/home/appuser/signalp",
+                # Volume to access rnammer binary
+                "-v", RNAMMER_FOLDER + ":/home/appuser/rnammer",
+                # Change output directory here
+                "-v", os.getcwd() + ":/home/appuser/wdir",
+                # "-it",
+                "--rm",
+                DOCKER_IMAGE,
+                ap.args.program,
+                "-d", os.path.join("/home/appuser/wdir", os.path.relpath(ap.args.directory)),
+                "-o", os.path.join("/home/appuser/wdir", os.path.relpath(ap.args.output_directory)),
+                "-c", os.path.join("/home/appuser/wdir", os.path.relpath(ap.args.config_file)),
+                "-t", (os.path.join("/home/appuser/wdir", os.path.relpath(ap.args.type_file))
+                       if ap.args.type_file != "None" else "None"),
+                *prokka_add,
+                # Notify that this was called from docker
+                "-y",
+                # Cancel autocommit from docker
+                "-a",
+                # Don't remove intermediary files
+                "-z"
+            ],
+            check=True,
+        )
         os.remove(cid_file_name)
-        sys.exit(1)
     except KeyboardInterrupt:
-        os.remove(cid_file_name)
-        sys.exit(1)
-    except FileNotFoundError:
-        sys.exit(1)
-except subprocess.CalledProcessError:
+        print("\nExiting...")
+        try:
+            subprocess.run(["docker", "kill", open(cid_file_name, "rb").read()], check=True)
+            os.remove(cid_file_name)
+            sys.exit(1)
+        except KeyboardInterrupt:
+            os.remove(cid_file_name)
+            sys.exit(1)
+        except FileNotFoundError:
+            sys.exit(1)
+    except subprocess.CalledProcessError:
+        try:
+            os.remove(cid_file_name)
+            sys.exit(1)
+        except FileNotFoundError:
+            sys.exit(1)
+else:
     try:
-        os.remove(cid_file_name)
-        sys.exit(1)
-    except FileNotFoundError:
+        subprocess.run(
+            [
+                "python3",
+                PIPEDM_PATH,
+                "-d", os.path.relpath(ap.args.directory),
+                "-o", os.path.relpath(ap.args.output_directory),
+                "-c", os.path.relpath(ap.args.config_file),
+                "-t", (os.path.relpath(ap.args.type_file) if ap.args.type_file != "None" else "None"),
+                *prokka_add
+            ],
+            check=True,
+        )
+    except KeyboardInterrupt:
         sys.exit(1)
 
 out_prefixes = set({})
