@@ -27,6 +27,7 @@ Ensure that BioMetaDB path is accurate, and that optional program binary paths a
 # Path to database download location
 DOWNLOAD_DIRECTORY = "/path/to/databases"
 # (Optional Source Code installation) Path to pipedm.py - Be sure to change the BIOMETADB path below manually
+# DO NOT CHANGE THIS VALUE IF USING THE DOCKER INSTALLATION!!
 PIPEDM_PATH = "/path/to/MetaSanity/pipedm.py"
 
 # # Optional program paths
