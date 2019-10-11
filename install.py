@@ -17,7 +17,7 @@ versions = {
     },
     "v1.1": {
         "biometadb": "v0.1.1",
-        "metasanity_docker": "v0.1.0",
+        "metasanity_docker": "v0.1.1",
         "metasanity_script": "v0.0.4",
     }
 }
