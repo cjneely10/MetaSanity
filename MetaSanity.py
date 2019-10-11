@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os
 import sys
+import json
 import shutil
 import argparse
 import subprocess
@@ -29,6 +30,8 @@ DOWNLOAD_DIRECTORY = "/path/to/databases"
 # (Optional Source Code installation) Path to pipedm.py - Be sure to change the BIOMETADB path below manually
 # DO NOT CHANGE THIS VALUE IF USING THE DOCKER INSTALLATION!!
 PIPEDM_PATH = "/path/to/MetaSanity/pipedm.py"
+# Version installation - do not change unless using an older MetaSanity version
+VERSION = "v1.1"
 
 # # Optional program paths
 # Extracted interproscan package with binary from  https://github.com/ebi-pf-team/interproscan/wiki/HowToDownload
@@ -52,9 +55,10 @@ VIRSORTER_DATA_FOLDER = os.path.join(DOWNLOAD_DIRECTORY, "virsorter/virsorter-da
 # Location of BioMetaDB on system. If not used, ensure to pass `-a` flag to MetaSanity.py when running
 BIOMETADB = os.path.join(os.path.dirname(DOWNLOAD_DIRECTORY), "BioMetaDB/dbdm.py")
 
+version_data = json.load(os.path.join(DOWNLOAD_DIRECTORY, "VERSIONS.json"))
 
 # MetaSanity version
-DOCKER_IMAGE = "cjneely10/metasanity:v0.1.0"
+DOCKER_IMAGE = "cjneely10/metasanity:%s" % version_data[VERSION]["metasanity_docker"]
 
 
 class ArgParse:

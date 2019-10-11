@@ -6,7 +6,7 @@ import subprocess
 from argparse import RawTextHelpFormatter
 
 
-global OUTDIR, VERSION
+global OUTDIR, VERSION, CURRENT_VERSION
 
 
 versions = {
@@ -16,13 +16,11 @@ versions = {
         "pipedm": "v0.0.3",
     },
     "v1.1": {
-            "biometadb": "v0.1.1",
-            "metasanity_docker": "v0.1.0",
-            "pipedm": "v0.0.4",
-        }
+        "biometadb": "v0.1.1",
+        "metasanity_docker": "v0.1.0",
+        "pipedm": "v0.0.4",
+    }
 }
-
-CURRENT_VERSION = "v1.1"
 
 
 def out_dir(func):
@@ -124,6 +122,13 @@ def download_metasanity():
     subprocess.run(["wget", METASANITY_URL, "-O", "MetaSanity.py"], check=True)
 
 
+@out_dir
+def pull_versions_json_file():
+    VERSIONS_JSON_FILE = "https://raw.githubusercontent.com/cjneely10/MetaSanity/%s/VERSIONS.json" % \
+                        versions[CURRENT_VERSION]["pipedm"]
+    subprocess.run(["wget", VERSIONS_JSON_FILE, "-O", "VERSIONS.json"], check=True)
+
+
 def docker():
     download_docker()
 
@@ -137,6 +142,7 @@ def scripts():
     config_pull()
     pull_download_script()
     download_metasanity()
+    pull_versions_json_file()
 
 
 if __name__ == "__main__":
@@ -148,10 +154,14 @@ if __name__ == "__main__":
              {"help": "Comma-separated list to download. Select from: docker,biometadb,scripts,all", "default": "all"}),
             (("-t", "--download_type"),
              {"help": "Download type. Select from: Docker,SourceCode", "default": "Docker"}),
+            (("-v", "--version"),
+             {"help": "Version to download. Default: v1.1", "default": "v1.1"})
         ),
         description="Download MetaSanity package"
     )
 
+    assert ap.args.version in versions.keys(), "Invalid version selected."
+    CURRENT_VERSION = ap.args.version
     OUTDIR = ap.args.outdir
     VERSION = ap.args.download_type
     sections = ap.args.sections.split(",")
