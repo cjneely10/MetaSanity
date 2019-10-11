@@ -235,6 +235,11 @@ ap = ArgParse(
           "default": "None"}),
         (("-p", "--prokka"),
          {"help": "Use PROKKA gene calls instead of prodigal search", "default": False, "action": "store_true"}),
+        (("-z", "--autoremove_intermediates"),
+         {"help": "Remove intermediary genome directories, default: True", "default": True, "action": "store_false"}),
+        (("-r", "--reevaluate_quality"),
+         {"help": "Redetermine genome quality as High/Medium/Low/Incomplete (PhyloSanity must be complete)",
+          "default": False, "action": "store_true"})
     ),
     description=ArgParse.description_builder(
         "MetaSanity:\tRun meta/genomes evaluation and annotation pipelines",
@@ -246,7 +251,7 @@ ap = ArgParse(
             "PhyloSanity": ("directory", "config_file", "cancel_autocommit", "output_directory",
                             "biometadb_project"),
             "FuncSanity": ("directory", "config_file", "cancel_autocommit", "output_directory",
-                           "biometadb_project", "type_file", "prokka"),
+                           "biometadb_project", "type_file", "prokka", "reevaluate_quality"),
         }
     )
 )
@@ -268,7 +273,7 @@ if ap.args.prokka:
 cid_file_name = 'docker.pid'
 
 # Run docker version
-if PIPEDM_PATH == "/path/to/MetaSanity/pipedm.py":
+if not os.path.exists(PIPEDM_PATH):
     try:
         subprocess.run(
             [
@@ -418,8 +423,13 @@ if not ap.args.cancel_autocommit and os.path.exists(os.path.join(ap.args.output_
         )
     print("BioMetaDB project complete!")
 
+if ap.args.reevaluate_quality:
+    pass
+
 if ap.args.program == "FuncSanity":
     for prefix in out_prefixes:
         os.remove(os.path.join(ap.args.output_directory, prefix + ".metagenome_annotation_tmp.tsv"))
+
+if ap.args.autoremove_intermediates:
     shutil.rmtree(os.path.join(ap.args.output_directory, "genomes"))
     shutil.rmtree(os.path.join(ap.args.output_directory, "splitfiles"))
