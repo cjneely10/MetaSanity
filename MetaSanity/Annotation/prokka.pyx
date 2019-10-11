@@ -123,12 +123,13 @@ cdef void write_prokka_amended(str prokka_results, str outfile):
         W.write(tsvParser.header())
         W.write("\n")
         for prokka_inner_list in prokka_data:
-            if prokka_inner_list[1] == "CDS":
+            if prokka_inner_list[1] in ("CDS", "tRNA", "rRNA"):
                 for val in prokka_inner_list:
                     out_string += val + "\t"
                 W.write(out_string[:-1])
                 W.write("\n")
                 out_string = ""
+            elif prokka_inner_list[3] == "hypothetical protein":
         W.close()
 
 
