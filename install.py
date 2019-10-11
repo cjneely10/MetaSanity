@@ -13,12 +13,12 @@ versions = {
     "v1": {
         "biometadb": "v0.1.0",
         "metasanity_docker": "v0.1.0",
-        "pipedm": "v0.0.3",
+        "metasanity_script": "v0.0.3",
     },
     "v1.1": {
         "biometadb": "v0.1.1",
         "metasanity_docker": "v0.1.0",
-        "pipedm": "v0.0.4",
+        "metasanity_script": "v0.0.4",
     }
 }
 
@@ -96,14 +96,14 @@ def config_pull():
         for _file in ("FuncSanity.ini", "Complete-FuncSanity.ini", "PhyloSanity.ini", "Complete-PhyloSanity.ini"):
             subprocess.run(["wget",
                             "https://raw.githubusercontent.com/cjneely10/MetaSanity/%s/Sample/Config/Docker/%s" %
-                            (versions[CURRENT_VERSION]["pipedm"], _file),
+                            (versions[CURRENT_VERSION]["metasanity_script"], _file),
                             "-O", _file],
                            check=True)
     if VERSION == "SourceCode":
         for _file in ("FuncSanity.ini", "PhyloSanity.ini"):
             subprocess.run(["wget",
                             "https://raw.githubusercontent.com/cjneely10/MetaSanity/%s/Sample/Config/SourceCode/%s" %
-                            (versions[CURRENT_VERSION]["pipedm"], _file),
+                            (versions[CURRENT_VERSION]["metasanity_script"], _file),
                             "-O", _file],
                            check=True)
 
@@ -111,21 +111,21 @@ def config_pull():
 @out_dir
 def pull_download_script():
     DOWNLOAD_SCRIPT_URL = "https://raw.githubusercontent.com/cjneely10/MetaSanity/%s/download-data.py" % \
-                          versions[CURRENT_VERSION]["pipedm"]
+                          versions[CURRENT_VERSION]["metasanity_script"]
     subprocess.run(["wget", DOWNLOAD_SCRIPT_URL, "-O", "download-data.py"], check=True)
 
 
 @out_dir
 def download_metasanity():
     METASANITY_URL = "https://raw.githubusercontent.com/cjneely10/MetaSanity/%s/MetaSanity.py" % \
-                          versions[CURRENT_VERSION]["pipedm"]
+                          versions[CURRENT_VERSION]["metasanity_script"]
     subprocess.run(["wget", METASANITY_URL, "-O", "MetaSanity.py"], check=True)
 
 
 @out_dir
 def pull_versions_json_file():
     VERSIONS_JSON_FILE = "https://raw.githubusercontent.com/cjneely10/MetaSanity/%s/VERSIONS.json" % \
-                        versions[CURRENT_VERSION]["pipedm"]
+                        versions[CURRENT_VERSION]["metasanity_script"]
     subprocess.run(["wget", VERSIONS_JSON_FILE, "-O", "VERSIONS.json"], check=True)
 
 

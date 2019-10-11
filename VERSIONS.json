@@ -2,11 +2,11 @@
   "v1": {
     "biometadb": "v0.1.0",
     "metasanity_docker": "v0.1.0",
-    "pipedm": "v0.0.3"
+    "metasanity_script": "v0.0.3"
   },
   "v1.1": {
     "biometadb": "v0.1.1",
     "metasanity_docker": "v0.1.0",
-    "pipedm": "v0.0.4"
+    "metasanity_script": "v0.0.4"
   }
 }

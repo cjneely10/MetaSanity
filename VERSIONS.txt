@@ -5,7 +5,7 @@ DCODES
     P   Planned
     IP  In Progress
 
-PACKAGE  PIPEDM  METASANITY  BIOMETADB  DCODE   NOTES
+PACKAGE  METASANITY_SCRIPT  METASANITY  BIOMETADB  DCODE   NOTES
 v1      0.0.3   0.1.0   0.1.0   C   "Updated CheckM - validated working PhyloSanity;
 									iss1; iss2; iss4; iss5; iss6; iss7"
 v1.1    0.0.4   0.1.0   0.1.1   IP  "10-11-2019 Integrate Bowers et. al quality analyses;
