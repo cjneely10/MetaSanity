@@ -10,6 +10,6 @@ ID  PACKAGE  PIPEDM  METASANITY  BIOMETADB  DCODE   NOTES
                                         iss1; iss2; iss4; iss5; iss6; iss7"
 2   v1.1    0.0.4   0.1.0   0.1.1   IP "10-11-2019 Integrate Bowers et. al quality analyses;
                                         BioMetaDB general speedups"
-2   v2  0.1.0   0.1.1   0.1.0   P   "Add flag storage and reload option;
+3   v2  0.1.0   0.1.1   0.1.0   P   "Add flag storage and reload option;
 							            Remove need for genome directory if running 2nd step in workflow;
                                         Batch-job option for calling pipeline"
