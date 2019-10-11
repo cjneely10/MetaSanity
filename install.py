@@ -14,10 +14,15 @@ versions = {
         "biometadb": "v0.1.0",
         "metasanity_docker": "v0.1.0",
         "pipedm": "v0.0.3",
-    }
+    },
+    "v1.1": {
+            "biometadb": "v0.1.1",
+            "metasanity_docker": "v0.1.0",
+            "pipedm": "v0.0.4",
+        }
 }
 
-CURRENT_VERSION = "v1"
+CURRENT_VERSION = "v1.1"
 
 
 def out_dir(func):
