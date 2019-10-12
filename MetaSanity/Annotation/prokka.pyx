@@ -71,7 +71,7 @@ class PROKKA(LuigiTaskClass):
         )
 
 
-class PROKKAMatcher:
+class PROKKAMatcher(luigi.Task):
     output_directory = luigi.Parameter()
     outfile = luigi.Parameter()
     diamond_file = luigi.Parameter()
