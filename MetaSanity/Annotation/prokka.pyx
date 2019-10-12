@@ -31,6 +31,7 @@ class PROKKA(LuigiTaskClass):
         if not os.path.exists(str(self.output_directory)):
             os.makedirs(str(self.output_directory))
         cdef str outfile_prefix = get_prefix(str(self.fasta_file))
+        # Output directory does not exist
         if not os.path.isfile(os.path.join(str(self.output_directory), outfile_prefix, outfile_prefix + ".tsv")):
             subprocess.run(
                 [
@@ -46,6 +47,7 @@ class PROKKA(LuigiTaskClass):
                 ],
                 check=True,
             )
+        # Write amended TSV file for only CDS, tRNA, and rRNA entries
         write_prokka_amended(
             os.path.join(str(self.output_directory), outfile_prefix, outfile_prefix + ".tsv"),
             os.path.join(str(self.output_directory), outfile_prefix, outfile_prefix + PROKKAConstants.AMENDED_RESULTS_SUFFIX)
@@ -111,26 +113,40 @@ cdef void write_prokka_amended(str prokka_results, str outfile):
     :param outfile: 
     :return: 
     """
-    cdef object tsvParser = TSVParser(prokka_results)
-    # Call through object to retain header line
-    tsvParser.read_file(header_line=True)
-    cdef list prokka_data = tsvParser.get_values()
-    cdef object W = open(outfile, "w")
-    cdef list prokka_inner_list
-    cdef str val, out_string = ""
-    if prokka_data:
-        # Write Header
-        W.write(tsvParser.header())
-        W.write("\n")
-        for prokka_inner_list in prokka_data:
-            if prokka_inner_list[1] in ("CDS", "tRNA", "rRNA"):
-                for val in prokka_inner_list:
-                    out_string += val + "\t"
-                W.write(out_string[:-1])
-                W.write("\n")
-                out_string = ""
-            elif prokka_inner_list[3] == "hypothetical protein":
-        W.close()
+    R = open(prokka_results, "rb")
+    W = open(outfile, "wb")
+    cdef bytes _line
+    cdef list line
+    # Skip over header
+    next(R)
+    W.write(b"ID\tprokka\n")
+    for _line in R:
+        line = _line.rstrip(b"\r\n").split()
+        if line[1] in (b"CDS", b"tRNA", b"rRNA"):
+            # Write line from gene identifier to end of line
+            W.write(b" ".join(line[3:]))
+            W.write(b"\n")
+    W.close()
+    # cdef object tsvParser = TSVParser(prokka_results)
+    # # Call through object to retain header line
+    # tsvParser.read_file(header_line=True)
+    # cdef list prokka_data = tsvParser.get_values()
+    # cdef object W = open(outfile, "w")
+    # cdef list prokka_inner_list
+    # cdef str val, out_string = ""
+    # if prokka_data:
+    #     # Write Header
+    #     W.write(tsvParser.header())
+    #     W.write("\n")
+    #     for prokka_inner_list in prokka_data:
+    #         if prokka_inner_list[1] in ("CDS", "tRNA", "rRNA"):
+    #             for val in prokka_inner_list:
+    #                 out_string += val + "\t"
+    #             W.write(out_string[:-1])
+    #             W.write("\n")
+    #             out_string = ""
+    #         elif prokka_inner_list[3] == "hypothetical protein":
+    #     W.close()
 
 
 cdef void match_prokka_to_prodigal_and_write_tsv(str diamond_file, str prokka_annotation_tsv, str matches_file, str outfile,
@@ -153,12 +169,12 @@ cdef void match_prokka_to_prodigal_and_write_tsv(str diamond_file, str prokka_an
     :return: 
     """
     cdef dict matches = {}
-    cdef object W = open(outfile, "w")
+    W = open(outfile, "w")
     cdef dict prokka_data = TSVParser.parse_dict(prokka_annotation_tsv)
     W.write("ID\tprokka\n")
     cdef bytes _line
     cdef list line
-    cdef object R = open(diamond_file, "rb")
+    R = open(diamond_file, "rb")
     cdef str _id
     cdef dict highest_matches = {}
     cdef tuple best_match
@@ -175,7 +191,7 @@ cdef void match_prokka_to_prodigal_and_write_tsv(str diamond_file, str prokka_an
     for best_match in highest_matches.values():
         if prokka_data[best_match[0]][2] != "":
             # prokka_out_string = "%s-%s:::%s;;;" % (*(best_match[1].split("-")[-1].split("_")), prokka_data[best_match[0]][2])
-            W.write(matches[best_match[1]] + suffix + "\t" + prokka_data[best_match[0]][2] + "\n")
+            W.write(matches[best_match[1]] + suffix + "\t" + prokka_data[best_match[0]][1] + "\n")
     W.close()
     R.close()
 

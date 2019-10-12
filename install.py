@@ -87,6 +87,18 @@ def download_docker():
 
 
 @out_dir
+def download_build_sourcecode():
+    METASANITY_URL = "https://github.com/cjneely10/MetaSanity.git"
+    if os.path.exists("MetaSanity"):
+        shutil.rmtree("MetaSanity")
+    subprocess.run(["git", "clone", METASANITY_URL], check=True)
+    os.chdir("MetaSanity")
+    subprocess.run(["git", "checkout", versions[CURRENT_VERSION]["metasanity_script"]], check=True)
+    subprocess.run(["pip", "install", "-r", "requirements.txt"])
+    subprocess.run(["python3", "setup.py", "build_ext", "--inplace"], check=True)
+
+
+@out_dir
 def config_pull():
     config_path = os.path.join("Config", VERSION)
     if not os.path.exists(config_path):
@@ -129,7 +141,7 @@ def pull_versions_json_file():
     subprocess.run(["wget", VERSIONS_JSON_FILE, "-O", "VERSIONS.json"], check=True)
 
 
-def docker():
+def docker_image():
     download_docker()
 
 
@@ -145,13 +157,33 @@ def scripts():
     pull_versions_json_file()
 
 
+def sourcecode():
+    download_build_sourcecode()
+
+
+def sourcecode_installation():
+    sourcecode()
+    biometadb()
+    scripts()
+    exit(0)
+
+
+def docker_installation():
+    docker_image()
+    biometadb()
+    scripts()
+    exit(0)
+
+
 if __name__ == "__main__":
     ap = ArgParse(
         (
             (("-o", "--outdir"),
              {"help": "Location to which to download MetaSanity package, default MetaSanity", "default": "MetaSanity"}),
             (("-s", "--sections"),
-             {"help": "Comma-separated list to download. Select from: docker,biometadb,scripts,all", "default": "all"}),
+             {"help": "Comma-separated list to download. Select from: docker_installation,sourcecode_installation,"
+                      "docker_image,sourcecode,biometadb,scripts",
+              "default": "DockerInstallation"}),
             (("-t", "--download_type"),
              {"help": "Download type. Select from: Docker,SourceCode", "default": "Docker"}),
             (("-v", "--version"),
@@ -166,11 +198,6 @@ if __name__ == "__main__":
     VERSION = ap.args.download_type
     sections = ap.args.sections.split(",")
 
-    if sections[0] == 'all':
-        docker()
-        biometadb()
-        scripts()
-        exit(0)
     for section in sections:
         try:
             locals()[section]()
