@@ -176,8 +176,6 @@ def docker_installation():
 if __name__ == "__main__":
     ap = ArgParse(
         (
-            (("-o", "--outdir"),
-             {"help": "Location to which to download MetaSanity package, default MetaSanity", "default": "MetaSanity"}),
             (("-s", "--sections"),
              {"help": "Comma-separated list to download. Select from: docker_installation,sourcecode_installation,"
                       "docker_image,sourcecode,biometadb,scripts",
@@ -192,7 +190,7 @@ if __name__ == "__main__":
 
     assert ap.args.version in versions.keys(), "Invalid version selected."
     CURRENT_VERSION = ap.args.version
-    OUTDIR = ap.args.outdir
+    OUTDIR = "MetaSanity"
     sections = ap.args.sections.split(",")
     if "docker_installation" in sections:
         VERSION = "Docker"
