@@ -25,8 +25,8 @@ Ensure that BioMetaDB path is accurate, and that optional program binary paths a
 
 """
 
-# Path to database download location
-DOWNLOAD_DIRECTORY = "/path/to/databases"
+# Path to download location
+DOWNLOAD_DIRECTORY = "/path/to/MetaSanity"
 # Version installation - do not change unless using an older MetaSanity version
 VERSION = "v1.1"
 
@@ -44,6 +44,8 @@ RNAMMER_FOLDER = "/path/to/rnammer-1.2.src"
 PIPEDM_PATH = "/path/to/MetaSanity/pipedm.py"
 
 # # Only edit below if your database files were not gathered using the download-data.py script
+# Location of databases
+DOWNLOAD_DIRECTORY = os.path.join(DOWNLOAD_DIRECTORY, "databases")
 # Data downloaded from  https://data.ace.uq.edu.au/public/gtdbtk/
 GTDBTK_FOLDER = os.path.join(DOWNLOAD_DIRECTORY, "gtdbtk/release89")
 # Extracted checkm data from  https://data.ace.uq.edu.au/public/CheckM_databases/
