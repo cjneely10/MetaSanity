@@ -165,14 +165,12 @@ def sourcecode_installation():
     sourcecode()
     biometadb()
     scripts()
-    exit(0)
 
 
 def docker_installation():
     docker_image()
     biometadb()
     scripts()
-    exit(0)
 
 
 if __name__ == "__main__":

@@ -27,9 +27,6 @@ Ensure that BioMetaDB path is accurate, and that optional program binary paths a
 
 # Path to database download location
 DOWNLOAD_DIRECTORY = "/path/to/databases"
-# (Optional Source Code installation) Path to pipedm.py - Be sure to change the BIOMETADB path below manually
-# DO NOT CHANGE THIS VALUE IF USING THE DOCKER INSTALLATION!!
-PIPEDM_PATH = "/path/to/MetaSanity/pipedm.py"
 # Version installation - do not change unless using an older MetaSanity version
 VERSION = "v1.1"
 
@@ -40,6 +37,11 @@ INTERPROSCAN_FOLDER = "/path/to/interproscan"
 SIGNALP_FOLDER = "/path/to/signalp-4.1"
 # RNAmmer software package, including binary, from  http://www.cbs.dtu.dk/cgi-bin/nph-sw_request?rnammer
 RNAMMER_FOLDER = "/path/to/rnammer-1.2.src"
+
+# # Only edit below if using the source code installation
+# (Optional Source Code installation) Path to pipedm.py - Be sure to change the BIOMETADB path below manually
+# DO NOT CHANGE THIS VALUE IF USING THE DOCKER INSTALLATION!!
+PIPEDM_PATH = "/path/to/MetaSanity/pipedm.py"
 
 # # Only edit below if your database files were not gathered using the download-data.py script
 # Data downloaded from  https://data.ace.uq.edu.au/public/gtdbtk/
@@ -54,8 +56,8 @@ PEPTIDASE_DATA_FOLDER = os.path.join(DOWNLOAD_DIRECTORY, "peptidase")
 VIRSORTER_DATA_FOLDER = os.path.join(DOWNLOAD_DIRECTORY, "virsorter/virsorter-data")
 # Location of BioMetaDB on system. If not used, ensure to pass `-a` flag to MetaSanity.py when running
 BIOMETADB = os.path.join(os.path.dirname(DOWNLOAD_DIRECTORY), "BioMetaDB/dbdm.py")
-
-version_data = json.load(os.path.join(DOWNLOAD_DIRECTORY, "VERSIONS.json"))
+# Location of VERSIONS.json should be in installation directory
+version_data = json.load(open(os.path.join(os.path.dirname(DOWNLOAD_DIRECTORY), "VERSIONS.json"), "r"))
 
 # MetaSanity version
 DOCKER_IMAGE = "cjneely10/metasanity:%s" % version_data[VERSION]["metasanity_docker"]

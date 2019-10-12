@@ -152,7 +152,7 @@ def metagenome_annotation(str directory, str config_file, bint cancel_autocommit
         )
 
         # Integral task - prokka proteins use
-        if cfg.check_pipe_set("prokka", MetagenomeAnnotationConstants.PIPELINE_NAME):
+        if prokka and cfg.check_pipe_set("prokka", MetagenomeAnnotationConstants.PIPELINE_NAME):
             task_list.append(
                 # PROKKA annotation pipeline
                 PROKKA(
@@ -190,29 +190,29 @@ def metagenome_annotation(str directory, str config_file, bint cancel_autocommit
             )
         # Required task - extract sections of contigs corresponding to gene calls
         for task in (
-                DiamondMakeDB(
-                    output_directory=os.path.join(output_directory, DiamondConstants.OUTPUT_DIRECTORY),
-                    prot_file=protein_file,
-                    calling_script_path=cfg.get(DiamondConstants.DIAMOND, ConfigManager.PATH),
-                ),
-                # Retrieve sections from contigs matching prodigal gene calls
-                Diamond(
-                    outfile=out_prefix + ".tsv",
-                    output_directory=os.path.join(output_directory, DiamondConstants.OUTPUT_DIRECTORY),
-                    program="blastx",
-                    diamond_db=os.path.join(output_directory, DiamondConstants.OUTPUT_DIRECTORY, get_prefix(protein_file)),
-                    query_file=fasta_file,
-                    evalue="1e-10",
-                    calling_script_path=cfg.get(DiamondConstants.DIAMOND, ConfigManager.PATH),
-                    added_flags=cfg.build_parameter_list_from_dict(DiamondConstants.DIAMOND),
-                ),
-                DiamondToFasta(
-                    output_directory=os.path.join(output_directory, DiamondConstants.OUTPUT_DIRECTORY),
-                    outfile=out_prefix + ".subset.fna",
-                    fasta_file=fasta_file,
-                    diamond_file=os.path.join(output_directory, DiamondConstants.OUTPUT_DIRECTORY, out_prefix + ".tsv"),
-                    calling_script_path=cfg.get(DiamondConstants.DIAMOND, ConfigManager.PATH),
-                ),
+            DiamondMakeDB(
+                output_directory=os.path.join(output_directory, DiamondConstants.OUTPUT_DIRECTORY),
+                prot_file=protein_file,
+                calling_script_path=cfg.get(DiamondConstants.DIAMOND, ConfigManager.PATH),
+            ),
+            # Retrieve sections from contigs matching prodigal gene calls
+            Diamond(
+                outfile=out_prefix + ".tsv",
+                output_directory=os.path.join(output_directory, DiamondConstants.OUTPUT_DIRECTORY),
+                program="blastx",
+                diamond_db=os.path.join(output_directory, DiamondConstants.OUTPUT_DIRECTORY, get_prefix(protein_file)),
+                query_file=fasta_file,
+                evalue="1e-10",
+                calling_script_path=cfg.get(DiamondConstants.DIAMOND, ConfigManager.PATH),
+                added_flags=cfg.build_parameter_list_from_dict(DiamondConstants.DIAMOND),
+            ),
+            DiamondToFasta(
+                output_directory=os.path.join(output_directory, DiamondConstants.OUTPUT_DIRECTORY),
+                outfile=out_prefix + ".subset.fna",
+                fasta_file=fasta_file,
+                diamond_file=os.path.join(output_directory, DiamondConstants.OUTPUT_DIRECTORY, out_prefix + ".tsv"),
+                calling_script_path=cfg.get(DiamondConstants.DIAMOND, ConfigManager.PATH),
+            ),
         ):
             task_list.append(task)
 
@@ -254,6 +254,14 @@ def metagenome_annotation(str directory, str config_file, bint cancel_autocommit
                 task_list.append(task)
         elif not prokka and cfg.check_pipe_set("prokka", MetagenomeAnnotationConstants.PIPELINE_NAME):
             for task in (
+                PROKKA(
+                    calling_script_path=cfg.get(PROKKAConstants.PROKKA, ConfigManager.PATH),
+                    output_directory=os.path.join(output_directory, PROKKAConstants.OUTPUT_DIRECTORY),
+                    out_prefix=out_prefix,
+                    fasta_file=fasta_file,
+                    added_flags=cfg.build_parameter_list_from_dict(PROKKAConstants.PROKKA),
+                    domain_type=(bact_arch_type.get(os.path.basename(fasta_file), (PeptidaseConstants.BACTERIA,))[0] if bact_arch_type else PeptidaseConstants.BACTERIA)
+                ),
                 DiamondMakeDB(
                     output_directory=os.path.join(output_directory, PROKKAConstants.OUTPUT_DIRECTORY, DiamondConstants.OUTPUT_DIRECTORY),
                     prot_file=os.path.join(output_directory, PROKKAConstants.OUTPUT_DIRECTORY, out_prefix, out_prefix + ".fxa"),
@@ -295,37 +303,6 @@ def metagenome_annotation(str directory, str config_file, bint cancel_autocommit
                     calling_script_path=cfg.get(DiamondConstants.DIAMOND, ConfigManager.PATH),
                 )
             )
-
-        # if cfg.check_pipe_set("prokka", MetagenomeAnnotationConstants.PIPELINE_NAME):
-        #     print("YES\n\n\n\n\n\n")
-        #     for task in (
-        #         # Identify which PROKKA annotations match contigs corresponding to prodigal gene calls and save the subset
-        #         Diamond(
-        #             outfile=out_prefix + ".rev.tsv",
-        #             output_directory=os.path.join(output_directory, PROKKAConstants.OUTPUT_DIRECTORY, DiamondConstants.OUTPUT_DIRECTORY),
-        #             program="blastx",
-        #             diamond_db=os.path.join(output_directory, PROKKAConstants.OUTPUT_DIRECTORY, DiamondConstants.OUTPUT_DIRECTORY, out_prefix),
-        #             query_file=os.path.join(output_directory, DiamondConstants.OUTPUT_DIRECTORY, out_prefix + ".subset.fna"),
-        #             evalue="1e-20",
-        #             calling_script_path=cfg.get(DiamondConstants.DIAMOND, ConfigManager.PATH),
-        #             added_flags=cfg.build_parameter_list_from_dict(DiamondConstants.DIAMOND),
-        #         ),
-        #         # Write final prokka annotations
-        #         PROKKAMatcher(
-        #             output_directory=os.path.join(output_directory, PROKKAConstants.OUTPUT_DIRECTORY, DiamondConstants.OUTPUT_DIRECTORY),
-        #             outfile=out_prefix + ".prk-to-prd.tsv",
-        #             diamond_file=os.path.join(output_directory, PROKKAConstants.OUTPUT_DIRECTORY,
-        #                                       DiamondConstants.OUTPUT_DIRECTORY, out_prefix + ".rev.tsv"),
-        #             prokka_tsv=os.path.join(output_directory, PROKKAConstants.OUTPUT_DIRECTORY, out_prefix,
-        #                                     out_prefix + PROKKAConstants.AMENDED_RESULTS_SUFFIX),
-        #             suffix=".faa",
-        #             evalue="1e-20",
-        #             pident="98.5",
-        #             matches_file=os.path.join(output_directory, DiamondConstants.OUTPUT_DIRECTORY, out_prefix + ".subset.matches"),
-        #             calling_script_path="",
-        #         ),
-        #     ):
-        #         task_list.append(task)
 
         # Required task - split protein file into separate fasta files
         task_list.append(
