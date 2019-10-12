@@ -349,7 +349,9 @@ else:
                 "-o", os.path.relpath(ap.args.output_directory),
                 "-c", os.path.relpath(ap.args.config_file),
                 "-t", (os.path.relpath(ap.args.type_file) if ap.args.type_file != "None" else "None"),
-                *prokka_add
+                *prokka_add,
+                "-a",
+                "-z",
             ],
             check=True,
         )
