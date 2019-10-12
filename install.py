@@ -76,7 +76,7 @@ def clone_biometadb():
 @out_dir
 def build_biometadb():
     os.chdir("BioMetaDB")
-    subprocess.run(["pip", "install", "-r", "requirements.txt"])
+    subprocess.run(["pip3", "install", "-r", "requirements.txt"])
     subprocess.run(["python3", "setup.py", "build_ext", "--inplace"], check=True)
 
 
@@ -94,7 +94,7 @@ def download_build_sourcecode():
     subprocess.run(["git", "clone", METASANITY_URL], check=True)
     os.chdir("MetaSanity")
     subprocess.run(["git", "checkout", versions[CURRENT_VERSION]["metasanity_script"]], check=True)
-    subprocess.run(["pip", "install", "-r", "requirements.txt"])
+    subprocess.run(["pip3", "install", "-r", "requirements.txt"])
     subprocess.run(["python3", "setup.py", "build_ext", "--inplace"], check=True)
 
 
