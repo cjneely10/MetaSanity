@@ -156,47 +156,20 @@ cdef void match_prokka_to_prodigal_and_write_tsv(str diamond_file, str prokka_an
     contig_to_proteins = _read_in_file(matches_file)
     # Read in prokka data
     prokka_data = _read_in_file(prokka_annotation_tsv)
+    print(prokka_data)
     # Get highest matching prokka contig id for each contig
     with open(diamond_file, "r") as R:
         for _l in R:
             line = _l.rstrip("\r\n").split("\t")
             match = highest_matches.get(line[qcol], None)
-            print(match)
             if float(line[pident_col]) >= pident and float(line[evalue_col]) <= evalue and \
                     (match is None or (match[2] > float(line[pident_col]) and match[3] < float(line[evalue_col]))):
                 highest_matches[line[qcol]] = (line[scol], line[qcol], float(line[pident_col]), float(line[evalue_col]))
     # Write best matches as id\tannotation\n
     W.write("ID\tprokka\n")
     for match in highest_matches.values():
-        print(match)
-        W.write(contig_to_proteins[match[1]] + suffix + "\t" + prokka_data[match[0]][1] + "\n")
+        W.write(contig_to_proteins[match[1]] + suffix + "\t" + prokka_data[match[0]] + "\n")
     W.close()
-    # cdef dict matches = {}
-    # W = open(outfile, "w")
-    # cdef dict prokka_data = TSVParser.parse_dict(prokka_annotation_tsv)
-    # W.write("ID\tprokka\n")
-    # cdef bytes _line
-    # cdef list line
-    # R = open(diamond_file, "rb")
-    # cdef str _id
-    # cdef dict highest_matches = {}
-    # cdef tuple best_match
-    # cdef str prokka_out_string
-    # for _line in open(matches_file, "rb"):
-    #     line = _line.decode().rstrip("\r\n").split("\t")
-    #     matches[line[0]] = line[1]
-    # for _line in R:
-    #     line = _line.decode().rstrip("\r\n").split("\t")
-    #     best_match = highest_matches.get(line[qcol], None)
-    #     if float(line[pident_col]) >= pident and float(line[evalue_col]) <= evalue and \
-    #             (best_match is None or (best_match[2] > float(line[pident_col]) and best_match[3] < float(line[evalue_col]))):
-    #         highest_matches[line[qcol]] = (line[scol], line[qcol], float(line[pident_col]), float(line[evalue_col]))
-    # for best_match in highest_matches.values():
-    #     if prokka_data[best_match[0]][2] != "":
-    #         # prokka_out_string = "%s-%s:::%s;;;" % (*(best_match[1].split("-")[-1].split("_")), prokka_data[best_match[0]][2])
-    #         W.write(matches[best_match[1]] + suffix + "\t" + prokka_data[best_match[0]][2] + "\n")
-    # W.close()
-    # R.close()
 
 
 def _read_in_file(str _file):
