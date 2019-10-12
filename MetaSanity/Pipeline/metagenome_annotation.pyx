@@ -248,7 +248,6 @@ def metagenome_annotation(str directory, str config_file, bint cancel_autocommit
                     evalue="1e-20",
                     pident="98.5",
                     matches_file=os.path.join(output_directory, DiamondConstants.OUTPUT_DIRECTORY, out_prefix + ".subset.matches"),
-                    calling_script_path="",
                 ),
             ):
                 task_list.append(task)
@@ -290,7 +289,6 @@ def metagenome_annotation(str directory, str config_file, bint cancel_autocommit
                     evalue="1e-20",
                     pident="98.5",
                     matches_file=os.path.join(output_directory, DiamondConstants.OUTPUT_DIRECTORY, out_prefix + ".subset.matches"),
-                    calling_script_path="",
                 ),
             ):
                 task_list.append(task)

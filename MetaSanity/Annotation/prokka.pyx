@@ -67,11 +67,11 @@ class PROKKA(LuigiTaskClass):
         return luigi.LocalTarget(
             os.path.join(str(self.output_directory),
                          get_prefix(str(self.fasta_file)),
-                         get_prefix(str(self.fasta_file)) + PROKKAConstants.AMENDED_RESULTS_SUFFIX)
+                         get_prefix(str(self.fasta_file)) + ".tsv")
         )
 
 
-class PROKKAMatcher(LuigiTaskClass):
+class PROKKAMatcher:
     output_directory = luigi.Parameter()
     outfile = luigi.Parameter()
     diamond_file = luigi.Parameter()
@@ -102,9 +102,6 @@ class PROKKAMatcher(LuigiTaskClass):
             )
         print("PROKKAMatcher complete!")
 
-    def output(self):
-        return luigi.LocalTarget(os.path.join(os.path.join(str(self.output_directory), str(self.outfile))))
-
 
 cdef void write_prokka_amended(str prokka_results, str outfile):
     """ Shortens output from prokka to only be CDS identifiers
@@ -117,40 +114,22 @@ cdef void write_prokka_amended(str prokka_results, str outfile):
     W = open(outfile, "wb")
     cdef bytes _line
     cdef list line
+    cdef tuple possibilities = (b"CDS", b"tRNA", b"rRNA")
     # Skip over header
     next(R)
     W.write(b"ID\tprokka\n")
     for _line in R:
         line = _line.rstrip(b"\r\n").split()
-        if line[1] in (b"CDS", b"tRNA", b"rRNA"):
+        if line[1] in possibilities:
             # Write line from gene identifier to end of line
+            W.write(line[0] + b"\t")
             W.write(b" ".join(line[3:]))
             W.write(b"\n")
     W.close()
-    # cdef object tsvParser = TSVParser(prokka_results)
-    # # Call through object to retain header line
-    # tsvParser.read_file(header_line=True)
-    # cdef list prokka_data = tsvParser.get_values()
-    # cdef object W = open(outfile, "w")
-    # cdef list prokka_inner_list
-    # cdef str val, out_string = ""
-    # if prokka_data:
-    #     # Write Header
-    #     W.write(tsvParser.header())
-    #     W.write("\n")
-    #     for prokka_inner_list in prokka_data:
-    #         if prokka_inner_list[1] in ("CDS", "tRNA", "rRNA"):
-    #             for val in prokka_inner_list:
-    #                 out_string += val + "\t"
-    #             W.write(out_string[:-1])
-    #             W.write("\n")
-    #             out_string = ""
-    #         elif prokka_inner_list[3] == "hypothetical protein":
-    #     W.close()
 
 
 cdef void match_prokka_to_prodigal_and_write_tsv(str diamond_file, str prokka_annotation_tsv, str matches_file, str outfile,
-                                                 float evalue = 1e-10, float pident = 98.5, int qcol = 0, int scol = 1,
+                                                 float evalue, float pident, int qcol = 0, int scol = 1,
                                                  int pident_col = 4, int evalue_col = 5, str suffix = ""):
     """ Function uses the output from diamond to identify highest matches between prodigal and prokka via evalue and pident.
     If a match, will write to .tsv file the prokka annotation named as the prodigal gene call 
@@ -168,30 +147,64 @@ cdef void match_prokka_to_prodigal_and_write_tsv(str diamond_file, str prokka_an
     :param suffix:
     :return: 
     """
-    cdef dict matches = {}
-    W = open(outfile, "w")
-    cdef dict prokka_data = TSVParser.parse_dict(prokka_annotation_tsv)
-    W.write("ID\tprokka\n")
-    cdef bytes _line
+    cdef str _l
     cdef list line
-    R = open(diamond_file, "rb")
-    cdef str _id
+    cdef tuple match
     cdef dict highest_matches = {}
-    cdef tuple best_match
-    cdef str prokka_out_string
-    for _line in open(matches_file, "rb"):
-        line = _line.decode().rstrip("\r\n").split("\t")
-        matches[line[0]] = line[1]
-    for _line in R:
-        line = _line.decode().rstrip("\r\n").split("\t")
-        best_match = highest_matches.get(line[qcol], None)
-        if float(line[pident_col]) >= pident and float(line[evalue_col]) <= evalue and \
-                (best_match is None or (best_match[2] > float(line[pident_col]) and best_match[3] < float(line[evalue_col]))):
-            highest_matches[line[qcol]] = (line[scol], line[qcol], float(line[pident_col]), float(line[evalue_col]))
-    for best_match in highest_matches.values():
-        if prokka_data[best_match[0]][2] != "":
-            # prokka_out_string = "%s-%s:::%s;;;" % (*(best_match[1].split("-")[-1].split("_")), prokka_data[best_match[0]][2])
-            W.write(matches[best_match[1]] + suffix + "\t" + prokka_data[best_match[0]][1] + "\n")
+    W = open(outfile, "w")
+    # Read in contig segment to protein data
+    contig_to_proteins = _read_in_file(matches_file)
+    # Read in prokka data
+    prokka_data = _read_in_file(prokka_annotation_tsv)
+    # Get highest matching prokka contig id for each contig
+    with open(diamond_file, "r") as R:
+        for _l in R:
+            line = _l.rstrip("\r\n").split("\t")
+            match = highest_matches.get(line[qcol], None)
+            print(match)
+            if float(line[pident_col]) >= pident and float(line[evalue_col]) <= evalue and \
+                    (match is None or (match[2] > float(line[pident_col]) and match[3] < float(line[evalue_col]))):
+                highest_matches[line[qcol]] = (line[scol], line[qcol], float(line[pident_col]), float(line[evalue_col]))
+    # Write best matches as id\tannotation\n
+    W.write("ID\tprokka\n")
+    for match in highest_matches.values():
+        print(match)
+        W.write(contig_to_proteins[match[1]] + suffix + "\t" + prokka_data[match[0]][1] + "\n")
     W.close()
-    R.close()
+    # cdef dict matches = {}
+    # W = open(outfile, "w")
+    # cdef dict prokka_data = TSVParser.parse_dict(prokka_annotation_tsv)
+    # W.write("ID\tprokka\n")
+    # cdef bytes _line
+    # cdef list line
+    # R = open(diamond_file, "rb")
+    # cdef str _id
+    # cdef dict highest_matches = {}
+    # cdef tuple best_match
+    # cdef str prokka_out_string
+    # for _line in open(matches_file, "rb"):
+    #     line = _line.decode().rstrip("\r\n").split("\t")
+    #     matches[line[0]] = line[1]
+    # for _line in R:
+    #     line = _line.decode().rstrip("\r\n").split("\t")
+    #     best_match = highest_matches.get(line[qcol], None)
+    #     if float(line[pident_col]) >= pident and float(line[evalue_col]) <= evalue and \
+    #             (best_match is None or (best_match[2] > float(line[pident_col]) and best_match[3] < float(line[evalue_col]))):
+    #         highest_matches[line[qcol]] = (line[scol], line[qcol], float(line[pident_col]), float(line[evalue_col]))
+    # for best_match in highest_matches.values():
+    #     if prokka_data[best_match[0]][2] != "":
+    #         # prokka_out_string = "%s-%s:::%s;;;" % (*(best_match[1].split("-")[-1].split("_")), prokka_data[best_match[0]][2])
+    #         W.write(matches[best_match[1]] + suffix + "\t" + prokka_data[best_match[0]][2] + "\n")
+    # W.close()
+    # R.close()
 
+
+def _read_in_file(str _file):
+    cdef str _line
+    cdef list line
+    out_dict = {}
+    with open(_file, "r") as R:
+        for _line in R:
+            line = _line.rstrip("\r\n").split("\t")
+            out_dict[line[0]] = line[1]
+    return out_dict

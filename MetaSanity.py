@@ -432,7 +432,8 @@ if ap.args.reevaluate_quality:
 
 if ap.args.program == "FuncSanity":
     for prefix in out_prefixes:
-        os.remove(os.path.join(ap.args.output_directory, prefix + ".metagenome_annotation_tmp.tsv"))
+        if os.path.exists(os.path.join(ap.args.output_directory, prefix + ".metagenome_annotation_tmp.tsv")):
+            os.remove(os.path.join(ap.args.output_directory, prefix + ".metagenome_annotation_tmp.tsv"))
 
 if ap.args.autoremove_intermediates:
     shutil.rmtree(os.path.join(ap.args.output_directory, "genomes"))
