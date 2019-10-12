@@ -183,9 +183,9 @@ if __name__ == "__main__":
             (("-s", "--sections"),
              {"help": "Comma-separated list to download. Select from: docker_installation,sourcecode_installation,"
                       "docker_image,sourcecode,biometadb,scripts",
-              "default": "DockerInstallation"}),
+              "default": "docker_installation"}),
             (("-t", "--download_type"),
-             {"help": "Download type. Select from: Docker,SourceCode", "default": "Docker"}),
+             {"help": "Download type for scripts. Select from: Docker,SourceCode", "default": "Docker"}),
             (("-v", "--version"),
              {"help": "Version to download. Default: v1.1", "default": "v1.1"})
         ),
@@ -195,8 +195,13 @@ if __name__ == "__main__":
     assert ap.args.version in versions.keys(), "Invalid version selected."
     CURRENT_VERSION = ap.args.version
     OUTDIR = ap.args.outdir
-    VERSION = ap.args.download_type
     sections = ap.args.sections.split(",")
+    if "docker_installation" in sections:
+        VERSION = "Docker"
+    elif "sourcecode_installation" in sections:
+        VERSION = "SourceCode"
+    else:
+        VERSION = ap.args.download_type
 
     for section in sections:
         try:
