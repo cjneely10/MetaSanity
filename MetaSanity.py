@@ -168,7 +168,7 @@ def split_phylo_in_evaluation_file(eval_file):
     W.write("\t".join(header) + "\n")
     for _line in R:
         line = _line.rstrip("\r\n").split("\t")
-        line[phyl_loc] = _line_split(line, phyl_loc)
+        line = _line_split(line, phyl_loc)
         W.write("\t".join(line) + "\n")
     W.close()
     shutil.move(eval_file + ".2", eval_file)
@@ -203,10 +203,11 @@ def _line_split(line, phyl_loc):
     phylogeny_out = line[phyl_loc].split(";")
     # No determination
     if phylogeny_out[0] == "root":
-        return ["None"] * 7
+        line[phyl_loc:phyl_loc + 1] = ["None"] * 7
+        return line
     # CheckM only
     if len(phylogeny_out) == 1:
-        line[phyl_loc:phyl_loc + 1] = [line[phyl_loc]] + ["None"] * 6
+        line[phyl_loc:phyl_loc + 1] = [line[phyl_loc].replace("k__", "")] + ["None"] * 6
         return line
     # GTDB-Tk
     int_data = [val.split("__")[1] if val.split("__")[1] != "" else "None" for val in line[phyl_loc].split(";")]
