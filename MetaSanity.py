@@ -172,31 +172,6 @@ def split_phylo_in_evaluation_file(eval_file):
         W.write("\t".join(line) + "\n")
     W.close()
     shutil.move(eval_file + ".2", eval_file)
-    # # Determine if phylogeny is from CheckM or from GTDB-Tk
-    # phyl = line[phyl_loc].split(";")
-    # # Replace with split values as needed
-    # is_checkm = False
-    # if len(phyl) == 1:
-    #     header[phyl_loc] = "domain"
-    #     line[phyl_loc] = line[phyl_loc].replace("k__", "")
-    #     is_checkm = True
-    # else:
-    #     header[phyl_loc:phyl_loc + 1] = "domain", "phylum", "_class", "_order", "family", "genus", "species"
-    #     line = _line_split(line, phyl_loc)
-    # W.write("\t".join(header) + "\n")
-    # W.write("\t".join(line) + "\n")
-    # # Read into each file
-    # for line in R:
-    #     line = line.rstrip("\r\n").split("\t")
-    #     # Add parsed phylogeny info to list
-    #     if is_checkm:
-    #         line[phyl_loc] = line[phyl_loc].replace("k__", "")
-    #     else:
-    #         line = _line_split(line, phyl_loc)
-    #     # Write corrected line
-    #     W.write("\t".join(line) + "\n")
-    # W.close()
-    # shutil.move(eval_file + ".2", eval_file)
 
 
 def _line_split(line, phyl_loc):
