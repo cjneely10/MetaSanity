@@ -26,7 +26,7 @@ class KofamScan(LuigiTaskClass):
         print("Running KofamScan..........")
         if not os.path.exists(str(self.output_directory)):
             os.makedirs(str(self.output_directory))
-        cdef str outfile_path = os.path.join(str(self.output_directory), str(self.outfile) + ".detailed.tsv")
+        cdef str outfile_path = os.path.join(str(self.output_directory), str(self.outfile) + ".detailed")
         cdef str outpath = os.path.join(str(self.output_directory), str(self.outfile) + ".tsv")
         cdef str tmp_path = os.path.join(str(self.output_directory), KofamScanConstants.TMP_DIR)
         cdef str _id
@@ -54,23 +54,26 @@ class KofamScan(LuigiTaskClass):
             W_biometadb.write(_id + "\t" + data[0] + " " + data[1] + "\n")
         W_biodata.close()
         W_biometadb.close()
-        if os.path.getsize(outpath) != 0:
-            os.remove(outpath)
-        shutil.rmtree(tmp_path)
+        # if os.path.getsize(outpath) != 0:
+        #     os.remove(outpath)
+        # shutil.rmtree(tmp_path)
         print("KofamScan complete!")
 
     def output(self):
-        return luigi.LocalTarget(os.path.join(str(self.output_directory), str(self.outfile) + KofamScanConstants.AMENDED_RESULTS_SUFFIX))
+        return luigi.LocalTarget(os.path.join(str(self.output_directory), os.path.splitext(str(self.outfile))[0] + KofamScanConstants.AMENDED_RESULTS_SUFFIX))
 
 
 def get_matches_data(str kofamscan_file):
-    """ Parses kofamscan details file and gathers highest match for each gene call
+    """ Parses kofamscan details file and gathers highest match for each gene call, which is first in list
 
     :param kofamscan_file:
     :return:
     """
     kegg_data = {}
     with open(kofamscan_file, "r") as R:
+        # Skip over header
+        next(R)
+        next(R)
         for _line in R:
             line = _line.rstrip("\r\n").split()
             match = kegg_data.get(line[0], None)

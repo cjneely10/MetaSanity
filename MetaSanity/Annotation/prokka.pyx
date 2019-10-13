@@ -155,7 +155,6 @@ cdef void match_prokka_to_prodigal_and_write_tsv(str diamond_file, str prokka_an
     contig_to_proteins = _read_in_file(matches_file)
     # Read in prokka data
     prokka_data = _read_in_file(prokka_annotation_tsv)
-    print(prokka_data)
     # Get highest matching prokka contig id for each contig
     with open(diamond_file, "r") as R:
         for _l in R:
