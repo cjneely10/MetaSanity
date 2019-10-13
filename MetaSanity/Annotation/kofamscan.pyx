@@ -70,13 +70,15 @@ def get_matches_data(str kofamscan_file):
     :return:
     """
     kegg_data = {}
+    cdef str _line
+    cdef list line
     with open(kofamscan_file, "r") as R:
         # Skip over header
         next(R)
         next(R)
         for _line in R:
             line = _line.rstrip("\r\n").split()
-            if _line[0] == '*':
+            if line[0] == '*':
                 match = kegg_data.get(line[1], None)
                 if match is None:
                     kegg_data[line[1]] = (line[2], " ".join(line[6:]))
