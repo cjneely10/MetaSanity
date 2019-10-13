@@ -77,6 +77,6 @@ def get_matches_data(str kofamscan_file):
         for _line in R:
             line = _line.rstrip("\r\n").split()
             match = kegg_data.get(line[0], None)
-            if match is None and (float(line[3]) > 75.0 and float(line[4]) < 1e-10):
-                kegg_data[line[0]] = (line[1], " ".join(line[5:]))
+            if _line[0] == '*':
+                kegg_data[line[1]] = (line[2], " ".join(line[6:]))
     return kegg_data
