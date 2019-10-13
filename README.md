@@ -2,7 +2,7 @@
 
 ## About
 
-**MetaSanity** is a wrapper-script for genome/metagenome evaluation tasks. This script will
+**MetaSanity v1.1** is a wrapper-script for genome/metagenome evaluation tasks. This script will
 run common evaluation and annotation programs and create a `BioMetaDB` project with the integrated results.
 
 This wrapper script was built using the `luigi` Python package. 
