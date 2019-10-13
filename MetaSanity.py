@@ -183,6 +183,12 @@ def split_phylo_in_evaluation_file(eval_file):
 
 
 def _line_split(line, phyl_loc):
+    """ Adjusts location in line to have corrected phylogeny
+
+    :param line:
+    :param phyl_loc:
+    :return:
+    """
     phylogeny_out = line[phyl_loc].split(";")
     # No determination
     if phylogeny_out[0] == "root":
@@ -209,6 +215,20 @@ def get_added_flags(config, _dict):
                 if def_key != ""]
     else:
         return []
+
+
+def determine_paths_to_add(path, add_string=""):
+    """ Determines if optional program path is valid
+    Returns list with correct path in docker volume-like standard
+    Or returns empty list
+
+    :param path:
+    :param add_string:
+    :return:
+    """
+    if os.path.exists(path):
+        return ["-v", path + add_string]
+    return []
 
 
 # Parsed arguments
@@ -266,6 +286,16 @@ prokka_add = []
 if ap.args.prokka:
     prokka_add = ["--prokka"]
 
+# Determine which volumes to connect to docker image
+interproscan_add = determine_paths_to_add(INTERPROSCAN_FOLDER, ":/home/appuser/interproscan-5.32-71.0")
+signalp_add = determine_paths_to_add(SIGNALP_FOLDER, ":/home/appuser/signalp")
+rnammer_add = determine_paths_to_add(RNAMMER_FOLDER, ":/home/appuser/rnammer")
+checkm_add = determine_paths_to_add(CHECKM_FOLDER, ":/home/appuser/checkm")
+gtdbtk_add = determine_paths_to_add(GTDBTK_FOLDER, ":/home/appuser/gtdbtk/db")
+kofamscan_add = determine_paths_to_add(KOFAM_FOLDER, ":/home/appuser/kofamscan/db")
+peptidase_add = determine_paths_to_add(PEPTIDASE_DATA_FOLDER, ":/home/appuser/Peptidase")
+virsorter_add = determine_paths_to_add(VIRSORTER_DATA_FOLDER, ":/home/appuser/virsorter-data")
+
 cid_file_name = 'docker.pid'
 
 # Run docker version
@@ -284,21 +314,21 @@ if not os.path.exists(PIPEDM_PATH):
                 "-e",
                 "LANG=C.UTF-8",
                 # CheckM
-                "-v", CHECKM_FOLDER + ":/home/appuser/checkm",
+                *checkm_add,
                 # GTDBtk
-                "-v", GTDBTK_FOLDER + ":/home/appuser/gtdbtk/db",
+                *gtdbtk_add,
                 # kofamscan
-                "-v", KOFAM_FOLDER + ":/home/appuser/kofamscan/db",
+                *kofamscan_add,
                 # Peptidase storage
-                "-v", PEPTIDASE_DATA_FOLDER + ":/home/appuser/Peptidase",
+                *peptidase_add,
                 # Interproscan
-                "-v", INTERPROSCAN_FOLDER + ":/home/appuser/interproscan-5.32-71.0",
+                *interproscan_add,
                 # Volume to access genomes
-                "-v", VIRSORTER_DATA_FOLDER + ":/home/appuser/virsorter-data",
+                *virsorter_add,
                 # Volume to access signalp binary
-                "-v", SIGNALP_FOLDER + ":/home/appuser/signalp",
+                *signalp_add,
                 # Volume to access rnammer binary
-                "-v", RNAMMER_FOLDER + ":/home/appuser/rnammer",
+                *rnammer_add,
                 # Change output directory here
                 "-v", os.getcwd() + ":/home/appuser/wdir",
                 # "-it",
