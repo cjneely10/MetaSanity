@@ -33,7 +33,7 @@ Download the install script from this repository.
 `wget https://raw.githubusercontent.com/cjneely10/MetaSanity/master/install.py`
 
 If desired, create and source a python virtual environment.
-This script requires `python3` with the `argparse` and `wheel` packages installed. `wget`, `git`, and `pip` are also required. Users are recommended to install **MetaSanity** within a separate python virtual environment, as packages within this software may conflict with existing package installations.
+This script requires `python3` with the `argparse` and `wheel` packages installed. `wget`, `git`, `sed`, and `pip3` are also required. Users are recommended to install **MetaSanity** within a separate python virtual environment, as packages within this software may conflict with existing package installations.
 
 Run the install script using `python3 install.py`.
 
