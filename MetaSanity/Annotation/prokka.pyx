@@ -4,7 +4,6 @@ import luigi
 import shutil
 import subprocess
 from MetaSanity.Accessories.ops import get_prefix
-from MetaSanity.Parsers.tsv_parser import TSVParser
 from MetaSanity.Parsers.fasta_parser import FastaParser
 from MetaSanity.TaskClasses.luigi_task_class import LuigiTaskClass
 

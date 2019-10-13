@@ -4,7 +4,6 @@ import os
 import shutil
 import subprocess
 from MetaSanity.TaskClasses.luigi_task_class import LuigiTaskClass
-from MetaSanity.Annotation.FunctionalProfileReader.reader import KoFamScan
 
 
 class KofamScanConstants:
