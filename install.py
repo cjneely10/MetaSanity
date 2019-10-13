@@ -5,11 +5,9 @@ import shutil
 import subprocess
 from argparse import RawTextHelpFormatter
 
-
 global VERSION, PACKAGE_VERSION
 
 OUTDIR = "MetaSanity"
-
 
 versions = {
     "v1": {
@@ -124,16 +122,18 @@ def pull_download_script():
 @out_dir
 def download_metasanity():
     METASANITY_URL = "https://raw.githubusercontent.com/cjneely10/MetaSanity/%s/MetaSanity.py" % \
-                          versions[PACKAGE_VERSION]["metasanity_script"]
+                     versions[PACKAGE_VERSION]["metasanity_script"]
     subprocess.run(["wget", METASANITY_URL, "-O", "MetaSanity.py"], check=True)
-    subprocess.run(["sed", r'"s/DOWNLOAD_DIRECTORY = \"\/path\/to\/MetaSanity\"/DOWNLOAD_DIRECTORY = \"' + os.getcwd() + r'\"/"',
-                    "MetaSanity.py"], check=True)
+    subprocess.run(["sed", "-i",
+                    's/DOWNLOAD_DIRECTORY = \"\/path\/to\/MetaSanity\"/DOWNLOAD_DIRECTORY = \"' + os.getcwd().replace(
+                        "/", "\/") + '\"/',
+                    "MetaSanity.py"])
 
 
 @out_dir
 def pull_versions_json_file():
     VERSIONS_JSON_FILE = "https://raw.githubusercontent.com/cjneely10/MetaSanity/%s/VERSIONS.json" % \
-                        versions[PACKAGE_VERSION]["metasanity_script"]
+                         versions[PACKAGE_VERSION]["metasanity_script"]
     subprocess.run(["wget", VERSIONS_JSON_FILE, "-O", "VERSIONS.json"], check=True)
 
 
