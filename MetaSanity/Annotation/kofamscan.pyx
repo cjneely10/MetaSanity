@@ -43,8 +43,8 @@ class KofamScan(LuigiTaskClass):
             ],
             check=True,
         )
-        W_biodata = open(outpath, "r")
-        W_biometadb = open(os.path.splitext(outpath)[0] + KofamScanConstants.AMENDED_RESULTS_SUFFIX, "r")
+        W_biodata = open(outpath, "w")
+        W_biometadb = open(os.path.splitext(outpath)[0] + KofamScanConstants.AMENDED_RESULTS_SUFFIX, "w")
         matches_data = get_matches_data(outfile_path)
         W_biometadb.write("ID\tKO\n")
         for _id, data in matches_data.items():
