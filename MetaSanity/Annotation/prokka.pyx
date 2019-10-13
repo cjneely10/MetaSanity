@@ -173,6 +173,11 @@ cdef void match_prokka_to_prodigal_and_write_tsv(str diamond_file, str prokka_an
 
 
 def _read_in_file(str _file):
+    """ Convert file to simple key\tvalue\n dict
+
+    :param _file:
+    :return:
+    """
     cdef str _line
     cdef list line
     out_dict = {}
