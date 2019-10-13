@@ -104,20 +104,12 @@ def config_pull():
     if not os.path.exists(config_path):
         os.makedirs(config_path)
     os.chdir(config_path)
-    if VERSION == "Docker":
-        for _file in ("FuncSanity.ini", "Complete-FuncSanity.ini", "PhyloSanity.ini", "Complete-PhyloSanity.ini"):
-            subprocess.run(["wget",
-                            "https://raw.githubusercontent.com/cjneely10/MetaSanity/%s/Sample/Config/Docker/%s" %
-                            (versions[CURRENT_VERSION]["metasanity_script"], _file),
-                            "-O", _file],
-                           check=True)
-    if VERSION == "SourceCode":
-        for _file in ("FuncSanity.ini", "PhyloSanity.ini"):
-            subprocess.run(["wget",
-                            "https://raw.githubusercontent.com/cjneely10/MetaSanity/%s/Sample/Config/SourceCode/%s" %
-                            (versions[CURRENT_VERSION]["metasanity_script"], _file),
-                            "-O", _file],
-                           check=True)
+    for _file in ("FuncSanity.ini", "Complete-FuncSanity.ini", "PhyloSanity.ini", "Complete-PhyloSanity.ini"):
+        subprocess.run(["wget",
+                        "https://raw.githubusercontent.com/cjneely10/MetaSanity/%s/Sample/Config/%s/%s" %
+                        (versions[CURRENT_VERSION]["metasanity_script"], VERSION, _file),
+                        "-O", _file],
+                       check=True)
 
 
 @out_dir
