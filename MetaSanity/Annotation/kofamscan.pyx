@@ -49,7 +49,7 @@ class KofamScan(LuigiTaskClass):
         W_biometadb.write("ID\tKO\n")
         for _id, data in matches_data.items():
             # for BioData
-            W_biodata.write(_id.replace(".protein", "") + "\t" + data[0] + "\n")
+            W_biodata.write(_id + "\t" + data[0] + "\n")
             # for BioMetaDB
             W_biometadb.write(_id + ".faa" + "\t" + data[0] + " " + data[1] + "\n")
         W_biodata.close()
