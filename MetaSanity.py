@@ -44,6 +44,10 @@ RNAMMER_FOLDER = "/path/to/rnammer-1.2.src"
 PIPEDM_PATH = "/path/to/MetaSanity/pipedm.py"
 
 # # Only edit below if your database files were not gathered using the download-data.py script
+# Location of VERSIONS.json should be in installation directory
+version_data = json.load(open(os.path.join(DOWNLOAD_DIRECTORY, "VERSIONS.json"), "r"))
+# Location of BioMetaDB on system. If not used, ensure to pass `-a` flag to MetaSanity.py when running
+BIOMETADB = os.path.join(DOWNLOAD_DIRECTORY, "BioMetaDB/dbdm.py")
 # Location of databases
 DOWNLOAD_DIRECTORY = os.path.join(DOWNLOAD_DIRECTORY, "databases")
 # Data downloaded from  https://data.ace.uq.edu.au/public/gtdbtk/
@@ -56,10 +60,6 @@ KOFAM_FOLDER = os.path.join(DOWNLOAD_DIRECTORY, "kofamscan")
 PEPTIDASE_DATA_FOLDER = os.path.join(DOWNLOAD_DIRECTORY, "peptidase")
 # Extracted virsorter data from  https://github.com/simroux/VirSorter
 VIRSORTER_DATA_FOLDER = os.path.join(DOWNLOAD_DIRECTORY, "virsorter/virsorter-data")
-# Location of BioMetaDB on system. If not used, ensure to pass `-a` flag to MetaSanity.py when running
-BIOMETADB = os.path.join(os.path.dirname(DOWNLOAD_DIRECTORY), "BioMetaDB/dbdm.py")
-# Location of VERSIONS.json should be in installation directory
-version_data = json.load(open(os.path.join(os.path.dirname(DOWNLOAD_DIRECTORY), "VERSIONS.json"), "r"))
 
 # MetaSanity version
 DOCKER_IMAGE = "cjneely10/metasanity:%s" % version_data[VERSION]["metasanity_docker"]
