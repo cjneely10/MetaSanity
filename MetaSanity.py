@@ -30,18 +30,16 @@ DOWNLOAD_DIRECTORY = "/path/to/MetaSanity"
 # Version installation - do not change unless using an older MetaSanity version
 VERSION = "v1.1"
 
-# # Optional program paths
+# (Optional Source Code installation) Path to pipedm.py
+PIPEDM_PATH = "/path/to/MetaSanity/pipedm.py"
+
+# # Recommended program paths
 # Extracted interproscan package with binary from  https://github.com/ebi-pf-team/interproscan/wiki/HowToDownload
 INTERPROSCAN_FOLDER = "/path/to/interproscan"
 # Signalp software package, including binary, from  http://www.cbs.dtu.dk/cgi-bin/nph-sw_request?signalp
 SIGNALP_FOLDER = "/path/to/signalp-4.1"
 # RNAmmer software package, including binary, from  http://www.cbs.dtu.dk/cgi-bin/nph-sw_request?rnammer
 RNAMMER_FOLDER = "/path/to/rnammer-1.2.src"
-
-# # Only edit below if using the source code installation
-# (Optional Source Code installation) Path to pipedm.py - Be sure to change the BIOMETADB path below manually
-# DO NOT CHANGE THIS VALUE IF USING THE DOCKER INSTALLATION!!
-PIPEDM_PATH = "/path/to/MetaSanity/pipedm.py"
 
 # # Only edit below if your database files were not gathered using the download-data.py script
 # Location of VERSIONS.json should be in installation directory

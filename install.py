@@ -128,6 +128,11 @@ def download_metasanity():
                     's/DOWNLOAD_DIRECTORY = \"\/path\/to\/MetaSanity\"/DOWNLOAD_DIRECTORY = \"' + os.getcwd().replace(
                         "/", "\/") + '\"/',
                     "MetaSanity.py"])
+    if VERSION == 'SourceCode':
+        subprocess.run(["sed", "-i",
+                        's/PIPEDM_PATH = \"\/path\/to\/MetaSanity\/pipedm.py\"/PIPEDM_PATH = \"' + os.getcwd().replace(
+                            "/", "\/") + '\/MetaSanity\/pipedm.py' + '\"/',
+                        "MetaSanity.py"])
 
 
 @out_dir
