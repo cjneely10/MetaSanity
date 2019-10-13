@@ -126,6 +126,8 @@ def download_metasanity():
     METASANITY_URL = "https://raw.githubusercontent.com/cjneely10/MetaSanity/%s/MetaSanity.py" % \
                           versions[PACKAGE_VERSION]["metasanity_script"]
     subprocess.run(["wget", METASANITY_URL, "-O", "MetaSanity.py"], check=True)
+    subprocess.run(["sed", r'"s/DOWNLOAD_DIRECTORY = \"\/path\/to\/MetaSanity\"/DOWNLOAD_DIRECTORY = \"' + os.getcwd() + r'\"/"',
+                    "MetaSanity.py"], check=True)
 
 
 @out_dir
