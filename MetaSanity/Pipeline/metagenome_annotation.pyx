@@ -2,8 +2,6 @@
 import os
 import luigi
 import shutil
-from random import randint
-from datetime import datetime
 from MetaSanity.Accessories.ops import get_prefix
 from MetaSanity.Parsers.tsv_parser import TSVParser
 from MetaSanity.Peptidase.cazy import CAZY, CAZYConstants
@@ -17,13 +15,13 @@ from MetaSanity.GeneCaller.prodigal import Prodigal, ProdigalConstants
 from MetaSanity.Peptidase.peptidase import Peptidase, PeptidaseConstants
 from MetaSanity.Annotation.kofamscan import KofamScan, KofamScanConstants
 from MetaSanity.Annotation.virsorter import VirSorter, VirSorterConstants
-from MetaSanity.Database.dbdm_calls import GetDBDMCall, BioMetaDBConstants
+from MetaSanity.DataPreparation.combine_output import CombineFunctionOutput
 from MetaSanity.Config.config_manager import ConfigManager, pipeline_classes
 from MetaSanity.FileOperations.split_file import SplitFile, SplitFileConstants
 from MetaSanity.Annotation.prokka import PROKKA, PROKKAConstants, PROKKAMatcher
 from MetaSanity.Annotation.interproscan import Interproscan, InterproscanConstants
 from MetaSanity.Peptidase.merops import MEROPS, MEROPSConstants, build_merops_dict
-from MetaSanity.PipelineManagement.citation_generator import CitationManagerConstants
+#from MetaSanity.PipelineManagement.citation_generator import CitationManagerConstants
 from MetaSanity.PipelineManagement.project_manager cimport project_check_and_creation
 from MetaSanity.DataPreparation.combine_output import CombineOutput, CombineOutputConstants
 from MetaSanity.Alignment.diamond import Diamond, DiamondMakeDB, DiamondConstants, DiamondToFasta
@@ -51,6 +49,7 @@ class MetagenomeAnnotationConstants:
     TABLE_NAME = "Functions"
     TMP_TSV_OUT = "metagenome_annotation_tmp.tsv"
     TSV_OUT = "metagenome_annotation.tsv"
+    FXNS_OUT = "metagenome_functions.tsv"
     LIST_FILE = "metagenome_annotation.list"
     PROJECT_NAME = "MetagenomeAnnotation"
     PEPTIDASE = "_peptidase"
@@ -329,20 +328,6 @@ def metagenome_annotation(str directory, str config_file, bint cancel_autocommit
                     is_docker=is_docker,
                 )
             )
-            if not is_docker:
-                # Store virsorter info to database
-                GetDBDMCall(
-                    cancel_autocommit=cancel_autocommit,
-                    table_name=out_prefix,
-                    alias=out_prefix,
-                    calling_script_path=cfg.get(BioMetaDBConstants.BIOMETADB, ConfigManager.PATH),
-                    db_name=biometadb_project,
-                    directory_name=os.path.join(output_directory, SplitFileConstants.OUTPUT_DIRECTORY, out_prefix + ".fna"),
-                    data_file=os.path.join(output_directory, VirSorterConstants.OUTPUT_DIRECTORY, get_prefix(fasta_file),
-                                           "virsorter-out", out_prefix + "." + VirSorterConstants.ADJ_OUT_FILE),
-                    added_flags=cfg.get_added_flags(BioMetaDBConstants.BIOMETADB),
-                    storage_string=out_prefix + " " + VirSorterConstants.STORAGE_STRING,
-                )
 
         # Optional task - kegg
         if cfg.check_pipe_set("kegg", MetagenomeAnnotationConstants.PIPELINE_NAME):
@@ -489,52 +474,6 @@ def metagenome_annotation(str directory, str config_file, bint cancel_autocommit
                 delimiter="\t",
             )
         )
-        if not is_docker:
-            # Store CAZy count info
-            task_list.append(
-                GetDBDMCall(
-                    cancel_autocommit=cancel_autocommit,
-                    table_name=table_name,
-                    alias=alias,
-                    calling_script_path=cfg.get(BioMetaDBConstants.BIOMETADB, ConfigManager.PATH),
-                    db_name=biometadb_project,
-                    directory_name=directory,
-                    data_file=os.path.join(output_directory, PeptidaseConstants.OUTPUT_DIRECTORY,
-                                           CombineOutputConstants.OUTPUT_DIRECTORY, CombineOutputConstants.CAZY_OUTPUT_FILE),
-                    added_flags=cfg.get_added_flags(BioMetaDBConstants.BIOMETADB),
-                    storage_string=CAZYConstants.SUMMARY_STORAGE_STRING,
-                )
-            )
-            task_list.append(
-                # MEROPS matches by their PFAM id
-                GetDBDMCall(
-                    cancel_autocommit=cancel_autocommit,
-                    table_name=table_name,
-                    alias=alias,
-                    calling_script_path=cfg.get(BioMetaDBConstants.BIOMETADB, ConfigManager.PATH),
-                    db_name=biometadb_project,
-                    directory_name=directory,
-                    data_file=os.path.join(output_directory, PeptidaseConstants.OUTPUT_DIRECTORY,
-                                           CombineOutputConstants.OUTPUT_DIRECTORY, CombineOutputConstants.MEROPS_PFAM_OUTPUT_FILE),
-                    added_flags=cfg.get_added_flags(BioMetaDBConstants.BIOMETADB),
-                    storage_string=MEROPSConstants.STORAGE_STRING,
-                ),
-            )
-            task_list.append(
-                # MEROPS matches by their MEROPS id
-                GetDBDMCall(
-                    cancel_autocommit=cancel_autocommit,
-                    table_name=table_name,
-                    alias=alias,
-                    calling_script_path=cfg.get(BioMetaDBConstants.BIOMETADB, ConfigManager.PATH),
-                    db_name=biometadb_project,
-                    directory_name=directory,
-                    data_file=os.path.join(output_directory, PeptidaseConstants.OUTPUT_DIRECTORY,
-                                           CombineOutputConstants.OUTPUT_DIRECTORY, CombineOutputConstants.MEROPS_OUTPUT_FILE),
-                    added_flags=cfg.get_added_flags(BioMetaDBConstants.BIOMETADB),
-                    storage_string=MEROPSConstants.SUMMARY_STORAGE_STRING,
-                ),
-            )
 
     # Optional task - kegg
     # Combine all results for final parsing
@@ -582,28 +521,22 @@ def metagenome_annotation(str directory, str config_file, bint cancel_autocommit
                 is_docker=is_docker,
             )
         )
-        if not is_docker:
-            task_list.append(
-                GetDBDMCall(
-                    cancel_autocommit=cancel_autocommit,
-                    table_name=table_name,
-                    alias=alias,
-                    calling_script_path=cfg.get(BioMetaDBConstants.BIOMETADB, ConfigManager.PATH),
-                    db_name=biometadb_project,
-                    directory_name=directory,
-                    data_file=os.path.join(
-                        output_directory,
-                        KofamScanConstants.KEGG_DIRECTORY,
-                        BioDataConstants.OUTPUT_DIRECTORY,
-                        BioDataConstants.OUTPUT_FILE + BioDataConstants.OUTPUT_SUFFIX,
-                    ),
-                    added_flags=cfg.get_added_flags(BioMetaDBConstants.BIOMETADB),
-                    storage_string=BioDataConstants.STORAGE_STRING,
-                )
-            )
 
     # Final task - combine all results from annotation into single tsv file per genomes
     if cfg.completed_tests:
+        task_list.append(
+            CombineFunctionOutput(
+                output_directory=output_directory,
+                data_files=[
+                    os.path.join(output_directory, PeptidaseConstants.OUTPUT_DIRECTORY, CombineOutputConstants.OUTPUT_DIRECTORY, CombineOutputConstants.CAZY_OUTPUT_FILE),
+                    os.path.join(output_directory, PeptidaseConstants.OUTPUT_DIRECTORY, CombineOutputConstants.OUTPUT_DIRECTORY, CombineOutputConstants.MEROPS_OUTPUT_FILE),
+                    os.path.join(output_directory, PeptidaseConstants.OUTPUT_DIRECTORY, CombineOutputConstants.OUTPUT_DIRECTORY, CombineOutputConstants.MEROPS_PFAM_OUTPUT_FILE),
+                    os.path.join(output_directory, KofamScanConstants.KEGG_DIRECTORY, BioDataConstants.OUTPUT_DIRECTORY, BioDataConstants.OUTPUT_FILE + BioDataConstants.OUTPUT_SUFFIX,
+                ),
+                ],
+                output_file=MetagenomeAnnotationConstants.FXNS_OUT,
+            )
+        )
         for prefix in out_prefixes:
             task_list.append(
                 CombineOutput(
@@ -632,21 +565,6 @@ def metagenome_annotation(str directory, str config_file, bint cancel_autocommit
                     output_directory=output_directory,
                 )
             )
-            # Store combined data to database
-            if not is_docker:
-                task_list.append(
-                    GetDBDMCall(
-                        cancel_autocommit=cancel_autocommit,
-                        table_name=prefix,
-                        alias=prefix,
-                        calling_script_path=cfg.get(BioMetaDBConstants.BIOMETADB, ConfigManager.PATH),
-                        db_name=biometadb_project,
-                        directory_name=os.path.join(output_directory, SplitFileConstants.OUTPUT_DIRECTORY, prefix),
-                        data_file=os.path.join(output_directory, prefix + "." + MetagenomeAnnotationConstants.TSV_OUT),
-                        added_flags=cfg.get_added_flags(BioMetaDBConstants.BIOMETADB),
-                        storage_string=prefix + " " + MetagenomeAnnotationConstants.STORAGE_STRING,
-                    )
-                )
 
     luigi.build(task_list, local_scheduler=True)
     # cfg.citation_generator.write(os.path.join(output_directory,

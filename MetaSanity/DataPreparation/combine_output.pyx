@@ -82,6 +82,28 @@ class CombineOutput(LuigiTaskClass):
                 #     )
 
 
+class CombineFunctionOutput(luigi.Task):
+    output_directory = luigi.Parameter()
+    data_files = luigi.ListParameter()
+    delimiter = luigi.Parameter(default="\t")
+    output_file = luigi.Parameter()
+
+    def requires(self):
+        return []
+
+    def run(self):
+        if not os.path.exists(str(self.output_directory)):
+            os.makedirs(str(self.output_directory))
+        tsv = None
+        cdef str _file
+        for _f in self.data_files:
+            if tsv is None:
+                tsv = TSVJoiner(_f)
+            else:
+                tsv.read_tsv(_f)
+        tsv.write_tsv(os.path.join(str(self.output_directory), str(self.output_file)))
+
+
 class TSVJoiner:
     def __init__(self, str tsv_file_path):
         self.header = set()

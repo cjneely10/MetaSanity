@@ -401,22 +401,12 @@ if not ap.args.cancel_autocommit and os.path.exists(os.path.join(ap.args.output_
 
     dbdm = GetDBDMCall(BIOMETADB, db_name, ap.args.cancel_autocommit, get_added_flags(cfg, "BIOMETADB"))
     if ap.args.program == "FuncSanity":
-        for _file in (
-                # CAZy (1) - out/peptidase_results/combined_results/combined.cazy
-                os.path.join(ap.args.output_directory, "peptidase_results/combined_results/combined.cazy"),
-                # MEROPS (1) - out/peptidase_results/combined_results/combined.merops
-                os.path.join(ap.args.output_directory, "peptidase_results/combined_results/combined.merops"),
-                # MEROPS pfam (1) - out/peptidase_results/combined_results/combined.merops.pfam
-                os.path.join(ap.args.output_directory, "peptidase_results/combined_results/combined.merops.pfam"),
-                # BioData (1) - out/kegg_results/biodata_results/KEGG.final.tsv
-                os.path.join(ap.args.output_directory, "kegg_results/biodata_results/KEGG.final.tsv"),
-        ):
-            dbdm.run(
-                "functions",
-                os.path.join(ap.args.output_directory, "genomes"),
-                _file,
-                "functions",
-            )
+        dbdm.run(
+            "functions",
+            os.path.join(ap.args.output_directory, "genomes"),
+            os.path.join(ap.args.output_directory, "metagenome_functions.tsv"),
+            "functions",
+        )
         # Begin commit individual genomes info
         # Based on file names in metagenome_annotation.list
         for genome_prefix in (os.path.splitext(os.path.basename(line.rstrip("\r\n")))[0]
