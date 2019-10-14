@@ -1,21 +1,46 @@
 # Changelog
-All notable changes to this **MetaSanity** and **BioMetaDB** will be documented in this file.
+All notable changes to **MetaSanity** and **BioMetaDB** will be documented in this file.
 
 ## MetaSanity v1.1 - 10/14/2019
-### Added
-- Speed up **BioMetaDB** runs for hundreds of genomes.
-- Incorporate tRNA/rRNA data in Prokka annotations.
-- Include gene description in annotations.
-- Determine high/medium/low quality genomes by incorporating Prokka annotations.
 
-### Changed
+### pipedm v0.0.4
+#### Added
+- Incorporate tRNA/rRNA data in Prokka annotations.
+- Determine high/medium/low quality genomes by incorporating Prokka annotations after running **PhyloSanity** and **FuncSanity**.
+
+#### Changed
+- Include gene description in annotations.
+- Record names in `evaluation` table match table names in **BioMetaDB** project, less the file extension (`.fna` or `.protein.faa`).
+
+---
+### MetaSanity v0.1.1
+#### Added
+- Run Docker or SourceCode version from `MetaSanity.py`.
+- Auto-install **MetaSanity** to download directory.
+	- Users no longer need to manually input their program installation location in the `MetaSanity.py` script.
+
+#### Changed
 - Update `install.py`
     - Download Source Code or Docker version via this script.
-    - Auto-install package to download directory.
-    
-### Fixed
-- Correctly parses evaluation metrics for very low-quality genomes.
+    - Refactor `install.py` script to allow easy download of future installations.
+- No more option to set name of program package or name of download directory - default to "MetaSanity" and "databases", respectively.
+- All database table creation/updates are no longer handled in pipedm, but are now handled post-**MetaSanity** runs from within `MetaSanity.py`.
 
+---
+### BioMetaDB v0.1.1
+#### Added
+- Speed up `dbdm` runs for hundreds of genomes.
+- Run table update functions from scripts and command line.
+
+#### Changed
+- `SUMMARIZE` info is not displayed to stdout for queries that write results to an external file or folder.
+
+#### Fixed
+- Correct type generation in update functions
+- Correctly parses evaluation metrics for very low-quality genomes.
+- General speedup/cleanup.
+
+---
 ## MetaSanity v1 - 10/01/2019
 First Release
 
