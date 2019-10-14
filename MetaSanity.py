@@ -36,9 +36,9 @@ PIPEDM_PATH = "/path/to/MetaSanity/pipedm.py"
 # # Recommended program paths
 # Extracted interproscan package with binary from  https://github.com/ebi-pf-team/interproscan/wiki/HowToDownload
 INTERPROSCAN_FOLDER = "/path/to/interproscan"
-# Signalp software package, including binary, from  http://www.cbs.dtu.dk/cgi-bin/nph-sw_request?signalp
+# SignalP4.1 software package, including binary, from  http://www.cbs.dtu.dk/cgi-bin/sw_request?signalp+4.1
 SIGNALP_FOLDER = "/path/to/signalp-4.1"
-# RNAmmer software package, including binary, from  http://www.cbs.dtu.dk/cgi-bin/nph-sw_request?rnammer
+# RNAmmer1.2 software package, including binary, from  http://www.cbs.dtu.dk/cgi-bin/nph-sw_request?rnammer
 RNAMMER_FOLDER = "/path/to/rnammer-1.2.src"
 
 # # Only edit below if your database files were not gathered using the download-data.py script
