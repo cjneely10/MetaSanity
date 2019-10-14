@@ -251,9 +251,6 @@ ap = ArgParse(
          {"help": "Use PROKKA gene calls instead of prodigal search", "default": False, "action": "store_true"}),
         (("-z", "--autoremove_intermediates"),
          {"help": "Remove intermediary genome directories, default: True", "default": True, "action": "store_false"}),
-        (("-r", "--reevaluate_quality"),
-         {"help": "Redetermine genome quality as High/Medium/Low/Incomplete (PhyloSanity must be complete)",
-          "default": False, "action": "store_true"})
     ),
     description=ArgParse.description_builder(
         "MetaSanity:\tRun meta/genomes evaluation and annotation pipelines",
@@ -428,9 +425,6 @@ if not ap.args.cancel_autocommit and os.path.exists(os.path.join(ap.args.output_
             "evaluation",
         )
     print("BioMetaDB project complete!")
-
-if ap.args.reevaluate_quality:
-    pass
 
 if ap.args.program == "FuncSanity":
     for prefix in out_prefixes:
