@@ -120,7 +120,7 @@ if __name__ == "__main__":
     ap = ArgParse(
         ((("-d", "--data"),
           {"help": "Comma-separated list (no spaces) of databases to download, default all", "default": "all"}),),
-        description="Download required BioMetaPipeline data\nSelect from: %s" % AVAILABLE_DATABASES)
+        description="Download required MetaSanity data\nSelect from: %s" % AVAILABLE_DATABASES)
 
     if ap.args.data == "all":
         to_download = AVAILABLE_DATABASES.split(",")
