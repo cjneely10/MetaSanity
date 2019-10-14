@@ -15,7 +15,7 @@ output_file.write("ID\tquality\n")
 for genome in evaluation_data.keys():
     genome_id = genome.rstrip(".fna")
     genome_rl = get_table(sys.argv[1], table_name=genome_id)
-    genome_rl.query("prokka LIKE '%tRNA%'")
+    genome_rl.query("prokka LIKE 'tRNA%'")
     num_tRNAs = len(genome_rl)
     genome_rl.query("prokka LIKE '%23S%'")
     has_23 = len(genome_rl) > 0
