@@ -142,6 +142,17 @@ def pull_versions_json_file():
     subprocess.run(["wget", VERSIONS_JSON_FILE, "-O", "VERSIONS.json"], check=True)
 
 
+@out_dir
+def download_accessory_script():
+    if os.path.exists("Accessories"):
+        shutil.rmtree("Accessories")
+    os.makedirs("Accessories")
+    os.chdir("Accessories")
+    ACCESSORIES_FILE = "https://raw.githubusercontent.com/cjneely10/MetaSanity/%s/Accessories/bowers_et_al_2017.py" % \
+                       PACKAGE_VERSION
+    subprocess.run(["wget", ACCESSORIES_FILE, "-O", "bowers_et_al_2017.py"], check=True)
+
+
 def docker_image():
     download_docker()
 
@@ -156,6 +167,7 @@ def scripts():
     pull_download_script()
     download_metasanity()
     pull_versions_json_file()
+    download_accessory_script()
 
 
 def sourcecode():
