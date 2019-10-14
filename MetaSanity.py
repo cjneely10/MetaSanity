@@ -284,16 +284,6 @@ prokka_add = []
 if ap.args.prokka:
     prokka_add = ["--prokka"]
 
-# Determine which volumes to connect to docker image
-interproscan_add = determine_paths_to_add(INTERPROSCAN_FOLDER, ":/home/appuser/interproscan-5.32-71.0")
-signalp_add = determine_paths_to_add(SIGNALP_FOLDER, ":/home/appuser/signalp")
-rnammer_add = determine_paths_to_add(RNAMMER_FOLDER, ":/home/appuser/rnammer")
-checkm_add = determine_paths_to_add(CHECKM_FOLDER, ":/home/appuser/checkm")
-gtdbtk_add = determine_paths_to_add(GTDBTK_FOLDER, ":/home/appuser/gtdbtk/db")
-kofamscan_add = determine_paths_to_add(KOFAM_FOLDER, ":/home/appuser/kofamscan/db")
-peptidase_add = determine_paths_to_add(PEPTIDASE_DATA_FOLDER, ":/home/appuser/Peptidase")
-virsorter_add = determine_paths_to_add(VIRSORTER_DATA_FOLDER, ":/home/appuser/virsorter-data")
-
 cid_file_name = 'docker.pid'
 
 # Run docker version
@@ -312,21 +302,21 @@ if not os.path.exists(PIPEDM_PATH):
                 "-e",
                 "LANG=C.UTF-8",
                 # CheckM
-                *checkm_add,
+                *determine_paths_to_add(CHECKM_FOLDER, ":/home/appuser/checkm"),
                 # GTDBtk
-                *gtdbtk_add,
+                *determine_paths_to_add(GTDBTK_FOLDER, ":/home/appuser/gtdbtk/db"),
                 # kofamscan
-                *kofamscan_add,
+                *determine_paths_to_add(KOFAM_FOLDER, ":/home/appuser/kofamscan/db"),
                 # Peptidase storage
-                *peptidase_add,
+                *determine_paths_to_add(PEPTIDASE_DATA_FOLDER, ":/home/appuser/Peptidase"),
                 # Interproscan
-                *interproscan_add,
+                *determine_paths_to_add(INTERPROSCAN_FOLDER, ":/home/appuser/interproscan-5.32-71.0"),
                 # Volume to access genomes
-                *virsorter_add,
+                *determine_paths_to_add(VIRSORTER_DATA_FOLDER, ":/home/appuser/virsorter-data"),
                 # Volume to access signalp binary
-                *signalp_add,
+                *determine_paths_to_add(SIGNALP_FOLDER, ":/home/appuser/signalp"),
                 # Volume to access rnammer binary
-                *rnammer_add,
+                *determine_paths_to_add(RNAMMER_FOLDER, ":/home/appuser/rnammer"),
                 # Change output directory here
                 "-v", os.getcwd() + ":/home/appuser/wdir",
                 # "-it",
