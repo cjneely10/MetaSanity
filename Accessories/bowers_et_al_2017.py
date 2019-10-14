@@ -15,8 +15,13 @@ evaluation_data.query()
 output_file.write("ID\tquality\n")
 for genome in genomes:
     genome_rl = get_table(sys.argv[1], table_name=genome)
-    num_tRNAs = len(genome_rl.query("(prokka LIKE '%tRNA%) '"))
-    has_23_16_rRNA = genome_rl.query("prokka LIKE '%23S%'") and genome_rl.query("prokka LIKE '%16S%'")
+    genome_rl.query("prokka LIKE '%tRNA%'")
+    num_tRNAs = len(genome_rl)
+    genome_rl.query("prokka LIKE '%23S%'")
+    has_23 = len(genome_rl) > 0
+    genome_rl.query("prokka LIKE '%16S%'")
+    has_16 = len(genome_rl) > 0
+    has_23_16_rRNA = has_23 and has_16
     completion = evaluation_data[genome].completion
     contamination = evaluation_data[genome].contamination
     # Bowers et al determinations for MAG/SAG assembly quality
