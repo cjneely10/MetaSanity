@@ -149,7 +149,7 @@ def download_accessory_script():
     os.makedirs("Accessories")
     os.chdir("Accessories")
     ACCESSORIES_FILE = "https://raw.githubusercontent.com/cjneely10/MetaSanity/%s/Accessories/bowers_et_al_2017.py" % \
-                       PACKAGE_VERSION
+                       versions[PACKAGE_VERSION]["metasanity_script"]
     subprocess.run(["wget", ACCESSORIES_FILE, "-O", "bowers_et_al_2017.py"], check=True)
 
 
