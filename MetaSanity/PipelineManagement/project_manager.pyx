@@ -50,7 +50,7 @@ cdef tuple project_check_and_creation(void* directory, void* config_file, void* 
     print("Reformatting input files and moving to temp directory")
     for _file in os.listdir((<object>directory)):
         if os.path.getsize(os.path.join((<object>directory), os.path.basename(_file))) != 0:
-            _f = os.path.splitext(_file.replace("_", "-"))[0] + ".fna"
+            _f = os.path.splitext(_file.replace("_", "-"))[0].lower() + ".fna"
             if _f not in current_files:
                 FastaParser.write_simple(
                     os.path.join((<object>directory), _file),
@@ -92,7 +92,7 @@ cdef void write_genome_list_to_file(void* directory, void* outfile):
     cdef str _file
     cdef object W = open((<object>outfile), "w")
     for _file in os.listdir((<object>directory)):
-        W.write("%s\n" % os.path.join((<object>directory), os.path.basename(_file)))
+        W.write("%s\n" % os.path.join((<object>directory), os.path.splitext(_file.replace("_", "-"))[0].lower() + ".fna"))
     W.close()
 
 cdef str adj_string_to_length(str to_adjust, int max_length, double split_ratio):
