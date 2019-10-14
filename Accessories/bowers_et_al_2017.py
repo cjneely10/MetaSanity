@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import sys
-from BioMetaDB import get_table, genomes
+from BioMetaDB import get_table
 
 
 assert len(sys.argv) == 2, "usage: python3 bowers_et_al_2017.py <biometadb-project>"
@@ -8,12 +8,12 @@ assert len(sys.argv) == 2, "usage: python3 bowers_et_al_2017.py <biometadb-proje
 output_filename = "bowers-quality.tsv"
 output_file = open(output_filename, "w")
 
-genomes = genomes(sys.argv[1])
 evaluation_data = get_table(sys.argv[1], "evaluation")
 evaluation_data.query()
 
 output_file.write("ID\tquality\n")
-for genome in genomes:
+for genome in evaluation_data.keys():
+    genome = genome.rstrip(".fna")
     genome_rl = get_table(sys.argv[1], table_name=genome)
     genome_rl.query("prokka LIKE '%tRNA%'")
     num_tRNAs = len(genome_rl)
