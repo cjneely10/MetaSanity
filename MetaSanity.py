@@ -438,5 +438,7 @@ if ap.args.program == "FuncSanity":
             os.remove(os.path.join(ap.args.output_directory, prefix + ".metagenome_annotation_tmp.tsv"))
 
 if ap.args.autoremove_intermediates:
-    shutil.rmtree(os.path.join(ap.args.output_directory, "genomes"))
-    shutil.rmtree(os.path.join(ap.args.output_directory, "splitfiles"))
+    if os.path.exists(os.path.join(ap.args.output_directory, "genomes")):
+        shutil.rmtree(os.path.join(ap.args.output_directory, "genomes"))
+    if os.path.exists(os.path.join(ap.args.output_directory, "splitfiles")):
+        shutil.rmtree(os.path.join(ap.args.output_directory, "splitfiles"))
