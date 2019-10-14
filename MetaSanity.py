@@ -402,18 +402,18 @@ if not ap.args.cancel_autocommit and os.path.exists(os.path.join(ap.args.output_
             print("\nStoring %s to database.........." % genome_prefix)
             out_prefixes.add(genome_prefix)
             dbdm.run(
-                genome_prefix.lower(),
+                genome_prefix,
                 os.path.join(ap.args.output_directory, "splitfiles", genome_prefix + ".fna"),
                 os.path.join(ap.args.output_directory, "virsorter_results", genome_prefix, "virsorter-out",
                              "%s.VIRSorter_adj_out.tsv" % genome_prefix),
-                genome_prefix.lower(),
+                genome_prefix,
             )
             # Combined Results (N) - out/*.metagenome_annotation.tsv
             dbdm.run(
-                genome_prefix.lower(),
+                genome_prefix,
                 os.path.join(ap.args.output_directory, "splitfiles", genome_prefix),
                 os.path.join(ap.args.output_directory, "%s.metagenome_annotation.tsv" % genome_prefix),
-                genome_prefix.lower(),
+                genome_prefix,
             )
     elif ap.args.program == "PhyloSanity":
         eval_file = os.path.join(ap.args.output_directory, "metagenome_evaluation.tsv")
