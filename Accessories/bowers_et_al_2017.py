@@ -34,7 +34,7 @@ for genome in evaluation_data.keys():
     else:
         output_file.write(genome + "\tincomplete\n")
         evaluation_data[genome].is_complete = False
-        evaluation_data.save()
+evaluation_data.save()
 
 output_file.close()
 
