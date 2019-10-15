@@ -5,6 +5,7 @@ import json
 import shutil
 import argparse
 import subprocess
+from pathlib import Path
 from configparser import RawConfigParser
 from argparse import RawTextHelpFormatter
 
@@ -224,6 +225,7 @@ def determine_paths_to_add(path, add_string=""):
     :param add_string:
     :return:
     """
+    path = str(Path(path).resolve())
     if os.path.exists(path):
         return ["-v", path + add_string]
     return []
@@ -407,6 +409,12 @@ if not ap.args.cancel_autocommit and os.path.exists(os.path.join(ap.args.output_
                 os.path.join(ap.args.output_directory, "virsorter_results", genome_prefix, "virsorter-out",
                              "%s.VIRSorter_adj_out.tsv" % genome_prefix),
                 genome_prefix,
+            )
+            # rRNA/tRNA data
+            dbdm.run(
+                genome_prefix,
+                os.path.join(ap.args.output_directory, "prokka_results", genome_prefix, genome_prefix + ".added"),
+                os.path.join(ap.args.output_directory, "prokka_results", genome_prefix, genome_prefix + ".prokka.nucl")
             )
             # Combined Results (N) - out/*.metagenome_annotation.tsv
             dbdm.run(

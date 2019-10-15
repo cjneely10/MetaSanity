@@ -11,6 +11,7 @@ from MetaSanity.TaskClasses.luigi_task_class import LuigiTaskClass
 class PROKKAConstants:
     PROKKA = "PROKKA"
     OUTPUT_DIRECTORY = "prokka_results"
+    OUT_ADDED = ".prokka.nucl"
     AMENDED_RESULTS_SUFFIX = ".prk.tsv.amd"
     STORAGE_STRING = "prokka results"
     FINAL_RESULTS_SUFFIX = ".prk-to-prd.tsv"
@@ -49,7 +50,9 @@ class PROKKA(LuigiTaskClass):
         # Write amended TSV file for only CDS, tRNA, and rRNA entries
         write_prokka_amended(
             os.path.join(str(self.output_directory), outfile_prefix, outfile_prefix + ".tsv"),
-            os.path.join(str(self.output_directory), outfile_prefix, outfile_prefix + PROKKAConstants.AMENDED_RESULTS_SUFFIX)
+            os.path.join(str(self.output_directory), outfile_prefix, outfile_prefix + PROKKAConstants.AMENDED_RESULTS_SUFFIX),
+            os.path.join(str(self.output_directory), outfile_prefix, outfile_prefix + ".ffn"),
+            os.path.join(str(self.output_directory), outfile_prefix, outfile_prefix + ".added"),
         )
         shutil.move(
             os.path.join(str(self.output_directory), outfile_prefix, outfile_prefix + ".faa"),
@@ -102,30 +105,55 @@ class PROKKAMatcher(luigi.Task):
         print("PROKKAMatcher complete!")
 
 
-cdef void write_prokka_amended(str prokka_results, str outfile):
-    """ Shortens output from prokka to only be CDS identifiers
+cdef void write_prokka_amended(str prokka_results, str outfile, str prokka_nucl_fasta, str prokka_nucl_out_folder):
+    """ Shortens output from prokka to only be CDS identifiers. rRNA and tRNA are parsed to separate tsv,
+    and the fasta records are written to their own directory
     
     :param prokka_results: 
     :param outfile: 
+    :param prokka_nucl_fasta: 
+    :param prokka_nucl_out_folder: 
     :return: 
     """
+    if os.path.exists(prokka_nucl_out_folder):
+        shutil.rmtree(prokka_nucl_out_folder)
+    os.makedirs(prokka_nucl_out_folder)
     R = open(prokka_results, "rb")
     W = open(outfile, "wb")
+    cdef str out_added = os.path.splitext(outfile)[0] + PROKKAConstants.OUT_ADDED
+    W_added = open(out_added, "wb")
+    cdef bint has_added = False
     cdef bytes _line
     cdef list line
     # Accumulate t/rRNA data and store fasta results to separate directory and tsv file
     cdef tuple added = (b"tRNA", b"rRNA")
-    added_data = {}
+    cdef dict prokka_nucl_dict = FastaParser.parse_dict(prokka_nucl_fasta)
     # Skip over header
     next(R)
     W.write(b"ID\tprokka\n")
+    W_added.write(b"ID\tprokka\n")
     for _line in R:
         line = _line.rstrip(b"\r\n").split()
+        # CDS match
         if line[1] == b"CDS":
             # Write line from gene identifier to end of line
             W.write(line[0] + b"\t")
             W.write(b" ".join(line[3:]))
             W.write(b"\n")
+        # rRNA or tRNA match
+        elif line[1] in added:
+            has_added = True
+            # Store data in out_dict
+            W_added.write(line[0] + b"\t")
+            W_added.write(b" ".join(line[3:]))
+            W_added.write(b"\n")
+            out_fasta = open(os.path.join(prokka_nucl_out_folder, "".join([chr(_c) for _c in line[0] + b".fna"])), "w")
+            record = prokka_nucl_dict.get(line[0], None)
+            if record is not None:
+                out_fasta.write(FastaParser.record_to_string(record))
+    if not has_added:
+        os.remove(out_added)
+
     W.close()
 
 
