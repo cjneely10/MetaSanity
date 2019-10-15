@@ -113,13 +113,15 @@ cdef void write_prokka_amended(str prokka_results, str outfile):
     W = open(outfile, "wb")
     cdef bytes _line
     cdef list line
-    cdef tuple possibilities = (b"CDS", b"tRNA", b"rRNA")
+    # Accumulate t/rRNA data and store fasta results to separate directory and tsv file
+    cdef tuple added = (b"tRNA", b"rRNA")
+    added_data = {}
     # Skip over header
     next(R)
     W.write(b"ID\tprokka\n")
     for _line in R:
         line = _line.rstrip(b"\r\n").split()
-        if line[1] in possibilities:
+        if line[1] == b"CDS":
             # Write line from gene identifier to end of line
             W.write(line[0] + b"\t")
             W.write(b" ".join(line[3:]))
