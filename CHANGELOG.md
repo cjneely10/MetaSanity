@@ -18,7 +18,7 @@ All notable changes to **MetaSanity** and **BioMetaDB** will be documented in th
 - Run Docker or SourceCode version from `MetaSanity.py`.
 - Auto-install **MetaSanity** to download directory.
 	- Users no longer need to manually input their program installation location in the `MetaSanity.py` script.
-- Handle symlinked database directories.
+- Handle symlinked database directories
 
 #### Changed
 - Update `install.py`
