@@ -31,22 +31,20 @@ class PROKKA(LuigiTaskClass):
         if not os.path.exists(str(self.output_directory)):
             os.makedirs(str(self.output_directory))
         cdef str outfile_prefix = get_prefix(str(self.fasta_file))
-        # Output directory does not exist
-        if not os.path.isfile(os.path.join(str(self.output_directory), outfile_prefix, outfile_prefix + ".tsv")):
-            subprocess.run(
-                [
-                    str(self.calling_script_path),
-                    "--prefix",
-                    str(self.out_prefix),
-                    "--kingdom",
-                    "%s%s" % (str(self.domain_type)[0].upper(), str(self.domain_type)[1:]),
-                    "--outdir",
-                    os.path.join(str(self.output_directory), outfile_prefix),
-                    str(self.fasta_file),
-                    *self.added_flags,
-                ],
-                check=True,
-            )
+        subprocess.run(
+            [
+                str(self.calling_script_path),
+                "--prefix",
+                str(self.out_prefix),
+                "--kingdom",
+                "%s%s" % (str(self.domain_type)[0].upper(), str(self.domain_type)[1:]),
+                "--outdir",
+                os.path.join(str(self.output_directory), outfile_prefix),
+                str(self.fasta_file),
+                *self.added_flags,
+            ],
+            check=True,
+        )
         # Write amended TSV file for only CDS, tRNA, and rRNA entries
         write_prokka_amended(
             os.path.join(str(self.output_directory), outfile_prefix, outfile_prefix + ".tsv"),
@@ -67,9 +65,7 @@ class PROKKA(LuigiTaskClass):
 
     def output(self):
         return luigi.LocalTarget(
-            os.path.join(str(self.output_directory),
-                         get_prefix(str(self.fasta_file)),
-                         get_prefix(str(self.fasta_file)) + ".tsv")
+            os.path.join(str(self.output_directory), str(self.out_prefix), str(self.out_prefix) + ".tsv")
         )
 
 
@@ -127,7 +123,7 @@ cdef void write_prokka_amended(str prokka_results, str outfile, str prokka_nucl_
     cdef list line
     # Accumulate t/rRNA data and store fasta results to separate directory and tsv file
     cdef tuple added = (b"tRNA", b"rRNA")
-    cdef dict prokka_nucl_dict = FastaParser.parse_dict(prokka_nucl_fasta)
+    cdef dict prokka_nucl_dict = FastaParser.parse_dict(prokka_nucl_fasta, is_python=False)
     # Skip over header
     next(R)
     W.write(b"ID\tprokka\n")
@@ -147,8 +143,13 @@ cdef void write_prokka_amended(str prokka_results, str outfile, str prokka_nucl_
             W_added.write(line[0] + b"\t")
             W_added.write(b" ".join(line[3:]))
             W_added.write(b"\n")
-            out_fasta = open(os.path.join(prokka_nucl_out_folder, "".join([chr(_c) for _c in line[0] + b".fna"])), "w")
-            record = prokka_nucl_dict.get("".join([chr(_c) for _c in line[0]]), None)
+            out_fasta = open(os.path.join(prokka_nucl_out_folder, "".join([chr(_c) for _c in line[0] + b".fna"])), "wb")
+            record = prokka_nucl_dict.get(line[0], None)
+            record = (
+                line[0],
+                b"",
+                record[1]
+            )
             if record is not None:
                 out_fasta.write(FastaParser.record_to_string(record))
     if not has_added:
@@ -176,7 +177,7 @@ cdef void match_prokka_to_prodigal_and_write_tsv(str diamond_file, str prokka_an
     :param suffix:
     :return: 
     """
-    cdef str _l
+    cdef str _l, val
     cdef list line
     cdef tuple match
     cdef dict highest_matches = {}
@@ -196,7 +197,9 @@ cdef void match_prokka_to_prodigal_and_write_tsv(str diamond_file, str prokka_an
     # Write best matches as id\tannotation\n
     W.write("ID\tprokka\n")
     for match in highest_matches.values():
-        W.write(contig_to_proteins[match[1]] + suffix + "\t" + prokka_data[match[0]] + "\n")
+        val = contig_to_proteins.get(match[1], None)
+        if val is not None:
+            W.write(val + suffix + "\t" + prokka_data[match[0]] + "\n")
     W.close()
 
 

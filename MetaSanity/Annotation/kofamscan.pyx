@@ -1,7 +1,6 @@
 # cython: language_level=3
 import luigi
 import os
-import shutil
 import subprocess
 from MetaSanity.TaskClasses.luigi_task_class import LuigiTaskClass
 
@@ -54,9 +53,6 @@ class KofamScan(LuigiTaskClass):
             W_biometadb.write(_id + ".faa" + "\t" + data[0] + " " + data[1] + "\n")
         W_biodata.close()
         W_biometadb.close()
-        # if os.path.getsize(outpath) != 0:
-        #     os.remove(outpath)
-        # shutil.rmtree(tmp_path)
         print("KofamScan complete!")
 
     def output(self):
