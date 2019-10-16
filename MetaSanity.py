@@ -392,7 +392,6 @@ if not ap.args.cancel_autocommit and os.path.exists(os.path.join(ap.args.output_
             "functions",
             os.path.join(ap.args.output_directory, "genomes"),
             os.path.join(ap.args.output_directory, "metagenome_functions.tsv"),
-            "functions",
         )
         # Begin commit individual genomes info
         # Based on file names in metagenome_annotation.list
@@ -407,17 +406,17 @@ if not ap.args.cancel_autocommit and os.path.exists(os.path.join(ap.args.output_
                 os.path.join(ap.args.output_directory, "virsorter_results", genome_prefix, "virsorter-out",
                              "%s.VIRSorter_adj_out.tsv" % genome_prefix),
             )
-            # rRNA/tRNA data
-            dbdm.run(
-                genome_prefix,
-                os.path.join(ap.args.output_directory, "prokka_results", genome_prefix, genome_prefix + ".added"),
-                os.path.join(ap.args.output_directory, "prokka_results", genome_prefix, genome_prefix + ".prk.tsv.prokka.nucl"),
-            )
             # Combined Results (N) - out/*.metagenome_annotation.tsv
             dbdm.run(
                 genome_prefix,
                 os.path.join(ap.args.output_directory, "splitfiles", genome_prefix),
                 os.path.join(ap.args.output_directory, "%s.metagenome_annotation.tsv" % genome_prefix),
+            )
+            # rRNA/tRNA data
+            dbdm.run(
+                genome_prefix,
+                os.path.join(ap.args.output_directory, "prokka_results", genome_prefix, genome_prefix + ".added"),
+                os.path.join(ap.args.output_directory, "prokka_results", genome_prefix, genome_prefix + ".prk.tsv.prokka.nucl"),
             )
     elif ap.args.program == "PhyloSanity":
         eval_file = os.path.join(ap.args.output_directory, "metagenome_evaluation.tsv")
