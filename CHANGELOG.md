@@ -13,17 +13,16 @@ All notable changes to **MetaSanity** and **BioMetaDB** will be documented in th
 - Record names in `evaluation` table match table names in **BioMetaDB** project, less the file extension (`.fna` or `.protein.faa`).
 
 ---
-### MetaSanity v0.1.1
+### MetaSanity-Code v0.1.1
 #### Added
-- Run Docker or SourceCode version from `MetaSanity.py`.
-- Auto-install **MetaSanity** to download directory.
-	- Users no longer need to manually input their program installation location in the `MetaSanity.py` script.
 - Handle symlinked database directories
 
 #### Changed
+- Run Docker or SourceCode version from `MetaSanity.py`.
 - Update `install.py`
     - Download Source Code or Docker version via this script.
-    - Refactor `install.py` script to allow easy download of future installations.
+    - Auto-install **MetaSanity** to download directory.
+	    - Users no longer need to manually input their program installation location in the `MetaSanity.py` script.
 - No more option to set name of program package or name of download directory - default to "MetaSanity" and "databases", respectively.
 - All database table creation/updates are no longer handled in pipedm, but are now handled post-**MetaSanity** runs from within `MetaSanity.py`.
 
@@ -31,7 +30,9 @@ All notable changes to **MetaSanity** and **BioMetaDB** will be documented in th
 ### BioMetaDB v0.1.1
 #### Added
 - Speed up `dbdm` runs for hundreds of genomes.
-- Run table update functions from scripts and command line.
+- Run table `UPDATE` functions from scripts and command line.
+- Store hypothetical proteins.
+- Filter out "hypothetical protein" annotations as part of "annotated" and "_annot" queries.
 
 #### Changed
 - `SUMMARIZE` info is not displayed to stdout for queries that write results to an external file or folder.
