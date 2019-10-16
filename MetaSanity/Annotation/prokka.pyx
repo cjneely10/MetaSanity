@@ -112,9 +112,8 @@ cdef void write_prokka_amended(str prokka_results, str outfile, str prokka_nucl_
     :param prokka_nucl_out_folder: 
     :return: 
     """
-    if os.path.exists(prokka_nucl_out_folder):
-        shutil.rmtree(prokka_nucl_out_folder)
-    os.makedirs(prokka_nucl_out_folder)
+    if not os.path.exists(prokka_nucl_out_folder):
+        os.makedirs(prokka_nucl_out_folder)
     R = open(prokka_results, "rb")
     W = open(outfile, "wb")
     cdef str out_added = os.path.splitext(outfile)[0] + PROKKAConstants.OUT_ADDED
@@ -143,6 +142,7 @@ cdef void write_prokka_amended(str prokka_results, str outfile, str prokka_nucl_
             W_added.write(line[0] + b".fna" + b"\t")
             W_added.write(b" ".join(line[3:]))
             W_added.write(b"\n")
+            print(os.path.join(prokka_nucl_out_folder, "".join([chr(_c) for _c in line[0] + b".fna"])))
             out_fasta = open(os.path.join(prokka_nucl_out_folder, "".join([chr(_c) for _c in line[0] + b".fna"])), "wb")
             record = prokka_nucl_dict.get(line[0], None)
             record = (
@@ -150,8 +150,7 @@ cdef void write_prokka_amended(str prokka_results, str outfile, str prokka_nucl_
                 b"",
                 record[1]
             )
-            if record is not None:
-                out_fasta.write(FastaParser.record_to_string(record))
+            out_fasta.write(FastaParser.record_to_string(record))
     if not has_added:
         os.remove(out_added)
 
