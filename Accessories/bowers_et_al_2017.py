@@ -22,14 +22,14 @@ for genome in evaluation_data.keys():
     contamination = evaluation_data[genome].contamination
     # Bowers et al determinations for MAG/SAG assembly quality
     if num_tRNAs >= 18 and has_23_16_rRNA and completion > 90 and contamination < 5:
-        dt[genome] = "high"
+        dt[genome].quality = "high"
     elif completion >= 50 and contamination < 10:
-        dt[genome] = "medium"
+        dt[genome].quality = "medium"
     elif completion < 50 and contamination < 10:
-        dt[genome] = "low"
+        dt[genome].quality = "low"
     else:
-        dt[genome] = "incomplete"
+        dt[genome].quality = "incomplete"
         evaluation_data[genome].is_complete = False
-evaluation_data.save()
 
+evaluation_data.save()
 evaluation_data.update(data=dt)
