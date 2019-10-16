@@ -414,7 +414,7 @@ if not ap.args.cancel_autocommit and os.path.exists(os.path.join(ap.args.output_
             dbdm.run(
                 genome_prefix,
                 os.path.join(ap.args.output_directory, "prokka_results", genome_prefix, genome_prefix + ".added"),
-                os.path.join(ap.args.output_directory, "prokka_results", genome_prefix, genome_prefix + ".prokka.nucl")
+                os.path.join(ap.args.output_directory, "prokka_results", genome_prefix, genome_prefix + ".prk.tsv.prokka.nucl")
             )
             # Combined Results (N) - out/*.metagenome_annotation.tsv
             dbdm.run(

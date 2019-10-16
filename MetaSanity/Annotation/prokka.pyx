@@ -139,8 +139,7 @@ cdef void write_prokka_amended(str prokka_results, str outfile, str prokka_nucl_
         # rRNA or tRNA match
         elif line[1] in added:
             has_added = True
-            # Store data in out_dict
-            W_added.write(line[0] + b"\t")
+            W_added.write(line[0] + b".fna" + b"\t")
             W_added.write(b" ".join(line[3:]))
             W_added.write(b"\n")
             out_fasta = open(os.path.join(prokka_nucl_out_folder, "".join([chr(_c) for _c in line[0] + b".fna"])), "wb")
