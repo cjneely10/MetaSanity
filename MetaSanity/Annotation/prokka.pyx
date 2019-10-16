@@ -51,7 +51,7 @@ class PROKKA(LuigiTaskClass):
             os.path.join(str(self.output_directory), outfile_prefix, outfile_prefix + ".tsv"),
             os.path.join(str(self.output_directory), outfile_prefix, outfile_prefix + PROKKAConstants.AMENDED_RESULTS_SUFFIX),
             os.path.join(str(self.output_directory), outfile_prefix, outfile_prefix + ".ffn"),
-            os.path.join(str(self.output_directory), SplitFileConstants.OUTPUT_DIRECTORY, outfile_prefix),
+            os.path.join(os.path.dirname(str(self.output_directory)), SplitFileConstants.OUTPUT_DIRECTORY, outfile_prefix),
         )
         shutil.move(
             os.path.join(str(self.output_directory), outfile_prefix, outfile_prefix + ".faa"),
