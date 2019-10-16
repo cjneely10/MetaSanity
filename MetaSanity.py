@@ -148,8 +148,6 @@ class GetDBDMCall:
                 *to_run,
                 "-t",
                 table_name,
-                "-a",
-                alias,
                 "-f",
                 data_file,
                 "-d",
