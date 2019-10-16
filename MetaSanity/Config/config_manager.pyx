@@ -30,7 +30,7 @@ pipelines = {
 pipeline_classes = {
     "virsorter": (VirSorterConstants.ADJ_OUT_FILE,),
     "interproscan": (InterproscanConstants.AMENDED_RESULTS_SUFFIX,),
-    "prokka": (PROKKAConstants.FINAL_RESULTS_SUFFIX,),
+    "prokka": (PROKKAConstants.FINAL_RESULTS_SUFFIX, PROKKAConstants.OUT_ADDED),
     "kegg": (KofamScanConstants.AMENDED_RESULTS_SUFFIX,),
     "peptidase": (CAZYConstants.ASSIGNMENTS_BY_PROTEIN, PeptidaseConstants.EXTRACELLULAR_MATCHES_BYPROT_EXT),
 }
