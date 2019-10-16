@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 import sys
-from BioMetaDB import get_table, DataTable
+from BioMetaDB import get_table, UpdateData
 
 assert len(sys.argv) == 2, "usage: python3 bowers_et_al_2017.py <biometadb-project>"
 
 evaluation_data = get_table(sys.argv[1], "evaluation")
 evaluation_data.query()
 
-dt = DataTable()
+dt = UpdateData()
 for genome in evaluation_data.keys():
     genome_id = genome.rstrip(".fna")
     genome_rl = get_table(sys.argv[1], table_name=genome_id)

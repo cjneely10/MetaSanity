@@ -116,7 +116,7 @@ class GetDBDMCall:
         self.cancel_autocommit = cancel_autocommit
         self.added_flags = added_flags
 
-    def run(self, table_name, directory_name, data_file, alias):
+    def run(self, table_name, directory_name, data_file):
         """ Runs dbdm call for specific table_name, etc
 
         """
@@ -127,7 +127,7 @@ class GetDBDMCall:
         ]
         if self.cancel_autocommit:
             return
-        if not os.path.isfile(data_file):
+        if not os.path.exists(data_file):
             return
         if not os.path.exists(self.db_name):
             to_run.append("INIT")
@@ -406,21 +406,18 @@ if not ap.args.cancel_autocommit and os.path.exists(os.path.join(ap.args.output_
                 os.path.join(ap.args.output_directory, "splitfiles", genome_prefix + ".fna"),
                 os.path.join(ap.args.output_directory, "virsorter_results", genome_prefix, "virsorter-out",
                              "%s.VIRSorter_adj_out.tsv" % genome_prefix),
-                genome_prefix,
             )
             # rRNA/tRNA data
             dbdm.run(
                 genome_prefix,
                 os.path.join(ap.args.output_directory, "prokka_results", genome_prefix, genome_prefix + ".added"),
                 os.path.join(ap.args.output_directory, "prokka_results", genome_prefix, genome_prefix + ".prk.tsv.prokka.nucl"),
-                genome_prefix,
             )
             # Combined Results (N) - out/*.metagenome_annotation.tsv
             dbdm.run(
                 genome_prefix,
                 os.path.join(ap.args.output_directory, "splitfiles", genome_prefix),
                 os.path.join(ap.args.output_directory, "%s.metagenome_annotation.tsv" % genome_prefix),
-                genome_prefix,
             )
     elif ap.args.program == "PhyloSanity":
         eval_file = os.path.join(ap.args.output_directory, "metagenome_evaluation.tsv")
@@ -429,7 +426,6 @@ if not ap.args.cancel_autocommit and os.path.exists(os.path.join(ap.args.output_
             "evaluation",
             os.path.join(ap.args.output_directory, "genomes"),
             os.path.join(ap.args.output_directory, "metagenome_evaluation.tsv"),
-            "evaluation",
         )
     print("BioMetaDB project complete!")
 
