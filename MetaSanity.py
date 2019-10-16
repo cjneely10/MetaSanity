@@ -134,12 +134,12 @@ class GetDBDMCall:
             to_run.append("-n")
             to_run.append(self.db_name)
         elif os.path.exists(self.db_name) and not os.path.exists(
-                os.path.join(self.db_name, "classes", table_name.lower() + ".json")):
+                os.path.join(self.db_name, "classes", table_name + ".json")):
             to_run.append("CREATE")
             to_run.append("-c")
             to_run.append(self.db_name)
         elif os.path.exists(self.db_name) and os.path.exists(
-                os.path.join(self.db_name, "classes", table_name.lower() + ".json")):
+                os.path.join(self.db_name, "classes", table_name + ".json")):
             to_run.append("UPDATE")
             to_run.append("-c")
             to_run.append(self.db_name)
