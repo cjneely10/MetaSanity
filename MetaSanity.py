@@ -147,9 +147,9 @@ class GetDBDMCall:
             [
                 *to_run,
                 "-t",
-                table_name.lower(),
+                table_name,
                 "-a",
-                alias.lower(),
+                alias,
                 "-f",
                 data_file,
                 "-d",
