@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to **MetaSanity** and **BioMetaDB** will be documented in this file.
 
-## MetaSanity v1.1 - 10/14/2019
+## MetaSanity v1.1 - 10/18/2019
 
 ### pipedm v0.0.4
 #### Added
