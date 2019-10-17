@@ -411,12 +411,6 @@ if not ap.args.cancel_autocommit and os.path.exists(os.path.join(ap.args.output_
                 os.path.join(ap.args.output_directory, "splitfiles", genome_prefix),
                 os.path.join(ap.args.output_directory, "%s.metagenome_annotation.tsv" % genome_prefix),
             )
-            # # rRNA/tRNA data
-            # dbdm.run(
-            #     genome_prefix,
-            #     os.path.join(ap.args.output_directory, "prokka_results", genome_prefix, genome_prefix + ".added"),
-            #     os.path.join(ap.args.output_directory, "prokka_results", genome_prefix, genome_prefix + ".prk.tsv.prokka.nucl"),
-            # )
     elif ap.args.program == "PhyloSanity":
         eval_file = os.path.join(ap.args.output_directory, "metagenome_evaluation.tsv")
         split_phylo_in_evaluation_file(eval_file)
