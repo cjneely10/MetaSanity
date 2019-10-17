@@ -142,7 +142,6 @@ cdef void write_prokka_amended(str prokka_results, str outfile, str prokka_nucl_
             W_added.write(line[0] + b".fna" + b"\t")
             W_added.write(b" ".join(line[3:]))
             W_added.write(b"\n")
-            print(os.path.join(prokka_nucl_out_folder, "".join([chr(_c) for _c in line[0] + b".fna"])))
             out_fasta = open(os.path.join(prokka_nucl_out_folder, "".join([chr(_c) for _c in line[0] + b".fna"])), "wb")
             record = prokka_nucl_dict.get(line[0], None)
             record = (
