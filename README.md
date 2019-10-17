@@ -1,13 +1,8 @@
-# MetaSanity
+# MetaSanity v1.1
 
 ## About
 
-**MetaSanity v1.1** is a wrapper-script for genome/metagenome evaluation tasks. This script will
-run common evaluation and annotation programs and create a `BioMetaDB` project with the integrated results.
-
-This wrapper script was built using the `luigi` Python package. 
-
-MetaSanity provides a unified workflow for genome assessment and functional annotation that combines
+**MetaSanity v1.1** provides a unified workflow for genome assessment and functional annotation that combines
 all outputs into a single queryable database – all within an easily distributed Docker image.
 
 ### [PhyloSanity](PhyloSanity.md)

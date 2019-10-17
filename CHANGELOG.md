@@ -14,9 +14,6 @@ All notable changes to **MetaSanity** and **BioMetaDB** will be documented in th
 
 ---
 ### MetaSanity-Code v0.1.1
-#### Added
-- Handle symlinked database directories
-
 #### Changed
 - Run Docker or SourceCode version from `MetaSanity.py`.
 - Update `install.py`
