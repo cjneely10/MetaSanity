@@ -2,15 +2,12 @@
 import os
 import luigi
 import shutil
-from random import randint
-from datetime import datetime
-from MetaSanity.Database.dbdm_calls import GetDBDMCall, BioMetaDBConstants
 from MetaSanity.Config.config_manager import ConfigManager
 from MetaSanity.AssemblyEvaluation.checkm import CheckM, CheckMConstants
 from MetaSanity.AssemblyEvaluation.gtdbtk import GTDBtk, GTDBTKConstants
 from MetaSanity.MetagenomeEvaluation.fastani import FastANI, FastANIConstants
 from MetaSanity.MetagenomeEvaluation.redundancy_checker import RedundancyParserTask
-from MetaSanity.PipelineManagement.citation_generator import CitationManagerConstants
+#from MetaSanity.PipelineManagement.citation_generator import CitationManagerConstants
 from MetaSanity.PipelineManagement.project_manager cimport project_check_and_creation
 from MetaSanity.PipelineManagement.project_manager import GENOMES
 
@@ -96,19 +93,6 @@ def metagenome_evaluation(str directory, str config_file, bint cancel_autocommit
         ),
     ):
         task_list.append(task)
-    task_list.append(
-        GetDBDMCall(
-            cancel_autocommit=cancel_autocommit,
-            table_name=table_name,
-            alias=alias,
-            calling_script_path=cfg.get(BioMetaDBConstants.BIOMETADB, ConfigManager.PATH),
-            db_name=biometadb_project,
-            directory_name=directory,
-            data_file=os.path.join(output_directory, MetagenomeEvaluationConstants.TSV_OUT),
-            added_flags=cfg.get_added_flags(BioMetaDBConstants.BIOMETADB),
-            storage_string="evaluation results"
-        )
-    )
     luigi.build(task_list, local_scheduler=True)
     # cfg.citation_generator.write(os.path.join(output_directory,
     #                                           "%s.%s.%s" % (datetime.today().strftime("%Y%m%d"),

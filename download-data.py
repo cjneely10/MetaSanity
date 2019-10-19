@@ -119,10 +119,8 @@ def virsorter(outdir, *args, **kwargs):
 if __name__ == "__main__":
     ap = ArgParse(
         ((("-d", "--data"),
-          {"help": "Comma-separated list (no spaces) of databases to download, default all", "default": "all"}),
-         (("-o", "--outdir"),
-          {"help": "Directory for storing database files, default 'databases'", "default": "databases"}),),
-        description="Download required BioMetaPipeline data\nSelect from: %s" % AVAILABLE_DATABASES)
+          {"help": "Comma-separated list (no spaces) of databases to download, default all", "default": "all"}),),
+        description="Download required MetaSanity data\nSelect from: %s" % AVAILABLE_DATABASES)
 
     if ap.args.data == "all":
         to_download = AVAILABLE_DATABASES.split(",")
@@ -130,6 +128,6 @@ if __name__ == "__main__":
         to_download = [val.lower() for val in ap.args.data.split(",") if val != ""]
     for dwnld in to_download:
         try:
-            locals()[dwnld](ap.args.outdir)
+            locals()[dwnld]("databases")
         except KeyError:
             print("%s database not found" % dwnld)

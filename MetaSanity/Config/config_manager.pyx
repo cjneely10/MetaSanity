@@ -1,6 +1,7 @@
 # cython: language_level=3
 
 import os
+from pathlib import Path
 from configparser import NoSectionError, NoOptionError
 from MetaSanity.Config.config import Config
 from MetaSanity.Peptidase.cazy import CAZYConstants
@@ -29,7 +30,7 @@ pipelines = {
 pipeline_classes = {
     "virsorter": (VirSorterConstants.ADJ_OUT_FILE,),
     "interproscan": (InterproscanConstants.AMENDED_RESULTS_SUFFIX,),
-    "prokka": (PROKKAConstants.FINAL_RESULTS_SUFFIX,),
+    "prokka": (PROKKAConstants.FINAL_RESULTS_SUFFIX, PROKKAConstants.OUT_ADDED),
     "kegg": (KofamScanConstants.AMENDED_RESULTS_SUFFIX,),
     "peptidase": (CAZYConstants.ASSIGNMENTS_BY_PROTEIN, PeptidaseConstants.EXTRACELLULAR_MATCHES_BYPROT_EXT),
 }
@@ -148,7 +149,7 @@ class ConfigManager:
                 # Check PATH, DATA, and DATA_DICT paths
                 self.citation_generator.add(program, self.build_parameter_list_from_dict(program))
                 for key in ("PATH", "DATA", "DATA_DICT"):
-                    if key in value.keys() and not os.path.exists(value[key]):
+                    if key in value.keys() and not os.path.exists(str(Path(value[key]).resolve())):
                         print("%s for %s not found" % (key, program))
                         exit(1)
             except NoSectionError:

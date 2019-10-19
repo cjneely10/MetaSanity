@@ -16,9 +16,8 @@ class SplitFile(luigi.Task):
     out_dir = luigi.Parameter()
 
     def run(self):
-        if os.path.isdir(str(self.out_dir)):
-            shutil.rmtree(str(self.out_dir))
-        os.makedirs(str(self.out_dir))
+        if not os.path.exists(str(self.out_dir)):
+            os.makedirs(str(self.out_dir))
         FastaParser.split(str(self.fasta_file), out_dir=str(self.out_dir))
 
     def output(self):

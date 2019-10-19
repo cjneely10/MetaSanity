@@ -5,19 +5,22 @@ import shutil
 import subprocess
 from argparse import RawTextHelpFormatter
 
+global VERSION, PACKAGE_VERSION
 
-global OUTDIR, VERSION
-
+OUTDIR = "MetaSanity"
 
 versions = {
     "v1": {
         "biometadb": "v0.1.0",
         "metasanity_docker": "v0.1.0",
-        "pipedm": "v0.0.3",
+        "metasanity_script": "v0.0.3",
+    },
+    "v1.1": {
+        "biometadb": "v0.1.1",
+        "metasanity_docker": "v0.1.1",
+        "metasanity_script": "v0.0.4",
     }
 }
-
-CURRENT_VERSION = "v1"
 
 
 def out_dir(func):
@@ -67,20 +70,32 @@ def clone_biometadb():
         shutil.rmtree("BioMetaDB")
     subprocess.run(["git", "clone", BIOMETADB_URL], check=True)
     os.chdir("BioMetaDB")
-    subprocess.run(["git", "checkout", versions[CURRENT_VERSION]["biometadb"]], check=True)
+    subprocess.run(["git", "checkout", versions[PACKAGE_VERSION]["biometadb"]], check=True)
 
 
 @out_dir
 def build_biometadb():
     os.chdir("BioMetaDB")
-    subprocess.run(["pip", "install", "-r", "requirements.txt"])
+    subprocess.run(["pip3", "install", "-r", "requirements.txt"])
     subprocess.run(["python3", "setup.py", "build_ext", "--inplace"], check=True)
 
 
 @out_dir
 def download_docker():
-    DOCKER_VERSION = "cjneely10/metasanity:%s" % versions[CURRENT_VERSION]["metasanity_docker"]
+    DOCKER_VERSION = "cjneely10/metasanity:%s" % versions[PACKAGE_VERSION]["metasanity_docker"]
     subprocess.run(["docker", "pull", DOCKER_VERSION], check=True)
+
+
+@out_dir
+def download_build_sourcecode():
+    METASANITY_URL = "https://github.com/cjneely10/MetaSanity.git"
+    if os.path.exists("MetaSanity"):
+        shutil.rmtree("MetaSanity")
+    subprocess.run(["git", "clone", METASANITY_URL], check=True)
+    os.chdir("MetaSanity")
+    subprocess.run(["git", "checkout", versions[PACKAGE_VERSION]["metasanity_script"]], check=True)
+    subprocess.run(["pip3", "install", "-r", "requirements.txt"])
+    subprocess.run(["python3", "setup.py", "build_ext", "--inplace"], check=True)
 
 
 @out_dir
@@ -89,37 +104,56 @@ def config_pull():
     if not os.path.exists(config_path):
         os.makedirs(config_path)
     os.chdir(config_path)
-    if VERSION == "Docker":
-        for _file in ("FuncSanity.ini", "Complete-FuncSanity.ini", "PhyloSanity.ini", "Complete-PhyloSanity.ini"):
-            subprocess.run(["wget",
-                            "https://raw.githubusercontent.com/cjneely10/MetaSanity/%s/Sample/Config/Docker/%s" %
-                            (versions[CURRENT_VERSION]["pipedm"], _file),
-                            "-O", _file],
-                           check=True)
-    if VERSION == "SourceCode":
-        for _file in ("FuncSanity.ini", "PhyloSanity.ini"):
-            subprocess.run(["wget",
-                            "https://raw.githubusercontent.com/cjneely10/MetaSanity/%s/Sample/Config/SourceCode/%s" %
-                            (versions[CURRENT_VERSION]["pipedm"], _file),
-                            "-O", _file],
-                           check=True)
+    for _file in ("FuncSanity.ini", "Complete-FuncSanity.ini", "PhyloSanity.ini", "Complete-PhyloSanity.ini"):
+        subprocess.run(["wget",
+                        "https://raw.githubusercontent.com/cjneely10/MetaSanity/%s/Sample/Config/%s/%s" %
+                        (versions[PACKAGE_VERSION]["metasanity_script"], VERSION, _file),
+                        "-O", _file],
+                       check=True)
 
 
 @out_dir
 def pull_download_script():
     DOWNLOAD_SCRIPT_URL = "https://raw.githubusercontent.com/cjneely10/MetaSanity/%s/download-data.py" % \
-                          versions[CURRENT_VERSION]["pipedm"]
+                          versions[PACKAGE_VERSION]["metasanity_script"]
     subprocess.run(["wget", DOWNLOAD_SCRIPT_URL, "-O", "download-data.py"], check=True)
 
 
 @out_dir
 def download_metasanity():
     METASANITY_URL = "https://raw.githubusercontent.com/cjneely10/MetaSanity/%s/MetaSanity.py" % \
-                          versions[CURRENT_VERSION]["pipedm"]
+                     versions[PACKAGE_VERSION]["metasanity_script"]
     subprocess.run(["wget", METASANITY_URL, "-O", "MetaSanity.py"], check=True)
+    subprocess.run(["sed", "-i",
+                    's/DOWNLOAD_DIRECTORY = \"\/path\/to\/MetaSanity\"/DOWNLOAD_DIRECTORY = \"' + os.getcwd().replace(
+                        "/", "\/") + '\"/',
+                    "MetaSanity.py"])
+    if VERSION == 'SourceCode':
+        subprocess.run(["sed", "-i",
+                        's/PIPEDM_PATH = \"\/path\/to\/MetaSanity\/pipedm.py\"/PIPEDM_PATH = \"' +
+                        os.path.join(os.getcwd(), 'MetaSanity/pipedm.py').replace("/", "\/") + '\"/',
+                        "MetaSanity.py"])
 
 
-def docker():
+@out_dir
+def pull_versions_json_file():
+    VERSIONS_JSON_FILE = "https://raw.githubusercontent.com/cjneely10/MetaSanity/%s/VERSIONS.json" % \
+                         versions[PACKAGE_VERSION]["metasanity_script"]
+    subprocess.run(["wget", VERSIONS_JSON_FILE, "-O", "VERSIONS.json"], check=True)
+
+
+@out_dir
+def download_accessory_script():
+    if os.path.exists("Accessories"):
+        shutil.rmtree("Accessories")
+    os.makedirs("Accessories")
+    os.chdir("Accessories")
+    ACCESSORIES_FILE = "https://raw.githubusercontent.com/cjneely10/MetaSanity/%s/Accessories/bowers_et_al_2017.py" % \
+                       versions[PACKAGE_VERSION]["metasanity_script"]
+    subprocess.run(["wget", ACCESSORIES_FILE, "-O", "bowers_et_al_2017.py"], check=True)
+
+
+def docker_image():
     download_docker()
 
 
@@ -132,30 +166,51 @@ def scripts():
     config_pull()
     pull_download_script()
     download_metasanity()
+    pull_versions_json_file()
+    download_accessory_script()
+
+
+def sourcecode():
+    download_build_sourcecode()
+
+
+def sourcecode_installation():
+    sourcecode()
+    biometadb()
+    scripts()
+
+
+def docker_installation():
+    docker_image()
+    biometadb()
+    scripts()
 
 
 if __name__ == "__main__":
     ap = ArgParse(
         (
-            (("-o", "--outdir"),
-             {"help": "Location to which to download MetaSanity package, default MetaSanity", "default": "MetaSanity"}),
             (("-s", "--sections"),
-             {"help": "Comma-separated list to download. Select from: docker,biometadb,scripts,all", "default": "all"}),
+             {"help": "Comma-separated list to download.\nSelect from: docker_installation,sourcecode_installation,"
+                      "docker_image,sourcecode,biometadb,scripts\n(def docker_installation)",
+              "default": "docker_installation"}),
             (("-t", "--download_type"),
-             {"help": "Download type. Select from: Docker,SourceCode", "default": "Docker"}),
+             {"help": "Download type for scripts. Select from: Docker,SourceCode (def Docker)", "default": "Docker"}),
+            (("-v", "--version"),
+             {"help": "Version to download. (def v1.1)", "default": "v1.1"})
         ),
         description="Download MetaSanity package"
     )
 
-    OUTDIR = ap.args.outdir
-    VERSION = ap.args.download_type
+    assert ap.args.version in versions.keys(), "Invalid version, select from {}".format(",".join(versions.keys()))
+    PACKAGE_VERSION = ap.args.version
     sections = ap.args.sections.split(",")
+    if "docker_installation" in sections:
+        VERSION = "Docker"
+    elif "sourcecode_installation" in sections:
+        VERSION = "SourceCode"
+    else:
+        VERSION = ap.args.download_type
 
-    if sections[0] == 'all':
-        docker()
-        biometadb()
-        scripts()
-        exit(0)
     for section in sections:
         try:
             locals()[section]()

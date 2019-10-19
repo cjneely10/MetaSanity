@@ -4,7 +4,7 @@ import luigi
 import shutil
 import subprocess
 from MetaSanity.Accessories.ops import get_prefix
-from MetaSanity.Parsers.tsv_parser import TSVParser
+from MetaSanity.FileOperations.split_file import SplitFileConstants
 from MetaSanity.Parsers.fasta_parser import FastaParser
 from MetaSanity.TaskClasses.luigi_task_class import LuigiTaskClass
 
@@ -12,6 +12,7 @@ from MetaSanity.TaskClasses.luigi_task_class import LuigiTaskClass
 class PROKKAConstants:
     PROKKA = "PROKKA"
     OUTPUT_DIRECTORY = "prokka_results"
+    OUT_ADDED = ".prokka.nucl"
     AMENDED_RESULTS_SUFFIX = ".prk.tsv.amd"
     STORAGE_STRING = "prokka results"
     FINAL_RESULTS_SUFFIX = ".prk-to-prd.tsv"
@@ -31,24 +32,26 @@ class PROKKA(LuigiTaskClass):
         if not os.path.exists(str(self.output_directory)):
             os.makedirs(str(self.output_directory))
         cdef str outfile_prefix = get_prefix(str(self.fasta_file))
-        if not os.path.isfile(os.path.join(str(self.output_directory), outfile_prefix, outfile_prefix + ".tsv")):
-            subprocess.run(
-                [
-                    str(self.calling_script_path),
-                    "--prefix",
-                    str(self.out_prefix),
-                    "--kingdom",
-                    "%s%s" % (str(self.domain_type)[0].upper(), str(self.domain_type)[1:]),
-                    "--outdir",
-                    os.path.join(str(self.output_directory), outfile_prefix),
-                    str(self.fasta_file),
-                    *self.added_flags,
-                ],
-                check=True,
-            )
+        subprocess.run(
+            [
+                str(self.calling_script_path),
+                "--prefix",
+                str(self.out_prefix),
+                "--kingdom",
+                "%s%s" % (str(self.domain_type)[0].upper(), str(self.domain_type)[1:]),
+                "--outdir",
+                os.path.join(str(self.output_directory), outfile_prefix),
+                str(self.fasta_file),
+                *self.added_flags,
+            ],
+            check=True,
+        )
+        # Write amended TSV file for only CDS, tRNA, and rRNA entries
         write_prokka_amended(
             os.path.join(str(self.output_directory), outfile_prefix, outfile_prefix + ".tsv"),
-            os.path.join(str(self.output_directory), outfile_prefix, outfile_prefix + PROKKAConstants.AMENDED_RESULTS_SUFFIX)
+            os.path.join(str(self.output_directory), outfile_prefix, outfile_prefix + PROKKAConstants.AMENDED_RESULTS_SUFFIX),
+            os.path.join(str(self.output_directory), outfile_prefix, outfile_prefix + ".ffn"),
+            os.path.join(os.path.dirname(str(self.output_directory)), SplitFileConstants.OUTPUT_DIRECTORY, outfile_prefix),
         )
         shutil.move(
             os.path.join(str(self.output_directory), outfile_prefix, outfile_prefix + ".faa"),
@@ -63,13 +66,11 @@ class PROKKA(LuigiTaskClass):
 
     def output(self):
         return luigi.LocalTarget(
-            os.path.join(str(self.output_directory),
-                         get_prefix(str(self.fasta_file)),
-                         get_prefix(str(self.fasta_file)) + PROKKAConstants.AMENDED_RESULTS_SUFFIX)
+            os.path.join(str(self.output_directory), str(self.out_prefix), str(self.out_prefix) + ".tsv")
         )
 
 
-class PROKKAMatcher(LuigiTaskClass):
+class PROKKAMatcher(luigi.Task):
     output_directory = luigi.Parameter()
     outfile = luigi.Parameter()
     diamond_file = luigi.Parameter()
@@ -100,40 +101,63 @@ class PROKKAMatcher(LuigiTaskClass):
             )
         print("PROKKAMatcher complete!")
 
-    def output(self):
-        return luigi.LocalTarget(os.path.join(os.path.join(str(self.output_directory), str(self.outfile))))
 
-
-cdef void write_prokka_amended(str prokka_results, str outfile):
-    """ Shortens output from prokka to only be CDS identifiers
+cdef void write_prokka_amended(str prokka_results, str outfile, str prokka_nucl_fasta, str prokka_nucl_out_folder):
+    """ Shortens output from prokka to only be CDS identifiers. rRNA and tRNA are parsed to separate tsv,
+    and the fasta records are written to their own directory
     
     :param prokka_results: 
     :param outfile: 
+    :param prokka_nucl_fasta: 
+    :param prokka_nucl_out_folder: 
     :return: 
     """
-    cdef object tsvParser = TSVParser(prokka_results)
-    # Call through object to retain header line
-    tsvParser.read_file(header_line=True)
-    cdef list prokka_data = tsvParser.get_values()
-    cdef object W = open(outfile, "w")
-    cdef list prokka_inner_list
-    cdef str val, out_string = ""
-    if prokka_data:
-        # Write Header
-        W.write(tsvParser.header())
-        W.write("\n")
-        for prokka_inner_list in prokka_data:
-            if prokka_inner_list[1] == "CDS":
-                for val in prokka_inner_list:
-                    out_string += val + "\t"
-                W.write(out_string[:-1])
-                W.write("\n")
-                out_string = ""
-        W.close()
+    if not os.path.exists(prokka_nucl_out_folder):
+        os.makedirs(prokka_nucl_out_folder)
+    R = open(prokka_results, "rb")
+    W = open(outfile, "wb")
+    cdef str out_added = os.path.splitext(outfile)[0] + PROKKAConstants.OUT_ADDED
+    W_added = open(out_added, "wb")
+    cdef bint has_added = False
+    cdef bytes _line
+    cdef list line
+    # Accumulate t/rRNA data and store fasta results to separate directory and tsv file
+    cdef tuple added = (b"tRNA", b"rRNA")
+    cdef dict prokka_nucl_dict = FastaParser.parse_dict(prokka_nucl_fasta, is_python=False)
+    # Skip over header
+    next(R)
+    W.write(b"ID\tprokka\n")
+    W_added.write(b"ID\tprokka\n")
+    for _line in R:
+        line = _line.rstrip(b"\r\n").split()
+        # CDS match
+        if line[1] == b"CDS":
+            # Write line from gene identifier to end of line
+            W.write(line[0] + b"\t")
+            W.write(b" ".join(line[3:]))
+            W.write(b"\n")
+        # rRNA or tRNA match
+        elif line[1] in added:
+            has_added = True
+            W_added.write(line[0] + b".fna" + b"\t")
+            W_added.write(b" ".join(line[3:]))
+            W_added.write(b"\n")
+            out_fasta = open(os.path.join(prokka_nucl_out_folder, "".join([chr(_c) for _c in line[0] + b".fna"])), "wb")
+            record = prokka_nucl_dict.get(line[0], None)
+            record = (
+                line[0],
+                b"",
+                record[1]
+            )
+            out_fasta.write(FastaParser.record_to_string(record))
+    if not has_added:
+        os.remove(out_added)
+
+    W.close()
 
 
 cdef void match_prokka_to_prodigal_and_write_tsv(str diamond_file, str prokka_annotation_tsv, str matches_file, str outfile,
-                                                 float evalue = 1e-10, float pident = 98.5, int qcol = 0, int scol = 1,
+                                                 float evalue, float pident, int qcol = 0, int scol = 1,
                                                  int pident_col = 4, int evalue_col = 5, str suffix = ""):
     """ Function uses the output from diamond to identify highest matches between prodigal and prokka via evalue and pident.
     If a match, will write to .tsv file the prokka annotation named as the prodigal gene call 
@@ -151,30 +175,43 @@ cdef void match_prokka_to_prodigal_and_write_tsv(str diamond_file, str prokka_an
     :param suffix:
     :return: 
     """
-    cdef dict matches = {}
-    cdef object W = open(outfile, "w")
-    cdef dict prokka_data = TSVParser.parse_dict(prokka_annotation_tsv)
-    W.write("ID\tprokka\n")
-    cdef bytes _line
+    cdef str _l, val
     cdef list line
-    cdef object R = open(diamond_file, "rb")
-    cdef str _id
+    cdef tuple match
     cdef dict highest_matches = {}
-    cdef tuple best_match
-    cdef str prokka_out_string
-    for _line in open(matches_file, "rb"):
-        line = _line.decode().rstrip("\r\n").split("\t")
-        matches[line[0]] = line[1]
-    for _line in R:
-        line = _line.decode().rstrip("\r\n").split("\t")
-        best_match = highest_matches.get(line[qcol], None)
-        if float(line[pident_col]) >= pident and float(line[evalue_col]) <= evalue and \
-                (best_match is None or (best_match[2] > float(line[pident_col]) and best_match[3] < float(line[evalue_col]))):
-            highest_matches[line[qcol]] = (line[scol], line[qcol], float(line[pident_col]), float(line[evalue_col]))
-    for best_match in highest_matches.values():
-        if prokka_data[best_match[0]][2] != "":
-            # prokka_out_string = "%s-%s:::%s;;;" % (*(best_match[1].split("-")[-1].split("_")), prokka_data[best_match[0]][2])
-            W.write(matches[best_match[1]] + suffix + "\t" + prokka_data[best_match[0]][2] + "\n")
+    W = open(outfile, "w")
+    # Read in contig segment to protein data
+    contig_to_proteins = _read_in_file(matches_file)
+    # Read in prokka data
+    prokka_data = _read_in_file(prokka_annotation_tsv)
+    # Get highest matching prokka contig id for each contig
+    with open(diamond_file, "r") as R:
+        for _l in R:
+            line = _l.rstrip("\r\n").split("\t")
+            match = highest_matches.get(line[qcol], None)
+            if float(line[pident_col]) >= pident and float(line[evalue_col]) <= evalue and \
+                    (match is None or (match[2] > float(line[pident_col]) and match[3] < float(line[evalue_col]))):
+                highest_matches[line[qcol]] = (line[scol], line[qcol], float(line[pident_col]), float(line[evalue_col]))
+    # Write best matches as id\tannotation\n
+    W.write("ID\tprokka\n")
+    for match in highest_matches.values():
+        val = contig_to_proteins.get(match[1], None)
+        if val is not None:
+            W.write(val + suffix + "\t" + prokka_data[match[0]] + "\n")
     W.close()
-    R.close()
 
+
+def _read_in_file(str _file):
+    """ Convert file to simple key\tvalue\n dict
+
+    :param _file:
+    :return:
+    """
+    cdef str _line
+    cdef list line
+    out_dict = {}
+    with open(_file, "r") as R:
+        for _line in R:
+            line = _line.rstrip("\r\n").split("\t")
+            out_dict[line[0]] = line[1]
+    return out_dict

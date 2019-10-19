@@ -14,7 +14,7 @@ results of this pipeline. Users have the option of using prodigal gene calls or 
 - Optional arguments
     - --output_directory (-o): Output prefix
     - --biometadb_project (-b): Name to assign to **BioMetaDB** project, or name of existing project to use
-    - --type_file (-t): /path/to/type_file, formatted as `'file_name.fna\t[Archaea/Bacteria]\t[gram+/gram-]\n'`
+    - --type_file (-t): type_file, formatted as `'file_name.fna\t[Archaea/Bacteria]\t[gram+/gram-]\n'`
         - This argument is only required if running the **peptidase** portion of the pipeline on non gram- bacteria.
 
 ## Example

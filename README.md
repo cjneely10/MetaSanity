@@ -1,13 +1,8 @@
-# MetaSanity
+# MetaSanity v1.1
 
 ## About
 
-**MetaSanity** is a wrapper-script for genome/metagenome evaluation tasks. This script will
-run common evaluation and annotation programs and create a `BioMetaDB` project with the integrated results.
-
-This wrapper script was built using the `luigi` Python package. 
-
-MetaSanity provides a unified workflow for genome assessment and functional annotation that combines
+**MetaSanity v1.1** provides a unified workflow for genome assessment and functional annotation that combines
 all outputs into a single queryable database – all within an easily distributed Docker image.
 
 ### [PhyloSanity](PhyloSanity.md)
@@ -26,6 +21,12 @@ BioMetaDB is a specialized relational database management system (RDBMS) project
 Output from both workflows is stored into a BioMetaDB project, providing users a simple interface to comprehensively examine their data. Users can query application results used across the entire genome set for specific information that is relevant to their research, allowing the potential to screen genomes based on returned taxonomy, quality, annotation, putative metabolic function, or any combination thereof.
 
 
+## Updating from **MetaSanity v1**.
+
+See the [wiki FAQ](https://github.com/cjneely10/MetaSanity/wiki/6-FAQ) and [installation wiki](https://github.com/cjneely10/MetaSanity/wiki/2-Installation) for more info.
+
+See the [changelog](https://github.com/cjneely10/MetaSanity/blob/v0.0.4/CHANGELOG.md) for update info.
+
 ## Quick Install
 See the [wiki page](https://github.com/cjneely10/MetaSanity/wiki/2-Installation) for a complete set of installation instructions.
 Download the install script from this repository.
@@ -33,7 +34,7 @@ Download the install script from this repository.
 `wget https://raw.githubusercontent.com/cjneely10/MetaSanity/master/install.py`
 
 If desired, create and source a python virtual environment.
-This script requires `python3` with the `argparse` and `wheel` packages installed. `wget`, `git`, and `pip` are also required. Users are recommended to install **MetaSanity** within a separate python virtual environment, as packages within this software may conflict with existing package installations.
+This script requires `python3` with the `argparse` and `wheel` packages installed. `wget`, `git`, `sed`, and `pip3` are also required. Users are recommended to install **MetaSanity** within a separate python virtual environment, as packages within this software may conflict with existing package installations.
 
 Run the install script using `python3 install.py`.
 
@@ -105,17 +106,17 @@ positional arguments:
 optional arguments:
   -h, --help            show this help message and exit
   -d DIRECTORY, --directory DIRECTORY
-                        Directory containing genomes
+                        Directory name containing genomes
   -c CONFIG_FILE, --config_file CONFIG_FILE
-                        Config file
+                        Config file name
   -a, --cancel_autocommit
                         Cancel commit to database
   -o OUTPUT_DIRECTORY, --output_directory OUTPUT_DIRECTORY
                         Output directory prefix, default out
   -b BIOMETADB_PROJECT, --biometadb_project BIOMETADB_PROJECT
-                        /path/to/BioMetaDB_project (updates values of existing database)
+                        BioMetaDB_project prefix (updates values of existing database)
   -t TYPE_FILE, --type_file TYPE_FILE
-                        /path/to/type_file formatted as 'file_name.fna\t[Archaea/Bacteria]\t[gram+/gram-]\n'
+                        type_file name formatted as 'file_name.fna\t[Archaea/Bacteria]\t[gram+/gram-]\n'
   -p, --prokka          Use PROKKA gene calls instead of prodigal search</code></pre>
 
 The typical workflow involves creating a configuration file based on the templates in `Sample/Config`. This config

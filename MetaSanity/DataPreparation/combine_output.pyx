@@ -82,11 +82,38 @@ class CombineOutput(LuigiTaskClass):
                 #     )
 
 
+class CombineFunctionOutput(luigi.Task):
+    output_directory = luigi.Parameter()
+    data_files = luigi.ListParameter()
+    delimiter = luigi.Parameter(default="\t")
+    output_file = luigi.Parameter()
+
+    def requires(self):
+        return []
+
+    def run(self):
+        if not os.path.exists(str(self.output_directory)):
+            os.makedirs(str(self.output_directory))
+        tsv = None
+        cdef str _file
+        for _f in self.data_files:
+            if tsv is None:
+                tsv = TSVJoiner(_f)
+            else:
+                tsv.read_tsv(_f)
+
+        tsv.write_tsv(os.path.join(str(self.output_directory), str(self.output_file)))
+
+
 class TSVJoiner:
     def __init__(self, str tsv_file_path):
         self.header = set()
         self.data = {}
-        self.read_tsv(tsv_file_path)
+        if os.path.exists(tsv_file_path):
+            self.read_tsv(tsv_file_path)
+            self.is_empty = False
+        else:
+            self.is_empty = True
 
     def _join_header(self, list header):
         cdef str _h
@@ -94,6 +121,8 @@ class TSVJoiner:
             self.header.add(_h)
 
     def read_tsv(self, str tsv_file_path):
+        self.is_empty = False
+        if not os.path.exists(tsv_file_path): return
         cdef object R = open(tsv_file_path, "r")
         header = next(R).rstrip("\r\n").split("\t")
         cdef int header_len = len(header)
@@ -110,21 +139,22 @@ class TSVJoiner:
         R.close()
 
     def write_tsv(self, str out_tsv_path):
-        W = open(out_tsv_path, "w")
-        header_list = list(self.header)
         cdef str head
         cdef str _id
-        _out = ""
-        W.write("ID\t")
-        for head in header_list:
-            _out += head + "\t"
-        W.write(_out[:-1] + "\n")
-        for _id in self.data.keys():
-            _out = _id + "\t"
+        if not self.is_empty:
+            W = open(out_tsv_path, "w")
+            header_list = list(self.header)
+            _out = ""
+            W.write("ID\t")
             for head in header_list:
-                _out += self.data[_id].get(head, "None") + "\t"
+                _out += head + "\t"
             W.write(_out[:-1] + "\n")
-        W.close()
+            for _id in self.data.keys():
+                _out = _id + "\t"
+                for head in header_list:
+                    _out += self.data[_id].get(head, "None") + "\t"
+                W.write(_out[:-1] + "\n")
+            W.close()
 
 
 def build_complete_file_list(str base_path, tuple suffixes):

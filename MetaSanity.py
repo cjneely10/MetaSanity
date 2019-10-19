@@ -1,44 +1,53 @@
 #!/usr/bin/env python3
 import os
 import sys
+import json
 import shutil
 import argparse
 import subprocess
+from pathlib import Path
 from configparser import RawConfigParser
 from argparse import RawTextHelpFormatter
 
 """
-MetaSanity calling script
+MetaSanity v1.1 calling script
 
 
 **********
 Prior to first run:
 
-If using the provided `download-data.py` script, provide its download location as the variable DOWNLOAD_DIRECTORY.
-Otherwise, ensure that all path arguments are valid and that all required databases are downloaded.
-If a certain program will not be used, and the database files are not downloaded, provide any valid directory
-or leave the default values. Directory contents are never deleted and are only used to reference stored data.
-Ensure that BioMetaDB path is accurate, and that optional program binary paths are valid
+Ensure that the variable DOWNLOAD_DIRECTORY stores the correct location of MetaSanity on your system.
+If using the source code installation, ensure that the variable PIPEDM_PATH correctly points to the `pipedm.py` script
+in your MetaSanity source code.
+Provide valid locations for any recommended programs that you use. If you will not use a program, leave its value as is.
 
 **********
 
 """
 
-# Path to database download location
-DOWNLOAD_DIRECTORY = "/path/to/databases"
-# (Optional Source Code installation) Path to pipedm.py - Be sure to change the BIOMETADB path below manually
-# DO NOT CHANGE THIS VALUE IF USING THE DOCKER INSTALLATION!!
+# Path to download location
+DOWNLOAD_DIRECTORY = "/path/to/MetaSanity"
+# Version installation - do not change unless using an older MetaSanity version
+VERSION = "v1.1"
+
+# (Optional Source Code installation) Path to pipedm.py
 PIPEDM_PATH = "/path/to/MetaSanity/pipedm.py"
 
-# # Optional program paths
+# # Recommended program paths
 # Extracted interproscan package with binary from  https://github.com/ebi-pf-team/interproscan/wiki/HowToDownload
 INTERPROSCAN_FOLDER = "/path/to/interproscan"
-# Signalp software package, including binary, from  http://www.cbs.dtu.dk/cgi-bin/nph-sw_request?signalp
+# SignalP4.1 software package, including binary, from  http://www.cbs.dtu.dk/cgi-bin/sw_request?signalp+4.1
 SIGNALP_FOLDER = "/path/to/signalp-4.1"
-# RNAmmer software package, including binary, from  http://www.cbs.dtu.dk/cgi-bin/nph-sw_request?rnammer
+# RNAmmer1.2 software package, including binary, from  http://www.cbs.dtu.dk/cgi-bin/nph-sw_request?rnammer
 RNAMMER_FOLDER = "/path/to/rnammer-1.2.src"
 
 # # Only edit below if your database files were not gathered using the download-data.py script
+# Location of VERSIONS.json should be in installation directory
+version_data = json.load(open(os.path.join(DOWNLOAD_DIRECTORY, "VERSIONS.json"), "r"))
+# Location of BioMetaDB on system. If not used, ensure to pass `-a` flag to MetaSanity.py when running
+BIOMETADB = os.path.join(DOWNLOAD_DIRECTORY, "BioMetaDB/dbdm.py")
+# Location of databases
+DOWNLOAD_DIRECTORY = os.path.join(DOWNLOAD_DIRECTORY, "databases")
 # Data downloaded from  https://data.ace.uq.edu.au/public/gtdbtk/
 GTDBTK_FOLDER = os.path.join(DOWNLOAD_DIRECTORY, "gtdbtk/release89")
 # Extracted checkm data from  https://data.ace.uq.edu.au/public/CheckM_databases/
@@ -49,12 +58,9 @@ KOFAM_FOLDER = os.path.join(DOWNLOAD_DIRECTORY, "kofamscan")
 PEPTIDASE_DATA_FOLDER = os.path.join(DOWNLOAD_DIRECTORY, "peptidase")
 # Extracted virsorter data from  https://github.com/simroux/VirSorter
 VIRSORTER_DATA_FOLDER = os.path.join(DOWNLOAD_DIRECTORY, "virsorter/virsorter-data")
-# Location of BioMetaDB on system. If not used, ensure to pass `-a` flag to MetaSanity.py when running
-BIOMETADB = os.path.join(os.path.dirname(DOWNLOAD_DIRECTORY), "BioMetaDB/dbdm.py")
-
 
 # MetaSanity version
-DOCKER_IMAGE = "cjneely10/metasanity:v0.1.0"
+DOCKER_IMAGE = "cjneely10/metasanity:%s" % version_data[VERSION]["metasanity_docker"]
 
 
 class ArgParse:
@@ -109,7 +115,7 @@ class GetDBDMCall:
         self.cancel_autocommit = cancel_autocommit
         self.added_flags = added_flags
 
-    def run(self, table_name, directory_name, data_file, alias):
+    def run(self, table_name, directory_name, data_file):
         """ Runs dbdm call for specific table_name, etc
 
         """
@@ -120,19 +126,19 @@ class GetDBDMCall:
         ]
         if self.cancel_autocommit:
             return
-        if not os.path.isfile(data_file):
+        if not os.path.exists(data_file):
             return
         if not os.path.exists(self.db_name):
             to_run.append("INIT")
             to_run.append("-n")
             to_run.append(self.db_name)
         elif os.path.exists(self.db_name) and not os.path.exists(
-                os.path.join(self.db_name, "classes", table_name.lower() + ".json")):
+                os.path.join(self.db_name, "classes", table_name + ".json")):
             to_run.append("CREATE")
             to_run.append("-c")
             to_run.append(self.db_name)
         elif os.path.exists(self.db_name) and os.path.exists(
-                os.path.join(self.db_name, "classes", table_name.lower() + ".json")):
+                os.path.join(self.db_name, "classes", table_name + ".json")):
             to_run.append("UPDATE")
             to_run.append("-c")
             to_run.append(self.db_name)
@@ -140,9 +146,7 @@ class GetDBDMCall:
             [
                 *to_run,
                 "-t",
-                table_name.lower(),
-                "-a",
-                alias.lower(),
+                table_name,
                 "-f",
                 data_file,
                 "-d",
@@ -175,6 +179,15 @@ def split_phylo_in_evaluation_file(eval_file):
 
 
 def _line_split(line, phyl_loc):
+<<<<<<< HEAD
+=======
+    """ Adjusts location in line to have corrected phylogeny
+
+    :param line:
+    :param phyl_loc:
+    :return:
+    """
+>>>>>>> v0.0.4
     phylogeny_out = line[phyl_loc].split(";")
     # No determination
     if phylogeny_out[0] == "root":
@@ -203,26 +216,43 @@ def get_added_flags(config, _dict):
         return []
 
 
+def determine_paths_to_add(path, add_string=""):
+    """ Determines if optional program path is valid
+    Returns list with correct path in docker volume-like standard
+    Or returns empty list
+
+    :param path:
+    :param add_string:
+    :return:
+    """
+    path = str(Path(path).resolve())
+    if os.path.exists(path):
+        return ["-v", path + add_string]
+    return []
+
+
 # Parsed arguments
 ap = ArgParse(
     (
         (("program",),
          {"help": "Program to run"}),
         (("-d", "--directory"),
-         {"help": "Directory containing genomes", "required": True}),
+         {"help": "Directory name containing genomes", "required": True}),
         (("-c", "--config_file"),
-         {"help": "Config file", "required": True}),
+         {"help": "Config file name", "required": True}),
         (("-a", "--cancel_autocommit"),
          {"help": "Cancel commit to database", "action": "store_true", "default": False}),
         (("-o", "--output_directory"),
          {"help": "Output directory prefix, default out", "default": "out"}),
         (("-b", "--biometadb_project"),
-         {"help": "/path/to/BioMetaDB_project (updates values of existing database)", "default": "None"}),
+         {"help": "BioMetaDB_project name (updates values of existing database)", "default": "None"}),
         (("-t", "--type_file"),
-         {"help": "/path/to/type_file formatted as 'file_name.fna\\t[Archaea/Bacteria]\\t[gram+/gram-]\\n'",
+         {"help": "type_file name formatted as 'file_name.fna\\t[Archaea/Bacteria]\\t[gram+/gram-]\\n'",
           "default": "None"}),
         (("-p", "--prokka"),
          {"help": "Use PROKKA gene calls instead of prodigal search", "default": False, "action": "store_true"}),
+        (("-z", "--autoremove_intermediates"),
+         {"help": "Remove intermediary genome directories, default: True", "default": True, "action": "store_false"}),
     ),
     description=ArgParse.description_builder(
         "MetaSanity:\tRun meta/genomes evaluation and annotation pipelines",
@@ -234,7 +264,7 @@ ap = ArgParse(
             "PhyloSanity": ("directory", "config_file", "cancel_autocommit", "output_directory",
                             "biometadb_project"),
             "FuncSanity": ("directory", "config_file", "cancel_autocommit", "output_directory",
-                           "biometadb_project", "type_file", "prokka"),
+                           "biometadb_project", "type_file", "prokka", "reevaluate_quality"),
         }
     )
 )
@@ -256,7 +286,7 @@ if ap.args.prokka:
 cid_file_name = 'docker.pid'
 
 # Run docker version
-if PIPEDM_PATH == "/path/to/MetaSanity/pipedm.py":
+if not os.path.exists(PIPEDM_PATH):
     try:
         subprocess.run(
             [
@@ -271,21 +301,21 @@ if PIPEDM_PATH == "/path/to/MetaSanity/pipedm.py":
                 "-e",
                 "LANG=C.UTF-8",
                 # CheckM
-                "-v", CHECKM_FOLDER + ":/home/appuser/checkm",
+                *determine_paths_to_add(CHECKM_FOLDER, ":/home/appuser/checkm"),
                 # GTDBtk
-                "-v", GTDBTK_FOLDER + ":/home/appuser/gtdbtk/db",
+                *determine_paths_to_add(GTDBTK_FOLDER, ":/home/appuser/gtdbtk/db"),
                 # kofamscan
-                "-v", KOFAM_FOLDER + ":/home/appuser/kofamscan/db",
+                *determine_paths_to_add(KOFAM_FOLDER, ":/home/appuser/kofamscan/db"),
                 # Peptidase storage
-                "-v", PEPTIDASE_DATA_FOLDER + ":/home/appuser/Peptidase",
+                *determine_paths_to_add(PEPTIDASE_DATA_FOLDER, ":/home/appuser/Peptidase"),
                 # Interproscan
-                "-v", INTERPROSCAN_FOLDER + ":/home/appuser/interproscan-5.32-71.0",
+                *determine_paths_to_add(INTERPROSCAN_FOLDER, ":/home/appuser/interproscan-5.32-71.0"),
                 # Volume to access genomes
-                "-v", VIRSORTER_DATA_FOLDER + ":/home/appuser/virsorter-data",
+                *determine_paths_to_add(VIRSORTER_DATA_FOLDER, ":/home/appuser/virsorter-data"),
                 # Volume to access signalp binary
-                "-v", SIGNALP_FOLDER + ":/home/appuser/signalp",
+                *determine_paths_to_add(SIGNALP_FOLDER, ":/home/appuser/signalp"),
                 # Volume to access rnammer binary
-                "-v", RNAMMER_FOLDER + ":/home/appuser/rnammer",
+                *determine_paths_to_add(RNAMMER_FOLDER, ":/home/appuser/rnammer"),
                 # Change output directory here
                 "-v", os.getcwd() + ":/home/appuser/wdir",
                 # "-it",
@@ -336,7 +366,9 @@ else:
                 "-o", os.path.relpath(ap.args.output_directory),
                 "-c", os.path.relpath(ap.args.config_file),
                 "-t", (os.path.relpath(ap.args.type_file) if ap.args.type_file != "None" else "None"),
-                *prokka_add
+                *prokka_add,
+                "-a",
+                "-z",
             ],
             check=True,
         )
@@ -358,22 +390,11 @@ if not ap.args.cancel_autocommit and os.path.exists(os.path.join(ap.args.output_
 
     dbdm = GetDBDMCall(BIOMETADB, db_name, ap.args.cancel_autocommit, get_added_flags(cfg, "BIOMETADB"))
     if ap.args.program == "FuncSanity":
-        for _file in (
-                # CAZy (1) - out/peptidase_results/combined_results/combined.cazy
-                os.path.join(ap.args.output_directory, "peptidase_results/combined_results/combined.cazy"),
-                # MEROPS (1) - out/peptidase_results/combined_results/combined.merops
-                os.path.join(ap.args.output_directory, "peptidase_results/combined_results/combined.merops"),
-                # MEROPS pfam (1) - out/peptidase_results/combined_results/combined.merops.pfam
-                os.path.join(ap.args.output_directory, "peptidase_results/combined_results/combined.merops.pfam"),
-                # BioData (1) - out/kegg_results/biodata_results/KEGG.final.tsv
-                os.path.join(ap.args.output_directory, "kegg_results/biodata_results/KEGG.final.tsv"),
-        ):
-            dbdm.run(
-                "functions",
-                os.path.join(ap.args.output_directory, "genomes"),
-                _file,
-                "functions",
-            )
+        dbdm.run(
+            "functions",
+            os.path.join(ap.args.output_directory, "genomes"),
+            os.path.join(ap.args.output_directory, "metagenome_functions.tsv"),
+        )
         # Begin commit individual genomes info
         # Based on file names in metagenome_annotation.list
         for genome_prefix in (os.path.splitext(os.path.basename(line.rstrip("\r\n")))[0]
@@ -382,18 +403,16 @@ if not ap.args.cancel_autocommit and os.path.exists(os.path.join(ap.args.output_
             print("\nStoring %s to database.........." % genome_prefix)
             out_prefixes.add(genome_prefix)
             dbdm.run(
-                genome_prefix.lower(),
+                genome_prefix,
                 os.path.join(ap.args.output_directory, "splitfiles", genome_prefix + ".fna"),
                 os.path.join(ap.args.output_directory, "virsorter_results", genome_prefix, "virsorter-out",
                              "%s.VIRSorter_adj_out.tsv" % genome_prefix),
-                genome_prefix.lower(),
             )
             # Combined Results (N) - out/*.metagenome_annotation.tsv
             dbdm.run(
-                genome_prefix.lower(),
+                genome_prefix,
                 os.path.join(ap.args.output_directory, "splitfiles", genome_prefix),
                 os.path.join(ap.args.output_directory, "%s.metagenome_annotation.tsv" % genome_prefix),
-                genome_prefix.lower(),
             )
     elif ap.args.program == "PhyloSanity":
         eval_file = os.path.join(ap.args.output_directory, "metagenome_evaluation.tsv")
@@ -402,12 +421,16 @@ if not ap.args.cancel_autocommit and os.path.exists(os.path.join(ap.args.output_
             "evaluation",
             os.path.join(ap.args.output_directory, "genomes"),
             os.path.join(ap.args.output_directory, "metagenome_evaluation.tsv"),
-            "evaluation",
         )
     print("BioMetaDB project complete!")
 
 if ap.args.program == "FuncSanity":
     for prefix in out_prefixes:
-        os.remove(os.path.join(ap.args.output_directory, prefix + ".metagenome_annotation_tmp.tsv"))
-    shutil.rmtree(os.path.join(ap.args.output_directory, "genomes"))
-    shutil.rmtree(os.path.join(ap.args.output_directory, "splitfiles"))
+        if os.path.exists(os.path.join(ap.args.output_directory, prefix + ".metagenome_annotation_tmp.tsv")):
+            os.remove(os.path.join(ap.args.output_directory, prefix + ".metagenome_annotation_tmp.tsv"))
+
+if ap.args.autoremove_intermediates:
+    if os.path.exists(os.path.join(ap.args.output_directory, "genomes")):
+        shutil.rmtree(os.path.join(ap.args.output_directory, "genomes"))
+    if os.path.exists(os.path.join(ap.args.output_directory, "splitfiles")):
+        shutil.rmtree(os.path.join(ap.args.output_directory, "splitfiles"))
