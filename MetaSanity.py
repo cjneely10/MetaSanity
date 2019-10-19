@@ -179,15 +179,12 @@ def split_phylo_in_evaluation_file(eval_file):
 
 
 def _line_split(line, phyl_loc):
-<<<<<<< HEAD
-=======
     """ Adjusts location in line to have corrected phylogeny
 
     :param line:
     :param phyl_loc:
     :return:
     """
->>>>>>> v0.0.4
     phylogeny_out = line[phyl_loc].split(";")
     # No determination
     if phylogeny_out[0] == "root":
