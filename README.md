@@ -25,6 +25,8 @@ Output from both workflows is stored into a BioMetaDB project, providing users a
 
 See the [wiki FAQ](https://github.com/cjneely10/MetaSanity/wiki/6-FAQ) and [installation wiki](https://github.com/cjneely10/MetaSanity/wiki/2-Installation) for more info.
 
+See the [changelog](https://github.com/cjneely10/MetaSanity/blob/v0.0.4/CHANGELOG.md) for update info.
+
 ## Quick Install
 See the [wiki page](https://github.com/cjneely10/MetaSanity/wiki/2-Installation) for a complete set of installation instructions.
 Download the install script from this repository.
