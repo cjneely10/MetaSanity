@@ -38,16 +38,20 @@ This script requires `python3` with the `argparse` and `wheel` packages installe
 
 Run the install script using `python3 install.py`.
 
-<pre><code>usage: install.py [-h] [-o OUTDIR] [-v VERSION]
+<pre><code>usage: install.py [-h] [-s SECTIONS] [-t DOWNLOAD_TYPE] [-v VERSION]
 
 Download MetaSanity package
 
 optional arguments:
   -h, --help            show this help message and exit
-  -o OUTDIR, --outdir OUTDIR
-                        Location to which to download MetaSanity package, default MetaSanity
+  -s SECTIONS, --sections SECTIONS
+                        Comma-separated list to download.
+                        Select from: docker_installation,sourcecode_installation,docker_image,sourcecode,biometadb,scripts
+                        (def docker_installation)
+  -t DOWNLOAD_TYPE, --download_type DOWNLOAD_TYPE
+                        Download type for scripts. Select from: Docker,SourceCode (def Docker)
   -v VERSION, --version VERSION
-                        Default: docker</code></pre>
+                        Version to download. (def v1.1)</code></pre>
 
 ### Dependencies
 
