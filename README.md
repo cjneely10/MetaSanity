@@ -100,17 +100,17 @@ positional arguments:
 optional arguments:
   -h, --help            show this help message and exit
   -d DIRECTORY, --directory DIRECTORY
-                        Directory containing genomes
+                        Directory name containing genomes
   -c CONFIG_FILE, --config_file CONFIG_FILE
-                        Config file
+                        Config file name
   -a, --cancel_autocommit
                         Cancel commit to database
   -o OUTPUT_DIRECTORY, --output_directory OUTPUT_DIRECTORY
                         Output directory prefix, default out
   -b BIOMETADB_PROJECT, --biometadb_project BIOMETADB_PROJECT
-                        /path/to/BioMetaDB_project (updates values of existing database)
+                        BioMetaDB_project prefix (updates values of existing database)
   -t TYPE_FILE, --type_file TYPE_FILE
-                        /path/to/type_file formatted as 'file_name.fna\t[Archaea/Bacteria]\t[gram+/gram-]\n'
+                        type_file name formatted as 'file_name.fna\t[Archaea/Bacteria]\t[gram+/gram-]\n'
   -p, --prokka          Use PROKKA gene calls instead of prodigal search</code></pre>
 
 The typical workflow involves creating a configuration file based on the templates in `Sample/Config`. This config
