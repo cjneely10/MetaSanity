@@ -5,16 +5,6 @@ DCODES
     P   Planned
     IP  In Progress
 
-<<<<<<< HEAD
-ID  PACKAGE  PIPEDM  METASANITY  BIOMETADB  DCODE   NOTES
-1   v1  0.0.3   0.1.0   0.1.0   C   "Updated CheckM - validated working PhyloSanity;
-                                        iss1; iss2; iss4; iss5; iss6; iss7"
-2   v1.1    0.0.4   0.1.0   0.1.1   IP "10-11-2019 Integrate Bowers et. al quality analyses;
-                                        BioMetaDB general speedups"
-3   v2  0.1.0   0.1.1   0.1.0   P   "Add flag storage and reload option;
-							            Remove need for genome directory if running 2nd step in workflow;
-                                        Batch-job option for calling pipeline"
-=======
 PACKAGE  METASANITY_SCRIPT  METASANITY  BIOMETADB  DCODE   NOTES
 v1      0.0.3   0.1.0   0.1.0   C   "Updated CheckM - validated working PhyloSanity;
 									iss1; iss2; iss4; iss5; iss6; iss7"
@@ -23,4 +13,3 @@ v1.1    0.0.4   0.1.1   0.1.1   IP  "10-11-2019 Integrate Bowers et. al quality 
 v2      0.1.0   0.1.1   0.1.0   P   "Add flag storage and reload option;
 									Remove need for genome directory if running 2nd step in workflow;
 									Batch-job option for calling pipeline"
->>>>>>> v0.0.4
