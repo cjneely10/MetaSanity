@@ -1,4 +1,5 @@
 import os
+import shutil
 from configparser import NoOptionError
 from MetaSanity.Pipeline.Exceptions.GeneralAssertion import AssertString
 from MetaSanity.Config.config_manager import ConfigManager
@@ -34,18 +35,17 @@ cdef tuple project_check_and_creation(void* directory, void* config_file, void* 
     # Declaration for iteration
     cdef object val
     cdef str genome_storage_folder = os.path.join((<object>output_directory), GENOMES)
-    # Create directories as needed
     print("Creating output directories")
-    if not os.path.exists((<object>output_directory)):
-        # Output directory
-        os.makedirs((<object>output_directory))
-        # Genome storage for processing
-    if not os.path.exists(genome_storage_folder):
-        os.makedirs(genome_storage_folder)
+    # Remove old directory from prior run, if available
+    if os.path.exists(genome_storage_folder):
+        shutil.rmtree(genome_storage_folder)
+    os.makedirs((<object>output_directory))
+    os.makedirs(genome_storage_folder)
     # Declarations
     cdef str _file, _f
     cdef tuple split_file
     cdef list current_files = os.listdir(genome_storage_folder)
+    cdef str genome_list_path = os.path.join((<object>output_directory), getattr(CallingClass, LIST_FILE))
     # Copy all genomes to folder with temporary file
     print("Reformatting input files and moving to temp directory")
     for _file in os.listdir((<object>directory)):
@@ -58,7 +58,6 @@ cdef tuple project_check_and_creation(void* directory, void* config_file, void* 
                     simplify=adj_string_to_length(get_prefix(_f), 20, .7),
                 )
     # Declarations
-    cdef str genome_list_path = os.path.join((<object>output_directory), getattr(CallingClass, LIST_FILE))
     cdef str alias
     cdef str table_name
     # Write list of all files in directory as a list file
