@@ -59,3 +59,12 @@ iss8    Overprediction of extracellularity
         | Adjusted accordingly - default all None or n/a set as False
         - Issue with pandas parsing - treated 'n/a' as True.
         | Issue resolved, nothing further
+
+iss9	Genomes in project do not update as user-passed directory updates
+		| Passing `-d genomes/` adds genomes as needed, but does not remove them from current pipeline run
+		- Noted by Ben
+		| Adjust project_check_and_creation function and build new Docker image.
+
+iss10
+
+iss11
