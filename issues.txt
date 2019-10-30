@@ -64,11 +64,13 @@ iss9	Genomes in project do not update as user-passed directory updates
 		| Passing `-d genomes/` adds genomes as needed, but does not remove them from current pipeline run
 		- Noted by Ben
 		| Adjust project_check_and_creation function and build new Docker image.
+		| Deletes directory, if it exists, and creates with new genome set. Nothing further.
 
 iss10	Example run should auto-download with MetaSanity installation
 		| Currently, users must manually download example data
 		- Noted by Elaina
 		| Package test set with MetaSanity github repo and autopull on download
+		| `Example-Genomes-Set` folder
 
 iss11	MetaSanity should have a binder available to test this example data
 		| Binder with example workflow that allows users to see CL and scripting power of MetaSanity
