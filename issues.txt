@@ -70,7 +70,7 @@ iss10	Example run should auto-download with MetaSanity installation
 		| Currently, users must manually download example data
 		- Noted by Elaina
 		| Package test set with MetaSanity github repo and autopull on download
-		| `Example-Genomes-Set` folder
+		| `Example-Genomes-Set` folder added to github, autodownload with `install.py` script. Nothing further.
 
 iss11	MetaSanity should have a binder available to test this example data
 		| Binder with example workflow that allows users to see CL and scripting power of MetaSanity
