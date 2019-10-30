@@ -152,6 +152,7 @@ def download_example_dataset():
     if os.path.exists("ExampleSet"):
         shutil.rmtree("ExampleSet")
     os.makedirs("ExampleSet")
+    os.chdir("ExampleSet")
     for _id in ("TOBG-CPC-297", "TOBG-CPC-3", "TOBG-CPC-31", "TOBG-CPC-51", "TOBG-CPC-85", "TOBG-CPC-86",
                 "TOBG-CPC-9", "TOBG-CPC-96", "TOBG-NP-99", "TOBG-NP-997"):
         subprocess.run(["wget",
