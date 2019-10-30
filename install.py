@@ -148,6 +148,19 @@ def pull_versions_json_file():
 
 
 @out_dir
+def download_example_dataset():
+    if os.path.exists("ExampleSet"):
+        shutil.rmtree("ExampleSet")
+    os.makedirs("ExampleSet")
+    for _id in ("TOBG-CPC-297", "TOBG-CPC-3", "TOBG-CPC-31", "TOBG-CPC-51", "TOBG-CPC-85", "TOBG-CPC-86",
+                "TOBG-CPC-9", "TOBG-CPC-96", "TOBG-NP-99", "TOBG-NP-997"):
+        subprocess.run(["wget",
+                        "https://raw.githubusercontent.com/cjneely10/MetaSanity/%s/Example-Genomes-Set/%s.fna" %
+                        (versions[PACKAGE_VERSION]["metasanity_script"], _id),
+                        "-O", "%s.fna" % _id], check=True)
+
+
+@out_dir
 def download_accessory_script():
     if os.path.exists("Accessories"):
         shutil.rmtree("Accessories")
@@ -173,6 +186,7 @@ def scripts():
     download_metasanity()
     pull_versions_json_file()
     download_accessory_script()
+    download_example_dataset()
 
 
 def sourcecode():
