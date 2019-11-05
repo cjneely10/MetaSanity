@@ -4,27 +4,17 @@ All notable changes to **MetaSanity** and **BioMetaDB** will be documented in th
 ## MetaSanity v1.1.1 - 11/08/2019
 
 ### pipedm v0.0.5
-#### Added
-
 #### Changed
-
-#### Fixed
-
----
-### MetaSanity-Code v0.1.2
-#### Added
-
-#### Changed
-
-#### Fixed
+- Updates to the user-provided genome folder (e.g. deleting or adding genome FASTA files) determines which genomes to annotate.
+    - Will not take into account previous or failed runs that do not originate from this directory.
 
 ---
 ### BioMetaDB v0.1.1
 #### Added
+- Users can query for "unannotated" and "_unannot" from the command line
 
 #### Changed
-
-#### Fixed
+- Checking for un/annotated status completed through simple existence check versus string comparison.
 
 ---
 
