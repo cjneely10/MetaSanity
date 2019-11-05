@@ -8,6 +8,7 @@ from argparse import RawTextHelpFormatter
 global VERSION, PACKAGE_VERSION
 
 OUTDIR = "MetaSanity"
+DEFAULT_VERSION = "v1.1.1"
 
 versions = {
     "v1": {
@@ -216,7 +217,7 @@ if __name__ == "__main__":
             (("-t", "--download_type"),
              {"help": "Download type for scripts. Select from: Docker,SourceCode (def Docker)", "default": "Docker"}),
             (("-v", "--version"),
-             {"help": "Version to download. (def v1.1)", "default": "v1.1"})
+             {"help": "Version to download. (def v1.1)", "default": DEFAULT_VERSION})
         ),
         description="Download MetaSanity package"
     )

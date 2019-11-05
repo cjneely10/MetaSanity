@@ -28,7 +28,7 @@ Provide valid locations for any recommended programs that you use. If you will n
 # Path to download location
 DOWNLOAD_DIRECTORY = "/path/to/MetaSanity"
 # Version installation - do not change unless using an older MetaSanity version
-VERSION = "v1.1"
+VERSION = "v1.1.1"
 
 # (Optional Source Code installation) Path to pipedm.py
 PIPEDM_PATH = "/path/to/MetaSanity/pipedm.py"
