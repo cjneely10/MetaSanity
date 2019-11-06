@@ -217,7 +217,7 @@ if __name__ == "__main__":
             (("-t", "--download_type"),
              {"help": "Download type for scripts. Select from: Docker,SourceCode (def Docker)", "default": "Docker"}),
             (("-v", "--version"),
-             {"help": "Version to download. (def v1.1)", "default": DEFAULT_VERSION})
+             {"help": "Version to download. (def %s)" % DEFAULT_VERSION, "default": DEFAULT_VERSION})
         ),
         description="Download MetaSanity package"
     )
