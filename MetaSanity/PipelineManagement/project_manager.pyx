@@ -37,6 +37,8 @@ cdef tuple project_check_and_creation(void* directory, void* config_file, void* 
     cdef str genome_storage_folder = os.path.join((<object>output_directory), GENOMES)
     print("Creating output directories")
     # Remove old directory from prior run, if available
+    if not os.path.exists((<object>output_directory)):
+        os.makedirs((<object>output_directory))
     if os.path.exists(genome_storage_folder):
         shutil.rmtree(genome_storage_folder)
     os.makedirs(genome_storage_folder)
