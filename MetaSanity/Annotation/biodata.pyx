@@ -57,6 +57,7 @@ class BioData(LuigiTaskClass):
                     # *out_path,
                     # "--vizoption",
                     # "static",
+                    *self.added_flags,
                 ],
                 check=True,
             )
