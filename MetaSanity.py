@@ -336,7 +336,7 @@ if not os.path.exists(PIPEDM_PATH):
         )
         os.remove(cid_file_name)
     except KeyboardInterrupt:
-        sys.stderr.write("\nExiting...")
+        sys.stderr.write("\nExiting...\n")
         try:
             subprocess.run(["docker", "kill", open(cid_file_name, "rb").read()], check=True)
             os.remove(cid_file_name)
@@ -375,7 +375,7 @@ else:
 out_prefixes = set({})
 
 if not ap.args.cancel_autocommit and os.path.exists(os.path.join(ap.args.output_directory, met_list[ap.args.program])):
-    sys.stderr.write("\nStoring results to database..........")
+    sys.stderr.write("\nStoring results to database..........\n")
     # Primary output file types from FuncSanity (with N = number of genomes):
     # Set project name
     try:
@@ -397,7 +397,7 @@ if not ap.args.cancel_autocommit and os.path.exists(os.path.join(ap.args.output_
         for genome_prefix in (os.path.splitext(os.path.basename(line.rstrip("\r\n")))[0]
                               for line in open(os.path.join(ap.args.output_directory, met_list[ap.args.program]))):
             # Virsorter out (N) - out/virsorter_results/*/virsorter-out/*.VIRSorter_adj_out.tsv
-            sys.stderr.write("\nStoring %s to database.........." % genome_prefix)
+            sys.stderr.write("\nStoring %s to database..........\n" % genome_prefix)
             out_prefixes.add(genome_prefix)
             dbdm.run(
                 genome_prefix,
@@ -419,8 +419,8 @@ if not ap.args.cancel_autocommit and os.path.exists(os.path.join(ap.args.output_
             os.path.join(ap.args.output_directory, "genomes"),
             os.path.join(ap.args.output_directory, "metagenome_evaluation.tsv"),
         )
-    sys.stderr.write("BioMetaDB project complete!")
-    sys.stderr.write("MetaSanity pipeline and database creation complete!")
+    sys.stderr.write("BioMetaDB project complete!\n")
+    sys.stderr.write("MetaSanity pipeline and database creation complete!\n")
 
 if ap.args.program == "FuncSanity":
     for prefix in out_prefixes:
