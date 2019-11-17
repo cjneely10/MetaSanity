@@ -7,6 +7,8 @@ All notable changes to **MetaSanity** and **BioMetaDB** will be documented in th
 #### Changed
 - Updates to the user-provided genome folder (e.g. deleting or adding genome FASTA files) determines which genomes to annotate.
     - Will not take into account previous or failed runs that do not originate from this directory.
+    
+#### Fixed
 - Fixed bug in parsing genome names with multiple '.'
 - Removed bug for genomes with no output
 
