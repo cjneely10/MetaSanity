@@ -62,7 +62,8 @@ class CombineOutput(LuigiTaskClass):
                         tsv = TSVJoiner(_f)
                     else:
                         tsv.read_tsv(_f)
-                tsv.write_tsv(os.path.join(str(self.output_directory), output_file))
+                if tsv is not None:
+                    tsv.write_tsv(os.path.join(str(self.output_directory), output_file))
                     # # Gather tsv info
                     # if not _df:
                     #     df = pd.read_csv(_f, delimiter=str(self.delimiter), header=0, index_col="ID")
