@@ -109,11 +109,9 @@ class TSVJoiner:
     def __init__(self, str tsv_file_path):
         self.header = set()
         self.data = {}
+        self.is_empty = True
         if os.path.exists(tsv_file_path):
             self.read_tsv(tsv_file_path)
-            self.is_empty = False
-        else:
-            self.is_empty = True
 
     def _join_header(self, list header):
         cdef str _h
@@ -121,8 +119,8 @@ class TSVJoiner:
             self.header.add(_h)
 
     def read_tsv(self, str tsv_file_path):
-        self.is_empty = False
         if not os.path.exists(tsv_file_path): return
+        self.is_empty = False
         cdef object R = open(tsv_file_path, "r")
         header = next(R).rstrip("\r\n").split("\t")
         cdef int header_len = len(header)
