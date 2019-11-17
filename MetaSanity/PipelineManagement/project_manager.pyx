@@ -40,7 +40,8 @@ cdef tuple project_check_and_creation(void* directory, void* config_file, void* 
     if not os.path.exists((<object>output_directory)):
         os.makedirs((<object>output_directory))
     if not os.path.exists(genome_storage_folder):
-        os.makedirs(genome_storage_folder)
+        shutil.rmtree(genome_storage_folder)
+    os.makedirs(genome_storage_folder)
     # Declarations
     cdef str _file, _f
     cdef tuple split_file
