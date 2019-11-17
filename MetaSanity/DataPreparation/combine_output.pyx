@@ -119,7 +119,6 @@ class TSVJoiner:
             self.header.add(_h)
 
     def read_tsv(self, str tsv_file_path):
-        if not os.path.exists(tsv_file_path): return
         self.is_empty = False
         cdef object R = open(tsv_file_path, "r")
         header = next(R).rstrip("\r\n").split("\t")
