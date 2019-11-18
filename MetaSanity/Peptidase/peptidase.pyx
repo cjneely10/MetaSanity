@@ -60,7 +60,7 @@ class Peptidase(LuigiTaskClass):
         cdef dict extracellular_pfams = {}
         cdef set unknown_prots = set()
         cdef dict extracellular_pfam_counts, merops_counts, adj_merops_pfam_dict
-        if psortb_data is not None and os.path.getsize(psortb_data) != 0:
+        if psortb_data is not None and os.path.getsize(str(self.psortb_results)) != 0:
             # Gather psortb ids assigned as "Extracellular" or "Cell Wall"
             # Skip over header line
             next(psortb_data)
@@ -71,7 +71,7 @@ class Peptidase(LuigiTaskClass):
                 elif line[1] in (b"Unknown",):
                     unknown_prots.add(line[1])
             psortb_data.close()
-        if signalp_results is not None and os.path.getsize(signalp_results) != 0:
+        if signalp_results is not None and os.path.getsize(str(self.signalp_results)) != 0:
             # Gather signalp ids assigned "Y"
             # Skip over 2 header lines
             next(signalp_results)
@@ -81,7 +81,7 @@ class Peptidase(LuigiTaskClass):
                 if line[9] == b"Y" and line[0] in unknown_prots:
                     matched_protein_ids.add(line[0])
             signalp_results.close()
-        if merops_results is not None and os.path.getsize(merops_results) != 0:
+        if merops_results is not None and os.path.getsize(str(self.merops_hmm_results)) != 0:
             # Gather hmm results for collected ids
             # Skip over 3 header lines
             next(merops_results)
