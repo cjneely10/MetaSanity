@@ -13,7 +13,7 @@ All notable changes to **MetaSanity** and **BioMetaDB** will be documented in th
 - Removed bug for genomes with no output
 
 ---
-### BioMetaDB v0.1.1
+### BioMetaDB v0.1.2
 #### Added
 - Users can query for "unannotated" and "_unannot" from the command line
 
@@ -21,6 +21,9 @@ All notable changes to **MetaSanity** and **BioMetaDB** will be documented in th
 - Checking for un/annotated status completed through simple existence check versus string comparison.
 
 ---
+### MetaSanity-Code v0.1.2
+#### Fixed
+- InterProScan bug that triggers `lib.idn.so.1 missing`.
 
 ## MetaSanity v1.1 - 10/18/2019
 

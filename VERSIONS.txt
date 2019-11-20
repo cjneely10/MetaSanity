@@ -10,7 +10,7 @@ v1      0.0.3   0.1.0   0.1.0   C   "Updated CheckM - validated working PhyloSan
 									iss1; iss2; iss4; iss5; iss6; iss7"
 v1.1    0.0.4   0.1.1   0.1.1   C  "10-11-2019 Integrate Bowers et. al quality analyses;
 									BioMetaDB general speedups"
-v1.1.1	0.0.5	0.1.2	0.1.2	IP	"iss9; iss10;
+v1.1.1	0.0.5	0.1.2	0.1.2	IP	"iss9; iss10; iss11
                                     BioMetaDB optimization in query; BioMetaDB store unannotated"
 v2      0.1.0   0.1.1   0.1.0   P   "Add flag storage and reload option;
 									Remove need for genome directory if running 2nd step in workflow;

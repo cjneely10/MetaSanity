@@ -71,3 +71,8 @@ iss10	Example run should auto-download with MetaSanity installation
 		- Noted by Elaina
 		| Package test set with MetaSanity github repo and autopull on download
 		| `Example-Genomes-Set` folder added to github, autodownload with `install.py` script. Nothing further.
+
+iss11	Interproscan lib not found
+		| lib.idn.so.1 Issue - not found
+		| Symlink from found directory
+		- Rebuild Docker image
