@@ -17,8 +17,8 @@ fn main() {
         if _line.len() > 0 {
             match _line[0] {
                 b'>' => println!("{}", get_header(&_line)),
-                // _ => println!("{}", line)
-                _ => print_line_to_80(&_line, &buffer)
+                _ => println!("{}", line)
+                // _ => print_line_to_80(&_line, &buffer)
             };
         }
     }
