@@ -1,4 +1,6 @@
 use std::io::{BufRead, BufReader};
+extern crate argparse;
+use argparse::ArgumentParser;
 
 fn main() {
     let args: Vec<String> = std::env::args().collect();
@@ -9,7 +11,7 @@ fn main() {
     }
 
     let reader = BufReader::new(std::fs::File::open(&args[1]).unwrap());
-    let mut buffer = String::new();
+    let mut buffer: [u8; 80];
 
     for line in reader.lines() {
         let line = line.expect("Unable to read line");
@@ -25,15 +27,23 @@ fn main() {
 }
 
 /// Calls print for 80 char line segments
-fn print_line_to_80(line: &[u8], mut buffer: &str) {
-    let total_length = line.len();
-    match total_length {
-        val if val > 80 => {
-            println!("{}", std::str::from_utf8(&line[..80]).unwrap());
-            print_line_to_80(&line[80..], &buffer);
-        },
-        _ => println!("{}", std::str::from_utf8(&line[..]).unwrap())
-    };
+/// Builds passed buffer and writes once it is 80 chars long
+fn print_line_to_80(line: &[u8], mut buffer: Option<&[u8]>) {
+    let buffer_len = buffer.unwrap().len();
+    // let total_length = line.len();
+    // match total_length {
+    //     val if val > 80 => {
+    //         let mut _buffer = buffer.unwrap();
+    //         match _buffer.len() {
+    //             80 => {
+    //                 println!("{}", std::str::from_utf8(&_buffer).unwrap())
+
+    //             },
+    //             _ => ()
+    //         }
+    //     },
+    //     _ => println!("{}", std::str::from_utf8(&line[..]).unwrap())
+    // };
 }
 
 /// Returns up to the first space in the header
