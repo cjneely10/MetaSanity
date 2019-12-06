@@ -26,9 +26,7 @@ fn main() {
                     }
                     println!("{}", get_header(&_line));
                 },
-                _ => {
-                    print_line_to_80(&_line, &mut line_loc, &mut end_of_line);
-                }
+                _ => print_line_to_80(&_line, &mut line_loc, &mut end_of_line)
             };
         }
     }
