@@ -20,7 +20,7 @@ fn main() -> std::io::Result<()> {
             match _line[0] {
                 b'>' => {
                     if end_of_line { 
-                        print!("{}", '\n');
+                        print!("\n");
                         line_loc = 0;
                         end_of_line = false;
                     }
@@ -45,7 +45,7 @@ fn print_line_to_80(line: &[u8], line_loc: &mut usize, end_of_line: &mut bool) {
             }
             // Record to write, line unavailable
             else {
-                print!("{}", '\n');
+                print!("\n");
                 *line_loc = 0;
                 print_line_to_80(&line[i..], line_loc, end_of_line);
                 break;
