@@ -2,7 +2,7 @@ use std::io::{BufRead, BufReader};
 extern crate argparse;
 use argparse::ArgumentParser;
 
-fn main() {
+fn main() -> std::io::Result<()> {
     let args: Vec<String> = std::env::args().collect();
 
     if args.len() < 2 {
@@ -30,10 +30,11 @@ fn main() {
             };
         }
     }
+    Ok(())
 }
 
-// /// Calls print for 80 char line segments
-// /// Builds passed buffer and writes once it is 80 chars long
+/// Calls print for 80 char line segments
+/// Builds passed buffer and writes once it is 80 chars long
 fn print_line_to_80(line: &[u8], line_loc: &mut usize, end_of_line: &mut bool) {
     for (i, &item) in line.iter().enumerate() {
         if item != b'\n' {
