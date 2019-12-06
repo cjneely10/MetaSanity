@@ -1,17 +1,21 @@
 use std::io::{BufRead, BufReader};
 extern crate argparse;
-use argparse::ArgumentParser;
+use argparse::{ArgumentParser, Store};
 
 fn main() -> std::io::Result<()> {
-    let args: Vec<String> = std::env::args().collect();
-
-    if args.len() < 2 {
-        println!("Usage: <program-name> <file>");
-        std::process::exit(1);
+    let mut fasta_file = String::new();
+    {
+        let mut parser = ArgumentParser::new();
+        parser.set_description("FastaOps - Simple operations of large fasta files");
+        parser.refer(&mut fasta_file)
+                .add_argument("fasta-file", Store, "Fasta file to modify")
+                .required();
+        parser.parse_args_or_exit();
     }
+
     let mut line_loc: usize = 0;
     let mut end_of_line: bool = false;
-    let reader = BufReader::new(std::fs::File::open(&args[1]).unwrap());
+    let reader = BufReader::new(std::fs::File::open(fasta_file).unwrap());
 
     for line in reader.lines() {
         let line = line.expect("Unable to read line");
