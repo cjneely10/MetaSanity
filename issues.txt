@@ -76,3 +76,15 @@ iss11	Interproscan lib not found
 		| lib.idn.so.1 Issue - not found
 		| Symlink from found directory
 		- Rebuild Docker image
+        | Issue resolved, nothing further
+
+iss12   CheckM and GTDB-Tk updated to Python3
+        | Per end-of-year deprecation of python2.7
+        | Dockerfile updated
+        | Issue resolved, nothing further
+
+iss13   tbl2asn NCBI update
+        | Crashes Prokka on final step
+        | Download newest version from NCBI ftp and upload to Docker image
+        | Issue resolved, nothing further
+

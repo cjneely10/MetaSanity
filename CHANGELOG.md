@@ -22,8 +22,12 @@ All notable changes to **MetaSanity** and **BioMetaDB** will be documented in th
 
 ---
 ### MetaSanity-Code v0.1.2
+#### Changed
+- CheckM and GTDB-Tk update to Python3.
+
 #### Fixed
 - InterProScan bug that triggers `lib.idn.so.1 missing`.
+- Update Prokka `tbl2asn`.
 
 ------
 ## MetaSanity v1.1 - 10/18/2019
