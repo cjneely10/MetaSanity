@@ -248,8 +248,8 @@ ap = ArgParse(
           "default": "None"}),
         (("-p", "--prokka"),
          {"help": "Use PROKKA gene calls instead of prodigal search", "default": False, "action": "store_true"}),
-        (("-z", "--autoremove_intermediates"),
-         {"help": "Remove intermediary genome directories, default: True", "default": True, "action": "store_false"}),
+        (("-z", "--remove_intermediates"),
+         {"help": "Remove intermediary genome directories, default: False", "default": False, "action": "store_true"}),
     ),
     description=ArgParse.description_builder(
         "MetaSanity:\tRun meta/genomes evaluation and annotation pipelines",
@@ -424,7 +424,7 @@ if ap.args.program == "FuncSanity":
         if os.path.exists(os.path.join(ap.args.output_directory, prefix + ".metagenome_annotation_tmp.tsv")):
             os.remove(os.path.join(ap.args.output_directory, prefix + ".metagenome_annotation_tmp.tsv"))
 
-if ap.args.autoremove_intermediates and ap.args.program == 'FuncSanity':
+if ap.args.remove_intermediates and ap.args.program == 'FuncSanity':
     if os.path.exists(os.path.join(ap.args.output_directory, "genomes")):
         shutil.rmtree(os.path.join(ap.args.output_directory, "genomes"))
     if os.path.exists(os.path.join(ap.args.output_directory, "splitfiles")):
