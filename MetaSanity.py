@@ -329,8 +329,6 @@ if not os.path.exists(PIPEDM_PATH):
                 "-y",
                 # Cancel autocommit from docker
                 "-a",
-                # Don't remove intermediary files
-                "-z"
             ],
             check=True,
         )
@@ -365,7 +363,6 @@ else:
                 "-t", (os.path.relpath(ap.args.type_file) if ap.args.type_file != "None" else "None"),
                 *prokka_add,
                 "-a",
-                "-z",
             ],
             check=True,
         )

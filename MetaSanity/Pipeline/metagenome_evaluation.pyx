@@ -28,7 +28,7 @@ class MetagenomeEvaluationConstants:
 
 
 def metagenome_evaluation(str directory, str config_file, bint cancel_autocommit, str output_directory,
-                      str biometadb_project, bint is_docker, bint remove_intermediates):
+                      str biometadb_project, bint is_docker):
     """ Function calls the pipeline for evaluating a set of genomes using checkm, gtdbtk, fastANI
     Creates .tsv file of final output, adds to database
 
@@ -37,7 +37,6 @@ def metagenome_evaluation(str directory, str config_file, bint cancel_autocommit
     :param cancel_autocommit:
     :param output_directory:
     :param biometadb_project:
-    :param remove_intermediates:
     :param is_docker:
     :return:
     """
@@ -98,6 +97,4 @@ def metagenome_evaluation(str directory, str config_file, bint cancel_autocommit
     #                                           "%s.%s.%s" % (datetime.today().strftime("%Y%m%d"),
     #                                                         str(randint(1, 1001)),
     #                                                         CitationManagerConstants.OUTPUT_FILE,)))
-    if remove_intermediates:
-        shutil.rmtree(directory)
     print("PhyloSanity pipeline complete!")
