@@ -4,13 +4,26 @@ use argparse::{ArgumentParser, Store};
 
 fn main() -> std::io::Result<()> {
     let mut fasta_file = String::new();
+    let mut header_adj = "file".to_string();
     {
         let mut parser = ArgumentParser::new();
         parser.set_description("FastaOps - Simple operations of large fasta files");
         parser.refer(&mut fasta_file)
                 .add_argument("fasta-file", Store, "Fasta file to modify")
                 .required();
+        parser.refer(&mut header_adj)
+                .add_option(&["-t", "--truncate-type"], Store, 
+                    "Determine by file/record, default file");
         parser.parse_args_or_exit();
+    }
+
+    let mut file_header : Option<String> = None;
+    if header_adj != "file" || header_adj != "record" { 
+        println!("Incorrect header parse type");
+        std::process::exit(1);
+    }
+    if header_adj == "file" { 
+        
     }
 
     let mut line_loc: usize = 0;
@@ -60,10 +73,14 @@ fn print_line_to_80(line: &[u8], line_loc: &mut usize, end_of_line: &mut bool) {
 }
 
 /// Returns up to the first space in the header
-fn get_header(line: &[u8]) -> &str {
+fn get_header<'a>(line: &'a [u8]) -> &'a str {
     for (i, &item) in line.iter().enumerate() {
         if item == b' ' {
-            return std::str::from_utf8(&line[0..i]).unwrap();
+            // Header is short - no edit needed
+            if i < 20 { return std::str::from_utf8(&line[0..i]).unwrap(); }
+            else {
+
+            }
         }
     }
     std::str::from_utf8(&line[..]).unwrap()
