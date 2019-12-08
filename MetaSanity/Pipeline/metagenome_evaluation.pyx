@@ -1,7 +1,6 @@
 # cython: language_level=3
 import os
 import luigi
-import shutil
 from MetaSanity.Config.config_manager import ConfigManager
 from MetaSanity.AssemblyEvaluation.checkm import CheckM, CheckMConstants
 from MetaSanity.AssemblyEvaluation.gtdbtk import GTDBtk, GTDBTKConstants

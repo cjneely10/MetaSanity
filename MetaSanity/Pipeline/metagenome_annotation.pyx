@@ -1,7 +1,6 @@
 # cython: language_level=3
 import os
 import luigi
-import shutil
 from MetaSanity.Accessories.ops import get_prefix
 from MetaSanity.Parsers.tsv_parser import TSVParser
 from MetaSanity.Peptidase.cazy import CAZY, CAZYConstants
