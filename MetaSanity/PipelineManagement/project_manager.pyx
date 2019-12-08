@@ -1,5 +1,4 @@
 import os
-import shutil
 from configparser import NoOptionError
 from MetaSanity.Pipeline.Exceptions.GeneralAssertion import AssertString
 from MetaSanity.Config.config_manager import ConfigManager
