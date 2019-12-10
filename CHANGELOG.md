@@ -8,6 +8,7 @@ All notable changes to **MetaSanity** and **BioMetaDB** will be documented in th
 - Updates to the user-provided genome folder (e.g. deleting or adding genome FASTA files) determines which genomes to annotate.
     - Will not take into account previous or failed runs that do not originate from this directory.
 - Intermediary files are retained. These may be deleted by the user with the `-z` flag.
+- CAZy outputs 'None' instead of '0', which is in line with rest of database API
     
 #### Fixed
 - Fixed bug in parsing genome names with multiple '.'
@@ -17,6 +18,8 @@ All notable changes to **MetaSanity** and **BioMetaDB** will be documented in th
 ### BioMetaDB v0.1.2
 #### Added
 - Users can query for "unannotated" and "_unannot" from the command line
+- Users can return truncated annotations (e.g., only return KEGG ID, etc) with `-r/--truncate`
+    - Does not apply to prokka
 
 #### Changed
 - Checking for un/annotated status completed through simple existence check versus string comparison.
