@@ -11,7 +11,7 @@ Evaluate MAGs for completion and contamination using CheckM, and evaluate redund
 ### [FuncSanity](FuncSanity.md)
 Provides functional annotation options through PROKKA, KEGG, InterProScan, the carbohydrate-active enzymes (CAZy) database, and the MEROPS database. Optionally, MEROPS matches can be filtered to target predicted outer membrane and extracellular proteins using PSORTb and SignalP4.1. KEGG results are processed through KEGG-Decoder to provide visual heatmaps of metabolic functions and pathways.
 
-### BioMetaDB
+### [BioMetaDB](https://github.com/cjneely10/BioMetaDB)
 
 BioMetaDB is a specialized relational database management system (RDBMS) project that integrates modularized storage and retrieval of FASTA records with the metadata describing them. This application uses tab-delimited data files to generate table relation schemas via Python3. Based on SQLAlchemy, BioMetaDB allows researchers to efficiently manage data from the command line by providing operations that include
 
