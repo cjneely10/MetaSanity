@@ -160,6 +160,21 @@ def merge_metasanity_files(old_file, template_file):
     while not old_line.startswith("DOWNLOAD_DIRECTORY"):
         old_line = next(R)
 
+    # Skip over template data section
+    while not templ_line.startswith("VERSION"):
+        templ_line = next(T)
+
+    # Write old data section up to VERSION
+    while not old_line.startswith("VERSION"):
+        W.write(old_line)
+        old_line = next(R)
+
+    # Skip version of old file
+    old_file = next(R)
+
+    # Write new version
+    W.write(templ_line)
+
     # Write old data section
     while not old_line.startswith("class ArgParse:"):
         W.write(old_line)
