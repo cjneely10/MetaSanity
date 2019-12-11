@@ -21,11 +21,11 @@ BioMetaDB is a specialized relational database management system (RDBMS) project
 Output from both workflows is stored into a BioMetaDB project, providing users a simple interface to comprehensively examine their data. Users can query application results used across the entire genome set for specific information that is relevant to their research, allowing the potential to screen genomes based on returned taxonomy, quality, annotation, putative metabolic function, or any combination thereof.
 
 
-## Updating from **MetaSanity v1**.
+## Updating **MetaSanity**
 
 See the [wiki FAQ](https://github.com/cjneely10/MetaSanity/wiki/6-FAQ) and [installation wiki](https://github.com/cjneely10/MetaSanity/wiki/2-Installation) for more info.
 
-See the [changelog](https://github.com/cjneely10/MetaSanity/blob/v0.0.4/CHANGELOG.md) for update info.
+See the [changelog](https://github.com/cjneely10/MetaSanity/blob/master/CHANGELOG.md) for update info.
 
 ## Quick Install
 See the [wiki page](https://github.com/cjneely10/MetaSanity/wiki/2-Installation) for a complete set of installation instructions.
