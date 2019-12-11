@@ -17,9 +17,9 @@ dt = UpdateData()
 for genome in evaluation_data.keys():
     domain = evaluation_data[genome].domain.lower()
     if domain == "archaea":
-        membrane_type = "gram-"
-    else:
         membrane_type = "gram+"
+    else:
+        membrane_type = "gram-"
     # Set biological domain and membrane type for each genome
     dt[genome].setattr("domain", domain)
     dt[genome].setattr("membrane_type", membrane_type)
