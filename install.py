@@ -168,9 +168,11 @@ def download_accessory_script():
         shutil.rmtree("Accessories")
     os.makedirs("Accessories")
     os.chdir("Accessories")
-    ACCESSORIES_FILE = "https://raw.githubusercontent.com/cjneely10/MetaSanity/%s/Accessories/bowers_et_al_2017.py" % \
+    ACCESSORIES_URL_PRE = "https://raw.githubusercontent.com/cjneely10/MetaSanity/%s/Accessories/" % \
                        versions[PACKAGE_VERSION]["metasanity_script"]
-    subprocess.run(["wget", ACCESSORIES_FILE, "-O", "bowers_et_al_2017.py"], check=True)
+    files_list = ["bowers_et_al_2017.py", "generate-typefile.py", "table", "tsv-join"]
+    for _file in files_list:
+        subprocess.run(["wget", ACCESSORIES_URL_PRE + _file, "-O", _file], check=True)
 
 
 def docker_image():
