@@ -59,3 +59,36 @@ iss8    Overprediction of extracellularity
         | Adjusted accordingly - default all None or n/a set as False
         - Issue with pandas parsing - treated 'n/a' as True.
         | Issue resolved, nothing further
+
+iss9	Genomes in project do not update as user-passed directory updates
+		| Passing `-d genomes/` adds genomes as needed, but does not remove them from current pipeline run
+		- Noted by Ben
+		| Adjust project_check_and_creation function and build new Docker image.
+		| Deletes directory, if it exists, and creates with new genome set. Nothing further.
+
+iss10	Example run should auto-download with MetaSanity installation
+		| Currently, users must manually download example data
+		- Noted by Elaina
+		| Package test set with MetaSanity github repo and autopull on download
+		| `Example-Genomes-Set` folder added to github, autodownload with `install.py` script. Nothing further.
+
+iss11	Interproscan lib not found
+		| lib.idn.so.1 Issue - not found
+		| Symlink from found directory
+		- Rebuild Docker image
+        | Issue resolved, nothing further
+
+iss12   CheckM and GTDB-Tk updated to Python3
+        | Per end-of-year deprecation of python2.7
+        | Dockerfile updated
+        | Issue resolved, nothing further
+
+iss13   tbl2asn NCBI update
+        | Crashes Prokka on final step
+        | Download newest version from NCBI ftp and upload to Docker image
+        | Issue resolved, nothing further
+
+iss14   Prokka data not stored if autoremove enabled
+        | Folder path deleted before data stored
+        | Remove delete calls from pipedm and sequester to MetaSanity.py
+        | Issue resolved, nothing further

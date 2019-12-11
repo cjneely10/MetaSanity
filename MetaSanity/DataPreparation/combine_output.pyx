@@ -62,7 +62,8 @@ class CombineOutput(LuigiTaskClass):
                         tsv = TSVJoiner(_f)
                     else:
                         tsv.read_tsv(_f)
-                tsv.write_tsv(os.path.join(str(self.output_directory), output_file))
+                if tsv is not None:
+                    tsv.write_tsv(os.path.join(str(self.output_directory), output_file))
                     # # Gather tsv info
                     # if not _df:
                     #     df = pd.read_csv(_f, delimiter=str(self.delimiter), header=0, index_col="ID")
@@ -109,11 +110,9 @@ class TSVJoiner:
     def __init__(self, str tsv_file_path):
         self.header = set()
         self.data = {}
+        self.is_empty = True
         if os.path.exists(tsv_file_path):
             self.read_tsv(tsv_file_path)
-            self.is_empty = False
-        else:
-            self.is_empty = True
 
     def _join_header(self, list header):
         cdef str _h
@@ -122,7 +121,6 @@ class TSVJoiner:
 
     def read_tsv(self, str tsv_file_path):
         self.is_empty = False
-        if not os.path.exists(tsv_file_path): return
         cdef object R = open(tsv_file_path, "r")
         header = next(R).rstrip("\r\n").split("\t")
         cdef int header_len = len(header)

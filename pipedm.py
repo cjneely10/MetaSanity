@@ -24,8 +24,6 @@ if __name__ == "__main__":
           "default": "None"}),
         (("-y", "--is_docker"),
          {"help": "For use in docker version", "default": False, "action": "store_true"}),
-        (("-z", "--remove_intermediates"),
-         {"help": "For use in docker version", "default": True, "action": "store_false"}),
         (("-p", "--prokka"),
          {"help": "Use PROKKA gene calls instead of prodigal search", "default": False, "action": "store_true"}),
     )
@@ -38,9 +36,9 @@ if __name__ == "__main__":
 
     flags = {
         "PhyloSanity": ("directory", "config_file", "cancel_autocommit", "output_directory",
-                        "biometadb_project", "is_docker", "remove_intermediates"),
+                        "biometadb_project", "is_docker"),
         "FuncSanity": ("directory", "config_file", "cancel_autocommit", "output_directory",
-                       "biometadb_project", "type_file", "is_docker", "remove_intermediates", "prokka"),
+                       "biometadb_project", "type_file", "is_docker", "prokka"),
     }
 
     errors = {

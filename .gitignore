@@ -19,7 +19,7 @@ MetaSanity/Annotation/FunctionalProfileReader/reader.cpp
 quick.py
 *.bam
 *.sam
-*.fna
 *.faa
 TARA*
-*/*/*/.vscode/*
+*/*/*/.vscode
+*/*/*/target

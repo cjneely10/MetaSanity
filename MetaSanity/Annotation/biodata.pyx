@@ -40,24 +40,24 @@ class BioData(LuigiTaskClass):
         cdef str final_outfile = os.path.join(str(self.output_directory), str(self.out_prefix) + BioDataConstants.OUTPUT_SUFFIX)
         cdef list out_path = []
         cdef list calling_head = []
-        if self.is_docker:
-            out_path = ["-p", os.path.join(str(self.output_directory), "function_heatmap.svg")]
-            calling_head = ["python", os.path.join(str(self.calling_script_path), "KEGG_decoder.py")]
-        else:
-            calling_head = ["KEGG-decoder"]
-        # Combine mrna results
+        # if self.is_docker:
+        out_path = ["-p", os.path.join(str(self.output_directory), "function_heatmap.svg")]
+        #     calling_head = ["python", os.path.join(str(self.calling_script_path), "KEGG_decoder.py")]
+        # else:
+        # calling_head = ["KEGG-decoder"]
         # Run KEGG-decoder
         try:
             subprocess.run(
                 [
-                    *calling_head,
+                    "KEGG-decoder",
                     "-i",
                     str(self.ko_file),
                     "-o",
                     decoder_outfile,
-                    *out_path,
-                    "--vizoption",
-                    "static",
+                    # *out_path,
+                    # "--vizoption",
+                    # "static",
+                    *self.added_flags,
                 ],
                 check=True,
             )

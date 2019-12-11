@@ -33,6 +33,7 @@ class AddUnannotated(luigi.Task):
         return []
 
     def run(self):
+        if not os.path.exists(str(self.annotation_tsv_outfile)): return
         cdef list combined_results
         cdef str _file, prot_id, annotation
         cdef set all_proteins = set([os.path.basename(_file) for _file in os.listdir(str(self.proteins_directory))])

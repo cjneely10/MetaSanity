@@ -5,12 +5,15 @@ import json
 import shutil
 import argparse
 import subprocess
+import sqlalchemy
+from Bio import SeqIO
 from pathlib import Path
+from Cython.Build import cythonize
 from configparser import RawConfigParser
 from argparse import RawTextHelpFormatter
 
 """
-MetaSanity v1.1 calling script
+MetaSanity v1.1.1 calling script
 
 
 **********
@@ -28,7 +31,7 @@ Provide valid locations for any recommended programs that you use. If you will n
 # Path to download location
 DOWNLOAD_DIRECTORY = "/path/to/MetaSanity"
 # Version installation - do not change unless using an older MetaSanity version
-VERSION = "v1.1"
+VERSION = "v1.1.1"
 
 # (Optional Source Code installation) Path to pipedm.py
 PIPEDM_PATH = "/path/to/MetaSanity/pipedm.py"
@@ -248,8 +251,8 @@ ap = ArgParse(
           "default": "None"}),
         (("-p", "--prokka"),
          {"help": "Use PROKKA gene calls instead of prodigal search", "default": False, "action": "store_true"}),
-        (("-z", "--autoremove_intermediates"),
-         {"help": "Remove intermediary genome directories, default: True", "default": True, "action": "store_false"}),
+        (("-z", "--remove_intermediates"),
+         {"help": "Remove intermediary genome directories, default: False", "default": False, "action": "store_true"}),
     ),
     description=ArgParse.description_builder(
         "MetaSanity:\tRun meta/genomes evaluation and annotation pipelines",
@@ -329,14 +332,12 @@ if not os.path.exists(PIPEDM_PATH):
                 "-y",
                 # Cancel autocommit from docker
                 "-a",
-                # Don't remove intermediary files
-                "-z"
             ],
             check=True,
         )
         os.remove(cid_file_name)
     except KeyboardInterrupt:
-        print("\nExiting...")
+        sys.stderr.write("\nExiting...\n")
         try:
             subprocess.run(["docker", "kill", open(cid_file_name, "rb").read()], check=True)
             os.remove(cid_file_name)
@@ -365,7 +366,6 @@ else:
                 "-t", (os.path.relpath(ap.args.type_file) if ap.args.type_file != "None" else "None"),
                 *prokka_add,
                 "-a",
-                "-z",
             ],
             check=True,
         )
@@ -375,7 +375,7 @@ else:
 out_prefixes = set({})
 
 if not ap.args.cancel_autocommit and os.path.exists(os.path.join(ap.args.output_directory, met_list[ap.args.program])):
-    print("\nStoring results to database..........")
+    sys.stderr.write("\nStoring results to database..........\n")
     # Primary output file types from FuncSanity (with N = number of genomes):
     # Set project name
     try:
@@ -397,7 +397,7 @@ if not ap.args.cancel_autocommit and os.path.exists(os.path.join(ap.args.output_
         for genome_prefix in (os.path.splitext(os.path.basename(line.rstrip("\r\n")))[0]
                               for line in open(os.path.join(ap.args.output_directory, met_list[ap.args.program]))):
             # Virsorter out (N) - out/virsorter_results/*/virsorter-out/*.VIRSorter_adj_out.tsv
-            print("\nStoring %s to database.........." % genome_prefix)
+            sys.stderr.write("\nStoring %s to database..........\n" % genome_prefix)
             out_prefixes.add(genome_prefix)
             dbdm.run(
                 genome_prefix,
@@ -419,14 +419,15 @@ if not ap.args.cancel_autocommit and os.path.exists(os.path.join(ap.args.output_
             os.path.join(ap.args.output_directory, "genomes"),
             os.path.join(ap.args.output_directory, "metagenome_evaluation.tsv"),
         )
-    print("BioMetaDB project complete!")
+    sys.stderr.write("BioMetaDB project complete!\n")
+    sys.stderr.write("MetaSanity pipeline and database creation complete!\n")
 
 if ap.args.program == "FuncSanity":
     for prefix in out_prefixes:
         if os.path.exists(os.path.join(ap.args.output_directory, prefix + ".metagenome_annotation_tmp.tsv")):
             os.remove(os.path.join(ap.args.output_directory, prefix + ".metagenome_annotation_tmp.tsv"))
 
-if ap.args.autoremove_intermediates:
+if ap.args.remove_intermediates:
     if os.path.exists(os.path.join(ap.args.output_directory, "genomes")):
         shutil.rmtree(os.path.join(ap.args.output_directory, "genomes"))
     if os.path.exists(os.path.join(ap.args.output_directory, "splitfiles")):

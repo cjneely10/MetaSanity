@@ -1,7 +1,6 @@
 # cython: language_level=3
 import os
 import luigi
-import shutil
 from MetaSanity.Accessories.ops import get_prefix
 from MetaSanity.Parsers.tsv_parser import TSVParser
 from MetaSanity.Peptidase.cazy import CAZY, CAZYConstants
@@ -58,8 +57,7 @@ class MetagenomeAnnotationConstants:
 
 
 def metagenome_annotation(str directory, str config_file, bint cancel_autocommit, str output_directory,
-                          str biometadb_project, str type_file, bint is_docker, bint remove_intermediates,
-                          bint prokka):
+                          str biometadb_project, str type_file, bint is_docker, bint prokka):
     """ Function calls the pipeline and is run from pipedm
 
     :param directory:
@@ -69,7 +67,6 @@ def metagenome_annotation(str directory, str config_file, bint cancel_autocommit
     :param biometadb_project:
     :param type_file:
     :param is_docker:
-    :param remove_intermediates:
     :param prokka:
     :return:
     """
@@ -571,10 +568,4 @@ def metagenome_annotation(str directory, str config_file, bint cancel_autocommit
     #                                           "%s.%s.%s" % (datetime.today().strftime("%Y%m%d"),
     #                                                         str(randint(1, 1001)),
     #                                                         CitationManagerConstants.OUTPUT_FILE,)))
-    # Remove directories that were added as part of the pipeline
-    if remove_intermediates:
-        for prefix in out_prefixes:
-            os.remove(os.path.join(output_directory, prefix + "." + MetagenomeAnnotationConstants.TMP_TSV_OUT))
-        shutil.rmtree(directory)
-        shutil.rmtree(os.path.join(output_directory, SplitFileConstants.OUTPUT_DIRECTORY))
     print("FuncSanity pipeline complete!")

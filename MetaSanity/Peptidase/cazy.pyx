@@ -60,7 +60,7 @@ class CAZY(LuigiTaskClass):
             W.write(<string>"\n")
             W.write(<string>PyUnicode_AsUTF8(str(self.genome_basename)))
             for cazy in cazy_ids:
-                val = <string>PyUnicode_AsUTF8(str(count_data.get(cazy, 0)))
+                val = <string>PyUnicode_AsUTF8(str(count_data.get(cazy, "None")))
                 W.write(<string>"\t" + val)
             W.write(<string>"\n")
             # Write individual protein data

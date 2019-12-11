@@ -2,7 +2,12 @@
 import sys
 from BioMetaDB import get_table, UpdateData
 
-assert len(sys.argv) == 2, "usage: python3 bowers_et_al_2017.py <biometadb-project>"
+USAGE = "Usage: python3 bowers_et_al_2017.py <biometadb-project>"
+
+if "-h" in sys.argv:
+    print(USAGE)
+    exit()
+assert len(sys.argv) == 2, USAGE
 
 evaluation_data = get_table(sys.argv[1], "evaluation")
 evaluation_data.query()
@@ -22,13 +27,13 @@ for genome in evaluation_data.keys():
     contamination = evaluation_data[genome].contamination
     # Bowers et al determinations for MAG/SAG assembly quality
     if num_tRNAs >= 18 and has_23_16_rRNA and completion > 90 and contamination < 5:
-        dt[genome].quality = "high"
+        dt[genome].setattr("quality", "high")
     elif completion >= 50 and contamination < 10:
-        dt[genome].quality = "medium"
+        dt[genome].setattr("quality", "medium")
     elif completion < 50 and contamination < 10:
-        dt[genome].quality = "low"
+        dt[genome].setattr("quality", "low")
     else:
-        dt[genome].quality = "incomplete"
+        dt[genome].setattr("quality", "incomplete")
         evaluation_data[genome].is_complete = False
 
 evaluation_data.save()
