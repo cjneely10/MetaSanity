@@ -134,6 +134,7 @@ def download_metasanity():
         merge_metasanity_files("MetaSanity.py", "MetaSanity.py.tmpl")
         os.remove("MetaSanity.py.tmpl")
     else:
+        shutil.move("MetaSanity.py.tmpl", "MetaSanity.py")
         subprocess.run(["sed", "-i",
                         's/DOWNLOAD_DIRECTORY = \"\/path\/to\/MetaSanity\"/DOWNLOAD_DIRECTORY = \"' + os.getcwd().replace(
                             "/", "\/") + '\"/',
