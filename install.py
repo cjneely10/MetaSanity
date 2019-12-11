@@ -129,16 +129,53 @@ def pull_download_script():
 def download_metasanity():
     METASANITY_URL = "https://raw.githubusercontent.com/cjneely10/MetaSanity/%s/MetaSanity.py" % \
                      versions[PACKAGE_VERSION]["metasanity_script"]
-    subprocess.run(["wget", METASANITY_URL, "-O", "MetaSanity.py"], check=True)
-    subprocess.run(["sed", "-i",
-                    's/DOWNLOAD_DIRECTORY = \"\/path\/to\/MetaSanity\"/DOWNLOAD_DIRECTORY = \"' + os.getcwd().replace(
-                        "/", "\/") + '\"/',
-                    "MetaSanity.py"])
-    if VERSION == 'SourceCode':
+    subprocess.run(["wget", METASANITY_URL, "-O", "MetaSanity.py.tmpl"], check=True)
+    if os.path.exists("MetaSanity.py"):
+        merge_metasanity_files("MetaSanity.py", "MetaSanity.py.tmpl")
+        os.remove("MetaSanity.py.tmpl")
+    else:
         subprocess.run(["sed", "-i",
-                        's/PIPEDM_PATH = \"\/path\/to\/MetaSanity\/pipedm.py\"/PIPEDM_PATH = \"' +
-                        os.path.join(os.getcwd(), 'MetaSanity/pipedm.py').replace("/", "\/") + '\"/',
+                        's/DOWNLOAD_DIRECTORY = \"\/path\/to\/MetaSanity\"/DOWNLOAD_DIRECTORY = \"' + os.getcwd().replace(
+                            "/", "\/") + '\"/',
                         "MetaSanity.py"])
+        if VERSION == 'SourceCode':
+            subprocess.run(["sed", "-i",
+                            's/PIPEDM_PATH = \"\/path\/to\/MetaSanity\/pipedm.py\"/PIPEDM_PATH = \"' +
+                            os.path.join(os.getcwd(), 'MetaSanity/pipedm.py').replace("/", "\/") + '\"/',
+                            "MetaSanity.py"])
+
+
+def merge_metasanity_files(old_file, template_file):
+    R = open(old_file, "r")
+    T = open(template_file, "r")
+    W = open(old_file + ".tmp10111134", "w")
+    # Write new file up to data section
+    templ_line = next(T)
+    while not templ_line.startswith("DOWNLOAD_DIRECTORY"):
+        W.write(templ_line)
+        templ_line = next(T)
+
+    # Skip over old section up to data
+    old_line = next(R)
+    while not old_line.startswith("DOWNLOAD_DIRECTORY"):
+        old_line = next(R)
+
+    # Write old data section
+    while not old_line.startswith("class ArgParse:"):
+        W.write(old_line)
+        old_line = next(R)
+
+    # Skip over template data section
+    while not templ_line.startswith("class ArgParse:"):
+        templ_line = next(T)
+
+    # Write rest of file
+    W.write(templ_line)
+    for line in T:
+        W.write(line)
+
+    shutil.move(old_file, old_file + ".prior")
+    shutil.move(old_file + ".tmp10111134", old_file)
 
 
 @out_dir
