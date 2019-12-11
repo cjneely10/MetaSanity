@@ -74,54 +74,54 @@ class ArgParse:
 
 
 if __name__ == "__main__":
-	args_list = (
-		(("filename",),
-		{"help": "<path/to/tsv_file>"}),
-		(("-r", "--replace"),
-		{"help": "Replace empty char value (default:'.')", "default": "."}),
-		(("-d", "--delim"),
-		{"help": "Delimiter (default: \\t)", "default": "\t"})
-	)
+    args_list = (
+        (("filename",),
+         {"help": "<path/to/tsv_file>"}),
+        (("-r", "--replace"),
+         {"help": "Replace empty char value (default:'.')", "default": "."}),
+        (("-d", "--delim"),
+         {"help": "Delimiter (default: \\t)", "default": "\t"})
+    )
 
-	ap = ArgParse(args_list, description="Columnize file and view with less")
+    ap = ArgParse(args_list, description="Columnize file and view with less")
 
-	p1 = subprocess.Popen(
-		[
-			"cat",
-			str(ap.args.filename),
-		],
-		stdout=subprocess.PIPE,
-	)
+    p1 = subprocess.Popen(
+        [
+            "cat",
+            str(ap.args.filename),
+        ],
+        stdout=subprocess.PIPE,
+    )
 
-	p2 = subprocess.Popen(
-		[
-			'tr',
-			" ",
-			ap.args.replace,
-		],
-		stdin=p1.stdout, \
-		stdout=subprocess.PIPE,
-	)
+    p2 = subprocess.Popen(
+        [
+            'tr',
+            " ",
+            ap.args.replace,
+        ],
+        stdin=p1.stdout, \
+        stdout=subprocess.PIPE,
+    )
 
-	p3 = subprocess.Popen(
-		[
-			'column',
-			"-t",
-			"-s",
-			ap.args.delim
-		],
-		stdin=p2.stdout, \
-		stdout=subprocess.PIPE,
-	)
+    p3 = subprocess.Popen(
+        [
+            'column',
+            "-t",
+            "-s",
+            ap.args.delim
+        ],
+        stdin=p2.stdout, \
+        stdout=subprocess.PIPE,
+    )
 
-	p4 = subprocess.Popen(
-		[
-			"less",
-			"-S"
-		],
-		stdin=p3.stdout,
-	)
-	p1.stdout.close()
-	p2.stdout.close()
-	p3.stdout.close()
-	output = p4.communicate()[0]
+    p4 = subprocess.Popen(
+        [
+            "less",
+            "-S"
+        ],
+        stdin=p3.stdout,
+    )
+    p1.stdout.close()
+    p2.stdout.close()
+    p3.stdout.close()
+    output = p4.communicate()[0]
