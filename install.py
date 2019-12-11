@@ -171,7 +171,7 @@ def merge_metasanity_files(old_file, template_file):
         old_line = next(R)
 
     # Skip version of old file
-    old_file = next(R)
+    old_line = next(R)
 
     # Write new version
     W.write(templ_line)
