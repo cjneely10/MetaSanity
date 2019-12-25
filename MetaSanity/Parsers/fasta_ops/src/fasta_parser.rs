@@ -41,6 +41,7 @@ impl FastaParser {
         }
     }
 
+    /// Writes FASTA file to standard
     fn write_simple(&self) {
         // File reader variables for parsing into 80 char chunks
         let mut line_loc: usize = 0;
