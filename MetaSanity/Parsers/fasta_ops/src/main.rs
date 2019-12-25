@@ -4,7 +4,9 @@ use argparse::{ArgumentParser, Store};
 
 fn main() -> std::io::Result<()> {
     let mut fasta_file = String::new();
-    let mut header_adj = "file".to_string();
+    let mut header_adj = "record".to_string();
+    
+    // Parse arguments using scoped borrows
     {
         let mut parser = ArgumentParser::new();
         parser.set_description("FastaOps - Simple operations of large fasta files");
@@ -13,19 +15,27 @@ fn main() -> std::io::Result<()> {
                 .required();
         parser.refer(&mut header_adj)
                 .add_option(&["-t", "--truncate-type"], Store, 
-                    "Determine by file/record, default file");
+                    "Determine by file/record, default record");
         parser.parse_args_or_exit();
     }
 
-    let mut file_header : Option<String> = None;
-    if header_adj != "file" || header_adj != "record" { 
+    // Confirm that header replace type is valid
+    let possible_types = ["file".to_string(), "record".to_string()];
+    if !possible_types.contains(&header_adj) { 
         println!("Incorrect header parse type");
         std::process::exit(1);
     }
+
+    // Determine file basename if needed
+    // Provide counter for indexing file
+    let ff = fasta_file.clone();
+    let mut counter = 0;
+    let mut file_header : Option<&str> = None;
     if header_adj == "file" { 
-        
+        file_header = std::path::Path::new(&ff).file_stem().and_then(std::ffi::OsStr::to_str);
     }
 
+    // File reader variables for parsing into 80 char chunks
     let mut line_loc: usize = 0;
     let mut end_of_line: bool = false;
     let reader = BufReader::new(std::fs::File::open(fasta_file).unwrap());
@@ -35,14 +45,19 @@ fn main() -> std::io::Result<()> {
         let _line = line.as_bytes();
         if _line.len() > 0 {
             match _line[0] {
+                // Write fasta header
                 b'>' => {
-                    if end_of_line { 
-                        print!("\n");
-                        line_loc = 0;
-                        end_of_line = false;
+                    // Based on name of file
+                    if file_header != None {
+                        println!(">{}_{}", file_header.unwrap(), counter);
+                        counter += 1;
                     }
-                    println!("{}", get_header(&_line));
+                    // Based on record
+                    else {
+                        write_header(&_line);
+                    }
                 },
+                // Write line in 80 character segments
                 _ => print_line_to_80(&_line, &mut line_loc, &mut end_of_line)
             };
         }
@@ -58,30 +73,41 @@ fn print_line_to_80(line: &[u8], line_loc: &mut usize, end_of_line: &mut bool) {
             // Record to write and line available
             if *line_loc < 80 {         
                 print!("{}", item as char);
-                *line_loc  = *line_loc + 1;
+                *line_loc += 1;
             }
             // Record to write, line unavailable
             else {
                 print!("\n");
                 *line_loc = 0;
+                // Recursive call for remaining length of line
                 print_line_to_80(&line[i..], line_loc, end_of_line);
                 break;
             }
         }
     }
-    *end_of_line = true;
+    // Print end of line
+    print!("\n");
+    // Update location in line to be at beginning of buffer
+    *line_loc = 0;
 }
 
 /// Returns up to the first space in the header
-fn get_header<'a>(line: &'a [u8]) -> &'a str {
+fn write_header<'a>(line: &'a [u8]) {
+    let mut line_len = line.len();
     for (i, &item) in line.iter().enumerate() {
+        // Identify location of space, if present, and break
         if item == b' ' {
-            // Header is short - no edit needed
-            if i < 20 { return std::str::from_utf8(&line[0..i]).unwrap(); }
-            else {
-
-            }
+            line_len = i;
+            break;
         }
     }
-    std::str::from_utf8(&line[..]).unwrap()
+    // Print up to space, or length of line, if short enough
+    if line_len <= 20 { 
+        println!("{}", std::str::from_utf8(&line[0..line_len]).unwrap());
+    }
+    // Print only first 12 and last 8 chars of line for max 20
+    else { 
+        print!("{}", std::str::from_utf8(&line[..12]).unwrap());
+        println!("{}", std::str::from_utf8(&line[line_len - 9..]).unwrap());
+    }
 }
