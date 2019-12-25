@@ -13,7 +13,7 @@ fn main() -> std::io::Result<()> {
         let mut parser = ArgumentParser::new();
         parser.set_description("FastaOps - Simple operations of large fasta files");
         parser.refer(&mut program)
-            .add_argument("program", Store, "Program to run. Select from: simplify")
+            .add_argument("program", Store, "Program to run. Select from: simplify/get")
             .required();
         parser.refer(&mut fasta_file)
             .add_argument("fasta-file", Store, "Fasta file to modify")
@@ -40,7 +40,7 @@ fn main() -> std::io::Result<()> {
             fasta_parser::FastaParser::new(&fasta_file, true).get(&query);
         },
         _ => {
-            println!("Program {} does not exist! Select from: simplify", program);
+            println!("Program {} does not exist! Select from: simplify/get", program);
             std::process::exit(1);
          }
     }

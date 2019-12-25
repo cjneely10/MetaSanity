@@ -56,7 +56,7 @@ impl FastaParser {
             let _line = line.as_bytes();
             // Update line count
             counter += 1;
-            if _line[0] == b'>' {
+            if _line.len() > 0 && _line[0] == b'>' {
                 // Store initial header line
                 if old_count == 0 { 
                     header = String::from(&line[1..]);
@@ -73,6 +73,11 @@ impl FastaParser {
                 header = String::from(&line[1..]);
             }
         }
+        // Insert last segment
+        index_hash.insert(
+            header.clone(),
+            LineNum{start: old_count as usize - 1, end: counter as usize - 1}
+        );
         Some(index_hash)
     }
 
