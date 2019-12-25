@@ -40,10 +40,12 @@ fn main() -> std::io::Result<()> {
     let mut end_of_line: bool = false;
     let reader = BufReader::new(std::fs::File::open(fasta_file).unwrap());
 
+    // Parse line by line
     for line in reader.lines() {
         let line = line.expect("Unable to read line");
         let _line = line.as_bytes();
         if _line.len() > 0 {
+            // Based on first character of each line
             match _line[0] {
                 // Write fasta header
                 b'>' => {
