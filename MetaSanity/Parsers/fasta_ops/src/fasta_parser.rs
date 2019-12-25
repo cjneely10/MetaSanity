@@ -7,12 +7,21 @@ pub struct FastaParser {
 }
 
 impl FastaParser {
+    /// Method converts FASTA file to std format
     pub fn parse_to_std(fasta_file: &str, header_as_id: bool) {
         let fp = FastaParser::new(fasta_file, header_as_id);
         fp.write_simple();
     }
 
+    /// Initializer for FastaParser object
+    /// * Assumes that the file has already been parsed to standard
+    /// * Will run even if not adequately parsed
     pub fn new(fasta_file: &str, header_as_id: bool) -> FastaParser {
+        // Confirm file exists
+        if !std::path::Path::new(&fasta_file).exists() {
+            println!("Fasta file {} does not exist!", fasta_file);
+            std::process::exit(1);
+        }
         let mut file_header: Option<String> = None;
         if header_as_id {
             file_header = Some(
@@ -23,11 +32,6 @@ impl FastaParser {
                         .unwrap()
                 )
             );
-        }
-        // Confirm file exists
-        if !std::path::Path::new(&fasta_file).exists() {
-            println!("Fasta file {} does not exist!", fasta_file);
-            std::process::exit(1);
         }
         // Return parsed object
         FastaParser{
