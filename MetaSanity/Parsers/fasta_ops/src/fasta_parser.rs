@@ -6,7 +6,6 @@ pub struct FastaParser {
     record_locations: Option<std::collections::HashMap<String, LineNum>>
 }
 
-#[derive(Debug)]
 struct LineNum {
     start: usize,
     end: usize
@@ -77,7 +76,7 @@ impl FastaParser {
         Some(index_hash)
     }
 
-    /// Public method for returning a specific id
+    /// Public method for returning a fasta record corresponding to a specific id
     pub fn get(&self, fasta_id: &str) {
         let file = BufReader::new(std::fs::File::open(self.fasta_file.clone()).unwrap());
         let location = self.record_locations
