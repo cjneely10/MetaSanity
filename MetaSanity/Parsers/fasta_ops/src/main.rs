@@ -5,12 +5,16 @@ mod fasta_parser;
 
 fn main() -> std::io::Result<()> {
     let mut fasta_file = String::new();
+    let mut program = String::from("simplify");
     let mut header_adj = false;
     
     // Parse arguments using scoped borrows
     {
         let mut parser = ArgumentParser::new();
         parser.set_description("FastaOps - Simple operations of large fasta files");
+        parser.refer(&mut program)
+            .add_argument("program", Store, "Program to run. Select from: simplify")
+            .required();
         parser.refer(&mut fasta_file)
                 .add_argument("fasta-file", Store, "Fasta file to modify")
                 .required();
@@ -20,14 +24,25 @@ fn main() -> std::io::Result<()> {
         parser.parse_args_or_exit();
     }
 
-    // Confirm that header replace type is valid
-    // let possible_types = ["file".to_string(), "record".to_string()];
-    // if !possible_types.contains(&header_adj) { 
-    //     println!("Incorrect header parse type");
-    //     std::process::exit(1);
-    // }
+    // Confirm program exists
+    let possible_programs = ["simplify".to_string(), "get".to_string()];
+    if !possible_programs.contains(&program) { 
+        println!("Program {} does not exist! Select from: simplify", program);
+        std::process::exit(1);
+    }
+    // Confirm file exists
+    if !std::path::Path::new(&fasta_file).exists() {
+        println!("Fasta file {} foes not exist!", fasta_file);
+        std::process::exit(1);
+    }
 
-    fasta_parser::FastaParser::parse_to_std(&fasta_file, header_adj);
+    let program = program.as_ref();
+    match program {
+        "simplify" => {
+            fasta_parser::FastaParser::parse_to_std(&fasta_file, header_adj);
+        }
+        _ => { }
+    }
 
     // // Determine file basename if needed
     // // Provide counter for indexing file
