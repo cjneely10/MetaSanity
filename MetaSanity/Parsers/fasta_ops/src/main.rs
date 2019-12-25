@@ -1,4 +1,3 @@
-// use std::io::{BufRead, BufReader};
 extern crate argparse;
 use argparse::{ArgumentParser, Store, StoreTrue};
 mod fasta_parser;
