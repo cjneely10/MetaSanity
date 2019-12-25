@@ -1,18 +1,18 @@
 use std::io::{BufRead, BufReader};
 
 pub struct FastaParser {
-    fasta_file: String,
+    pub fasta_file: String,
     file_header: Option<String>,
-    record_locations: Option<std::collections::HashMap<String, u16>>
+    record_locations: Option<std::collections::HashMap<String, LineNum>>
+}
+
+#[derive(Debug)]
+struct LineNum {
+    start: usize,
+    end: usize
 }
 
 impl FastaParser {
-    /// Method converts FASTA file to std format
-    pub fn parse_to_std(fasta_file: &str, header_as_id: bool) {
-        let fp = FastaParser::new(fasta_file, header_as_id);
-        fp.write_simple();
-    }
-
     /// Initializer for FastaParser object
     /// * Assumes that the file has already been parsed to standard
     /// * Will run even if not adequately parsed
@@ -34,15 +34,64 @@ impl FastaParser {
             );
         }
         // Return parsed object
-        FastaParser{
+        let mut fp = FastaParser{
             fasta_file: fasta_file.to_string(),
             file_header: file_header,
-            record_locations: Some(std::collections::HashMap::new())
+            record_locations: None
+        };
+        fp.record_locations = fp.generate_index_map();
+        fp
+    }
+
+    /// Creates an index of the line numbers within
+    fn generate_index_map(&self) -> Option<std::collections::HashMap<String, LineNum>> {
+        let reader = BufReader::new(std::fs::File::open(self.fasta_file.clone()).unwrap());
+        let mut counter: u16 = 0;
+        let mut old_count = counter;
+        let mut header = String::new();
+        // let mut header_locs = std::vec::Vec::new();
+        let mut index_hash: std::collections::HashMap<String, LineNum> = std::collections::HashMap::new();
+        // let mut headers = std::vec::Vec::new();
+
+        for line in reader.lines() {
+            let line = line.expect("Unable to read line");
+            let _line = line.as_bytes();
+            counter += 1;
+            if _line[0] == b'>' {
+                if old_count == 0 { 
+                    header = String::from(&line[1..]);
+                    old_count = 1;
+                };
+                index_hash.insert(
+                    header.clone(),
+                    LineNum{start: old_count as usize - 1, end: counter as usize - 2}
+                );
+                old_count = counter;
+                header = String::from(&line[1..]);
+            }
+        }
+        Some(index_hash)
+    }
+
+    pub fn get(&self, fasta_id: &str) {
+        let file = BufReader::new(std::fs::File::open(self.fasta_file.clone()).unwrap());
+        let location = self.record_locations.as_ref().unwrap().get(fasta_id).expect("Unable to locate ID");
+        for (i, line) in file.lines().enumerate() {
+            if i >= location.start && i <= location.end {
+                let line = line.expect("Unable to read line");
+                println!("{}", line);
+            }
         }
     }
 
-    /// Writes FASTA file to standard
-    fn write_simple(&self) {
+    /// Method outputs FASTA file to stdout in std format
+    pub fn parse_to_std(fasta_file: &str, header_as_id: bool) {
+        FastaParser::new(fasta_file, header_as_id).write_simple();
+    }
+
+    /// Writes FASTA file to standard format
+    /// * Outputs to stdout
+    pub fn write_simple(&self) {
         // File reader variables for parsing into 80 char chunks
         let mut line_loc: usize = 0;
         let mut end_of_line: bool = false;
@@ -77,7 +126,7 @@ impl FastaParser {
     }
 
     /// Calls print for 80 char line segments
-    /// Builds passed buffer and writes once it is 80 chars long
+    /// * Builds passed buffer and writes once it is 80 chars long
     fn print_line_to_80(&self, line: &[u8], line_loc: &mut usize, end_of_line: &mut bool) {
         for (i, &item) in line.iter().enumerate() {
             if item != b'\n' {
