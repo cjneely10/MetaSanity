@@ -30,11 +30,6 @@ fn main() -> std::io::Result<()> {
         println!("Program {} does not exist! Select from: simplify", program);
         std::process::exit(1);
     }
-    // Confirm file exists
-    if !std::path::Path::new(&fasta_file).exists() {
-        println!("Fasta file {} foes not exist!", fasta_file);
-        std::process::exit(1);
-    }
 
     let program = program.as_ref();
     match program {

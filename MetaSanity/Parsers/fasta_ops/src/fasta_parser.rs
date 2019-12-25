@@ -3,32 +3,38 @@ use std::io::{BufRead, BufReader};
 pub struct FastaParser {
     fasta_file: String,
     file_header: Option<String>,
-    record_locations: Option<std::collections::HashMap<String, String>>
+    record_locations: Option<std::collections::HashMap<String, u16>>
 }
 
 impl FastaParser {
-    pub fn parse_to_std(_file: &str, header_as_id: bool) {
+    pub fn parse_to_std(fasta_file: &str, header_as_id: bool) {
+        let fp = FastaParser::new(fasta_file, header_as_id);
+        fp.write_simple();
+    }
+
+    pub fn new(fasta_file: &str, header_as_id: bool) -> FastaParser {
         let mut file_header: Option<String> = None;
         if header_as_id {
             file_header = Some(
                 String::from(
-                    std::path::Path::new(&_file)
+                    std::path::Path::new(&fasta_file)
                         .file_stem()
                         .and_then(std::ffi::OsStr::to_str)
                         .unwrap()
                 )
             );
         }
-        let fp = FastaParser{
-            fasta_file: _file.to_string(), 
+        // Confirm file exists
+        if !std::path::Path::new(&fasta_file).exists() {
+            println!("Fasta file {} does not exist!", fasta_file);
+            std::process::exit(1);
+        }
+        // Return parsed object
+        FastaParser{
+            fasta_file: fasta_file.to_string(),
             file_header: file_header,
-            record_locations: None
-        };
-        fp.write_simple();
-    }
-
-    pub fn new(_file: &str) {
-
+            record_locations: Some(std::collections::HashMap::new())
+        }
     }
 
     fn write_simple(&self) {
