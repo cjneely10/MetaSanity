@@ -28,7 +28,10 @@ fn main() -> std::io::Result<()> {
     match program {
         "simplify" => {
             fasta_parser::FastaParser::parse_to_std(&fasta_file, header_adj);
-        }
+        },
+        "get" => {
+            println!("get function");
+        },
         _ => {
             println!("Program {} does not exist! Select from: simplify", program);
             std::process::exit(1);
