@@ -43,39 +43,48 @@ impl FastaParser {
         fp
     }
 
-    /// Creates an index of the line numbers within
+    /// Creates an index of the line numbers within the fasta file
+    /// * Used for quick access by id
     fn generate_index_map(&self) -> Option<std::collections::HashMap<String, LineNum>> {
         let reader = BufReader::new(std::fs::File::open(self.fasta_file.clone()).unwrap());
         let mut counter: u16 = 0;
         let mut old_count = counter;
         let mut header = String::new();
-        // let mut header_locs = std::vec::Vec::new();
         let mut index_hash: std::collections::HashMap<String, LineNum> = std::collections::HashMap::new();
-        // let mut headers = std::vec::Vec::new();
 
         for line in reader.lines() {
             let line = line.expect("Unable to read line");
             let _line = line.as_bytes();
+            // Update line count
             counter += 1;
             if _line[0] == b'>' {
+                // Store initial header line
                 if old_count == 0 { 
                     header = String::from(&line[1..]);
                     old_count = 1;
                 };
+                // Store in hash map based on id (gathered from last record)
                 index_hash.insert(
                     header.clone(),
                     LineNum{start: old_count as usize - 1, end: counter as usize - 2}
                 );
+                // Store new count as end of section
                 old_count = counter;
+                // Update new header id
                 header = String::from(&line[1..]);
             }
         }
         Some(index_hash)
     }
 
+    /// Public method for returning a specific id
     pub fn get(&self, fasta_id: &str) {
         let file = BufReader::new(std::fs::File::open(self.fasta_file.clone()).unwrap());
-        let location = self.record_locations.as_ref().unwrap().get(fasta_id).expect("Unable to locate ID");
+        let location = self.record_locations
+            .as_ref()
+            .unwrap()
+            .get(fasta_id).expect("Unable to locate ID");
+        // Print out lines that correspond to the location
         for (i, line) in file.lines().enumerate() {
             if i >= location.start && i <= location.end {
                 let line = line.expect("Unable to read line");
