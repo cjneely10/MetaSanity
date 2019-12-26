@@ -116,10 +116,12 @@ impl FastaParser {
         }
     }
 
-    pub fn get_list(&self, fasta_ids: &std::vec::Vec<String>) {
+    /// Public method for getting a list of fasta records corresponding to located ids
+    /// * Raises error if any id in list is not found
+    pub fn get_list(&self, fasta_ids: &std::vec::Vec<&str>) {
         let mut location_vector = std::vec::Vec::new();
         // Get locations of ids in query list
-        for id in fasta_ids {
+        for &id in fasta_ids {
             let location = self.record_locations
                 .as_ref()
                 .unwrap()

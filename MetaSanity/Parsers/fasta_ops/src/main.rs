@@ -37,10 +37,14 @@ fn main() -> std::io::Result<()> {
                 println!("Provide query id!");
                 std::process::exit(1);
             }
+            let query: std::vec::Vec<&str> = query.split(",").collect();
             // fasta_parser::FastaParser::new(&fasta_file, true).get(&query);
-            fasta_parser::FastaParser::new(&fasta_file, true).get_list(
-                &vec!["2629614481|sp.|SC-1]".to_string(), "2629614483|sp.|SC-1]".to_string(), "2629614480|sp.|SC-1]".to_string()]
-            );
+            if query.len() == 1 {
+                fasta_parser::FastaParser::new(&fasta_file, true).get(query[0]);
+            }
+            else {
+                fasta_parser::FastaParser::new(&fasta_file, true).get_list(&query);
+            }
         },
         _ => {
             println!("Program {} does not exist! Select from: simplify/get", program);
