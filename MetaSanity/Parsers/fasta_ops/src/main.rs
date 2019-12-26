@@ -23,7 +23,7 @@ fn main() -> std::io::Result<()> {
                 "Name by file instead of default name by record");
         parser.refer(&mut query)
             .add_option(&["-q", "--query"], Store, 
-                "Query id to gather");
+                "Query id (or comma-separated list of ids) to gather");
         parser.parse_args_or_exit();
     }
 
@@ -33,15 +33,18 @@ fn main() -> std::io::Result<()> {
             fasta_parser::FastaParser::parse_to_std(&fasta_file, header_adj);
         },
         "get" => {
+            // Confirm that query was passed
             if query == "" {
                 println!("Provide query id!");
                 std::process::exit(1);
             }
+            // Split by commas
             let query: std::vec::Vec<&str> = query.split(",").collect();
-            // fasta_parser::FastaParser::new(&fasta_file, true).get(&query);
+            // Get single id
             if query.len() == 1 {
                 fasta_parser::FastaParser::new(&fasta_file, true).get(query[0]);
             }
+            // Get list of ids
             else {
                 fasta_parser::FastaParser::new(&fasta_file, true).get_list(&query);
             }
