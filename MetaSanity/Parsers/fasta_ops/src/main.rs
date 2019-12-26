@@ -20,7 +20,7 @@ fn main() -> std::io::Result<()> {
             .required();
         parser.refer(&mut header_adj)
             .add_option(&["-n", "--name-by-file"], StoreTrue, 
-                "Name by file instead of default name by record");
+                "Name by file instead of by record (use with simplify)");
         parser.refer(&mut query)
             .add_option(&["-q", "--query"], Store, 
                 "Query id (or comma-separated list of ids) to gather");
