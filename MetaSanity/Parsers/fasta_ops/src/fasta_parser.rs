@@ -161,11 +161,6 @@ impl FastaParser {
         }
     }
 
-    /// Method outputs FASTA file to stdout in std format
-    pub fn parse_to_std(fasta_file: &str, header_as_id: bool) {
-        FastaParser::new(fasta_file, header_as_id).write_simple();
-    }
-
     /// Writes FASTA file to standard format
     /// * Outputs to stdout
     pub fn write_simple(&self) {

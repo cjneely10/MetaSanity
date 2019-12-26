@@ -31,7 +31,7 @@ fn main() -> std::io::Result<()> {
     // Run calling program
     match program.as_ref() {
         "simplify" => {
-            FastaParser::parse_to_std(&fasta_file, header_adj);
+            FastaParser::new(&fasta_file, header_adj).write_simple();
         },
         "get" => {
             // Confirm that query was passed
