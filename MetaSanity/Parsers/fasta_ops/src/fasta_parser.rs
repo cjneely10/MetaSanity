@@ -57,18 +57,18 @@ impl FastaParser {
             file_header: file_header,
             record_locations: None
         };
-        fp.record_locations = fp.generate_index_map();
+        fp.generate_index_map();
         fp
     }
 
     /// Creates an index of the line numbers within the fasta file
     /// * Used for quick access by id
-    fn generate_index_map(&self) -> Option<std::collections::HashMap<String, LineNum>> {
+    fn generate_index_map(&mut self) {
         let reader = BufReader::new(std::fs::File::open(self.fasta_file.clone()).unwrap());
         let mut counter: u16 = 0;
         let mut old_count = counter;
         let mut header = String::new();
-        let mut index_hash: std::collections::HashMap<String, LineNum> = std::collections::HashMap::new();
+        let mut index_hash = std::collections::HashMap::new();
 
         for line in reader.lines() {
             let line = line.expect("Unable to read line");
@@ -100,7 +100,8 @@ impl FastaParser {
             header.clone(),
             LineNum{start: old_count as usize - 1, end: counter as usize - 1}
         );
-        Some(index_hash)
+        // Copy hashmap to object property
+        self.record_locations = Some(index_hash);
     }
 
     /// Public method for returning a fasta record corresponding to a specific id
