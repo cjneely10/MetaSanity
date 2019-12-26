@@ -1,6 +1,7 @@
 extern crate argparse;
 use argparse::{ArgumentParser, Store, StoreTrue};
 mod fasta_parser;
+use fasta_parser::FastaParser;
 
 fn main() -> std::io::Result<()> {
     let mut fasta_file = String::new();
@@ -30,7 +31,7 @@ fn main() -> std::io::Result<()> {
     // Run calling program
     match program.as_ref() {
         "simplify" => {
-            fasta_parser::FastaParser::parse_to_std(&fasta_file, header_adj);
+            FastaParser::parse_to_std(&fasta_file, header_adj);
         },
         "get" => {
             // Confirm that query was passed
@@ -42,11 +43,11 @@ fn main() -> std::io::Result<()> {
             let query: std::vec::Vec<&str> = query.split(",").collect();
             // Get single id
             if query.len() == 1 {
-                fasta_parser::FastaParser::new(&fasta_file, true).get(query[0]);
+                FastaParser::new(&fasta_file, true).get(query[0]);
             }
             // Get list of ids
             else {
-                fasta_parser::FastaParser::new(&fasta_file, true).get_list(&query);
+                FastaParser::new(&fasta_file, true).get_list(&query);
             }
         },
         _ => {
