@@ -78,7 +78,8 @@ impl FastaParser {
             if _line.len() > 0 && _line[0] == b'>' {
                 // Store initial header line
                 if old_count == 0 { 
-                    header = String::from(&line[1..]);
+                    let line: std::vec::Vec<&str> = line.split(" ").collect();
+                    header = String::from(&line[0][1..]);
                     old_count = 1;
                     continue;
                 };
@@ -90,7 +91,8 @@ impl FastaParser {
                 // Store new count as end of section
                 old_count = counter;
                 // Update new header id
-                header = String::from(&line[1..]);
+                let line: std::vec::Vec<&str> = line.split(" ").collect();
+                header = String::from(&line[0][1..]);
             }
         }
         // Insert last segment
