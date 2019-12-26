@@ -141,14 +141,18 @@ impl FastaParser {
         let mut write_location = location_vector.pop();
         
         for (i, line) in file.lines().enumerate() {
+            // Skip over 1) beginning of file, or 2) space between records
             if i < write_location.unwrap().start { continue; }
+            // Write portion of file matching indexed region
             if i >= write_location.unwrap().start && i < write_location.unwrap().end {
                 println!("{}", line.expect("Unable to read line"));
             }
+            // Print line and then get next region
             else {
                 println!("{}", line.expect("Unable to read line"));
                 write_location = location_vector.pop();
             }
+            // Break out of loop if no more areas to write
             match write_location {
                 None => { break; },
                 Some(_) => { continue; }
