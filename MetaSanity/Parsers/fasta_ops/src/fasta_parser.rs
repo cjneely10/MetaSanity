@@ -40,6 +40,7 @@ impl FastaParser {
             println!("Fasta file {} does not exist!", fasta_file);
             std::process::exit(1);
         }
+        // Determine if header is based on file or on record
         let mut file_header: Option<String> = None;
         if header_as_id {
             file_header = Some(
@@ -51,13 +52,15 @@ impl FastaParser {
                 )
             );
         }
-        // Return parsed object
+        // Generate mutable object
         let mut fp = FastaParser{
             fasta_file: fasta_file.to_string(),
             file_header: file_header,
             record_locations: None
         };
+        // Gather index map
         fp.generate_index_map();
+        // Return object
         fp
     }
 
