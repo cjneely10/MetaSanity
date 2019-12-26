@@ -1,14 +1,33 @@
 use std::io::{BufRead, BufReader};
 
+#[derive(Debug, Eq)]
+struct LineNum {
+    start: usize,
+    end: usize
+}
+
+impl Ord for LineNum {
+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+        self.start.cmp(&other.start)
+    }
+}
+
+impl PartialOrd for LineNum {
+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+        Some(self.cmp(other))
+    }
+}
+
+impl PartialEq for LineNum {
+    fn eq(&self, other: &Self) -> bool {
+        self.start == other.start
+    }
+}
+
 pub struct FastaParser {
     pub fasta_file: String,
     file_header: Option<String>,
     record_locations: Option<std::collections::HashMap<String, LineNum>>
-}
-
-struct LineNum {
-    start: usize,
-    end: usize
 }
 
 impl FastaParser {
@@ -61,6 +80,7 @@ impl FastaParser {
                 if old_count == 0 { 
                     header = String::from(&line[1..]);
                     old_count = 1;
+                    continue;
                 };
                 // Store in hash map based on id (gathered from last record)
                 index_hash.insert(
@@ -91,8 +111,43 @@ impl FastaParser {
         // Print out lines that correspond to the location
         for (i, line) in file.lines().enumerate() {
             if i >= location.start && i <= location.end {
-                let line = line.expect("Unable to read line");
-                println!("{}", line);
+                println!("{}", line.expect("Unable to read line"));
+            }
+        }
+    }
+
+    pub fn get_list(&self, fasta_ids: &std::vec::Vec<String>) {
+        let mut location_vector = std::vec::Vec::new();
+        // Get locations of ids in query list
+        for id in fasta_ids {
+            let location = self.record_locations
+                .as_ref()
+                .unwrap()
+                .get(id).expect("Unable to locate ID");
+            location_vector.push(
+                location
+            );
+        }
+
+        // Sort vector in reverse in order to make pop efficient
+        location_vector.sort_by(|b, e| e.cmp(&b));
+        
+        // Open file and get first location in file
+        let file = BufReader::new(std::fs::File::open(self.fasta_file.clone()).unwrap());
+        let mut write_location = location_vector.pop();
+        
+        for (i, line) in file.lines().enumerate() {
+            if i < write_location.unwrap().start { continue; }
+            if i >= write_location.unwrap().start && i < write_location.unwrap().end {
+                println!("{}", line.expect("Unable to read line"));
+            }
+            else {
+                println!("{}", line.expect("Unable to read line"));
+                write_location = location_vector.pop();
+            }
+            match write_location {
+                None => { break; },
+                Some(_) => { continue; }
             }
         }
     }
