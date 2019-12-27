@@ -216,7 +216,7 @@ impl FastaParser {
                     *line_loc = 0;
                     // Recursive call for remaining length of line
                     self.print_line_to_80(&line[i..], line_loc, end_of_line);
-                    break;
+                    return;
                 }
             }
         }
