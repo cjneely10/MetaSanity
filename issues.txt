@@ -11,7 +11,7 @@ iss#    <short descr>
     - Notes
     <<<
 ----------------------------------------------------------------------------------------------------------------
-version pipedm:v0.0.3 cjneely10/metasanity:v0.1.0
+
 iss1    PSORTb output
         | Error on line 55 of PSORTb.run in shutil function
         - No such file or directory: /home/appuser/wdir/out/peptidase_results/psortb_results/<OUT_PREFIX>/psortb_out
