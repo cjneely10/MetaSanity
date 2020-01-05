@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to **MetaSanity** and **BioMetaDB** will be documented in this file.
 
+## MetaSanity v1.1.1 - 2020 version, 01/05/2019
+
+### MetaSanity-Code v0.1.2
+- GTDB-Tk released a version update to fix bug in FastANI calling.
+
+------
 ## MetaSanity v1.1.1 - 12/13/2019
 
 ### pipedm v0.0.5

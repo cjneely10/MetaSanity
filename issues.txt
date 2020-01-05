@@ -92,3 +92,8 @@ iss14   Prokka data not stored if autoremove enabled
         | Folder path deleted before data stored
         | Remove delete calls from pipedm and sequester to MetaSanity.py
         | Issue resolved, nothing further
+
+iss15   GTDB-Tk fails in FastANI stage
+        | Pipeline fails GTDBTK step
+        | GTDB-Tk update to v1.0.2
+        | Issue resolved, nothing further
