@@ -11,7 +11,7 @@ iss#    <short descr>
     - Notes
     <<<
 ----------------------------------------------------------------------------------------------------------------
-version pipedm:v0.0.3 cjneely10/metasanity:v0.1.0
+
 iss1    PSORTb output
         | Error on line 55 of PSORTb.run in shutil function
         - No such file or directory: /home/appuser/wdir/out/peptidase_results/psortb_results/<OUT_PREFIX>/psortb_out
@@ -91,4 +91,9 @@ iss13   tbl2asn NCBI update
 iss14   Prokka data not stored if autoremove enabled
         | Folder path deleted before data stored
         | Remove delete calls from pipedm and sequester to MetaSanity.py
+        | Issue resolved, nothing further
+
+iss15   GTDB-Tk fails in FastANI stage
+        | Pipeline fails GTDBTK step
+        | GTDB-Tk update to v1.0.2
         | Issue resolved, nothing further

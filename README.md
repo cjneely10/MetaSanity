@@ -1,4 +1,4 @@
-# MetaSanity v1.1.1
+# MetaSanity v1.1.1 - 2020 version
 
 ## About
 

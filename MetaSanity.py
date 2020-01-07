@@ -13,7 +13,7 @@ from configparser import RawConfigParser
 from argparse import RawTextHelpFormatter
 
 """
-MetaSanity v1.1.1 calling script
+MetaSanity v1.1.1 - 2020 version calling script
 
 
 **********
