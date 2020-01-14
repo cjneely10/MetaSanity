@@ -8,7 +8,7 @@ from argparse import RawTextHelpFormatter
 global VERSION, PACKAGE_VERSION
 
 OUTDIR = "MetaSanity"
-DEFAULT_VERSION = "v1.1.1"
+DEFAULT_VERSION = "v1.2.0"
 
 versions = {
     "v1": {
@@ -263,7 +263,7 @@ def sourcecode_installation():
 
 def docker_installation():
     docker_image()
-    biometadb()
+    # biometadb()
     scripts()
 
 

@@ -5,15 +5,12 @@ import json
 import shutil
 import argparse
 import subprocess
-import sqlalchemy
-from Bio import SeqIO
 from pathlib import Path
-from Cython.Build import cythonize
 from configparser import RawConfigParser
 from argparse import RawTextHelpFormatter
 
 """
-MetaSanity v1.1.1 - 2020 version calling script
+MetaSanity v1.2.0
 
 
 **********
@@ -31,7 +28,7 @@ Provide valid locations for any recommended programs that you use. If you will n
 # Path to download location
 DOWNLOAD_DIRECTORY = "/path/to/MetaSanity"
 # Version installation - do not change unless using an older MetaSanity version
-VERSION = "v1.1.1"
+VERSION = "v1.2.0"
 
 # (Optional Source Code installation) Path to pipedm.py
 PIPEDM_PATH = "/path/to/MetaSanity/pipedm.py"
@@ -48,7 +45,7 @@ RNAMMER_FOLDER = "/path/to/rnammer-1.2.src"
 # Location of VERSIONS.json should be in installation directory
 version_data = json.load(open(os.path.join(DOWNLOAD_DIRECTORY, "VERSIONS.json"), "r"))
 # Location of BioMetaDB on system. If not used, ensure to pass `-a` flag to MetaSanity.py when running
-BIOMETADB = os.path.join(DOWNLOAD_DIRECTORY, "BioMetaDB/dbdm.py")
+BIOMETADB = "dbdm"
 # Location of databases
 DOWNLOAD_DIRECTORY = os.path.join(DOWNLOAD_DIRECTORY, "databases")
 # Data downloaded from  https://data.ace.uq.edu.au/public/gtdbtk/
@@ -124,7 +121,7 @@ class GetDBDMCall:
         """
         # Commit with biometadb, if passed (COPY/PASTE+REFACTOR from dbdm_calls.pyx)
         to_run = [
-            "python3",
+            # "python3",
             self.calling_script_path,
         ]
         if self.cancel_autocommit:

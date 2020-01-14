@@ -6,12 +6,17 @@ All notable changes to **MetaSanity** and **BioMetaDB** will be documented in th
 ### BioMetaDB v1.3.0
 #### Changed
 - BioMetaDB is now installable via `pip3`.
-- 
+- Accessory scripts `table` and `tsv-join` part of `pip3` installation.
+
+---
+### MetaSanity-Code v0.0.6
+#### Changed
+- Refactor `install.py`, `MetaSanity.py` to use `pip3` version of BioMetaDB.
 
 ------
 ## MetaSanity v1.1.1 - 2020 version, 01/05/2020
 
-### MetaSanity-Code v0.1.2
+### MetaSanity-Docker v0.1.2
 - GTDB-Tk released a version update to fix bug in FastANI calling.
 
 ------
@@ -39,7 +44,7 @@ All notable changes to **MetaSanity** and **BioMetaDB** will be documented in th
 - Checking for un/annotated status completed through simple existence check versus string comparison.
 
 ---
-### MetaSanity-Code v0.1.2
+### MetaSanity-Docker v0.1.2
 #### Changed
 - CheckM and GTDB-Tk update to Python3.
 
