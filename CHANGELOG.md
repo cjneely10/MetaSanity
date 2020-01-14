@@ -1,7 +1,15 @@
 # Changelog
 All notable changes to **MetaSanity** and **BioMetaDB** will be documented in this file.
 
-## MetaSanity v1.1.1 - 2020 version, 01/05/2019
+## MetaSanity v1.2.0 - 01/24/2020
+
+### BioMetaDB v1.3.0
+#### Changed
+- BioMetaDB is now installable via `pip3`.
+- 
+
+------
+## MetaSanity v1.1.1 - 2020 version, 01/05/2020
 
 ### MetaSanity-Code v0.1.2
 - GTDB-Tk released a version update to fix bug in FastANI calling.

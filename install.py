@@ -22,10 +22,15 @@ versions = {
         "metasanity_script": "v0.0.4",
     },
     "v1.1.1": {
-        "biometadb": "master",
+        "biometadb": "v0.1.2",
         "metasanity_docker": "v0.1.2",
         "metasanity_script": "v0.0.5"
-      }
+    },
+    "v1.2.0": {
+        "biometadb": "v0.1.3",
+        "metasanity_docker": "v0.1.2",
+        "metasanity_script": "v0.0.6"
+    }
 }
 
 
@@ -222,8 +227,8 @@ def download_accessory_script():
     os.makedirs("Accessories")
     os.chdir("Accessories")
     ACCESSORIES_URL_PRE = "https://raw.githubusercontent.com/cjneely10/MetaSanity/%s/Accessories/" % \
-                       versions[PACKAGE_VERSION]["metasanity_script"]
-    files_list = ["bowers_et_al_2017.py", "generate-typefile.py", "table", "tsv-join"]
+                          versions[PACKAGE_VERSION]["metasanity_script"]
+    files_list = ["bowers_et_al_2017.py", "generate-typefile.py"]
     for _file in files_list:
         subprocess.run(["wget", ACCESSORIES_URL_PRE + _file, "-O", _file], check=True)
 

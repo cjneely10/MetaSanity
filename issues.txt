@@ -97,3 +97,11 @@ iss15   GTDB-Tk fails in FastANI stage
         | Pipeline fails GTDBTK step
         | GTDB-Tk update to v1.0.2
         | Issue resolved, nothing further
+
+iss16	BioMetaDB has many install issues
+		| Reported by multiple uses
+		| Create `pip` installation
+		| In testing
+
+iss17	Refactor MetaSanity for BioMetaDB `pip` installation
+		| Confirm working work all versions
