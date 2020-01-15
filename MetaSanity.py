@@ -250,6 +250,8 @@ ap = ArgParse(
          {"help": "Use PROKKA gene calls instead of prodigal search", "default": False, "action": "store_true"}),
         (("-z", "--remove_intermediates"),
          {"help": "Remove intermediary genome directories, default: False", "default": False, "action": "store_true"}),
+        (("-v", "--version"),
+         {"help": "Print version of MetaSanity and exit", "default": False, "action": "store_true"})
     ),
     description=ArgParse.description_builder(
         "MetaSanity:\tRun meta/genomes evaluation and annotation pipelines",
@@ -265,6 +267,10 @@ ap = ArgParse(
         }
     )
 )
+
+if ap.args.version:
+    print("MetaSanity version %s" % VERSION)
+    exit(0)
 
 # Config file read in
 cfg = RawConfigParser()
