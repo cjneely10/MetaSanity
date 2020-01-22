@@ -3,4 +3,3 @@ argparse
 luigi
 configparser
 Cython
-BioMetaDB>=0.1.2.62

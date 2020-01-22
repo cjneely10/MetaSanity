@@ -27,7 +27,7 @@ versions = {
         "metasanity_script": "v0.0.5"
     },
     "v1.2.0": {
-        "biometadb": "v0.1.3",
+        "biometadb": "v0.1.3.0",
         "metasanity_docker": "v0.1.2",
         "metasanity_script": "v0.0.6"
     }
@@ -263,6 +263,7 @@ def sourcecode_installation():
 
 def docker_installation():
     docker_image()
+    subprocess.run(["pip3", "install", "BioMetaDB==%s" % versions[PACKAGE_VERSION]["biometadb"]])
     # biometadb()
     scripts()
 
