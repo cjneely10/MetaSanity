@@ -223,6 +223,7 @@ def download_accessory_script():
     files_list = ["bowers_et_al_2017.py", "generate-typefile.py"]
     for _file in files_list:
         subprocess.run(["wget", ACCESSORIES_URL_PRE + _file, "-O", _file], check=True)
+        subprocess.run(["chmod", "+x", _file], check=True)
 
 
 def docker_image():
