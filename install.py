@@ -75,26 +75,13 @@ class ArgParse:
 
 
 @out_dir
-def clone_biometadb():
-    BIOMETADB_URL = "https://github.com/cjneely10/BioMetaDB.git"
-    if os.path.exists("BioMetaDB"):
-        shutil.rmtree("BioMetaDB")
-    subprocess.run(["git", "clone", BIOMETADB_URL], check=True)
-    os.chdir("BioMetaDB")
-    subprocess.run(["git", "checkout", versions[PACKAGE_VERSION]["biometadb"]], check=True)
-
-
-@out_dir
-def build_biometadb():
-    os.chdir("BioMetaDB")
-    subprocess.run(["pip3", "install", "-r", "requirements.txt"])
-    subprocess.run(["python3", "setup.py", "build_ext", "--inplace"], check=True)
-
-
-@out_dir
 def download_docker():
     DOCKER_VERSION = "cjneely10/metasanity:%s" % versions[PACKAGE_VERSION]["metasanity_docker"]
-    subprocess.run(["docker", "pull", DOCKER_VERSION], check=True)
+    try:
+        subprocess.run(["docker", "pull", DOCKER_VERSION], check=True)
+    except subprocess.CalledProcessError as e:
+        print(e.output)
+        exit(1)
 
 
 @out_dir
@@ -102,11 +89,15 @@ def download_build_sourcecode():
     METASANITY_URL = "https://github.com/cjneely10/MetaSanity.git"
     if os.path.exists("MetaSanity"):
         shutil.rmtree("MetaSanity")
-    subprocess.run(["git", "clone", METASANITY_URL], check=True)
-    os.chdir("MetaSanity")
-    subprocess.run(["git", "checkout", versions[PACKAGE_VERSION]["metasanity_script"]], check=True)
-    subprocess.run(["pip3", "install", "-r", "requirements.txt"])
-    subprocess.run(["python3", "setup.py", "build_ext", "--inplace"], check=True)
+    try:
+        subprocess.run(["git", "clone", METASANITY_URL], check=True)
+        os.chdir("MetaSanity")
+        subprocess.run(["git", "checkout", versions[PACKAGE_VERSION]["metasanity_script"]], check=True)
+        subprocess.run(["pip3", "install", "-r", "requirements.txt"])
+        subprocess.run(["python3", "setup.py", "build_ext", "--inplace"], check=True)
+    except subprocess.CalledProcessError as e:
+        print(e.output)
+        exit(1)
 
 
 @out_dir
@@ -237,11 +228,6 @@ def docker_image():
     download_docker()
 
 
-def biometadb():
-    clone_biometadb()
-    build_biometadb()
-
-
 def scripts():
     config_pull()
     pull_download_script()
@@ -257,7 +243,7 @@ def sourcecode():
 
 def sourcecode_installation():
     sourcecode()
-    biometadb()
+    subprocess.run(["pip3", "install", "BioMetaDB==%s" % versions[PACKAGE_VERSION]["biometadb"]])
     scripts()
 
 
