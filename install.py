@@ -263,7 +263,6 @@ def sourcecode_installation():
 
 def docker_installation():
     docker_image()
-    # biometadb()
     scripts()
 
 
