@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to **MetaSanity** and **BioMetaDB** will be documented in this file.
 
-## MetaSanity v1.2.0 - 01/24/2020
+## MetaSanity v1.2.0 - 01/31/2020
 
 ### BioMetaDB v1.3.0
 #### Changed
