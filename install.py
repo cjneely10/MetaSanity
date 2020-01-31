@@ -140,6 +140,7 @@ def download_metasanity():
                             's/PIPEDM_PATH = \"\/path\/to\/MetaSanity\/pipedm.py\"/PIPEDM_PATH = \"' +
                             os.path.join(os.getcwd(), 'MetaSanity/pipedm.py').replace("/", "\/") + '\"/',
                             "MetaSanity.py"])
+    subprocess.run(["chmod", "+x", "MetaSanity.py"])
 
 
 def merge_metasanity_files(old_file, template_file):
