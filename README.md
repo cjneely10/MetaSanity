@@ -51,7 +51,7 @@ optional arguments:
   -t DOWNLOAD_TYPE, --download_type DOWNLOAD_TYPE
                         Download type for scripts. Select from: Docker,SourceCode (def Docker)
   -v VERSION, --version VERSION
-                        Version to download. (def v1.1)</code></pre>
+                        Version to download. (def v1.2.0)</code></pre>
 
 ### Dependencies
 
