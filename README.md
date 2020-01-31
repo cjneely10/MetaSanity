@@ -1,8 +1,8 @@
-# MetaSanity v1.1.1 - 2020 version
+# MetaSanity v1.2.0
 
 ## About
 
-**MetaSanity v1.1.1** provides a unified workflow for genome assessment and functional annotation that combines
+**MetaSanity v1.2.0** provides a unified workflow for genome assessment and functional annotation that combines
 all outputs into a single queryable database – all within an easily distributed Docker image.
 
 ### [PhyloSanity](PhyloSanity.md)
