@@ -9,7 +9,7 @@ all outputs into a single queryable database – all within an easily distribute
 Evaluate MAGs for completion and contamination using CheckM, and evaluate redundancy using FastANI. Optionally predict phylogeny using GTDB-Tk. A final BioMetaDB project is generated, or updated, with a table that provides a summary of the results.
 
 ### [FuncSanity](FuncSanity.md)
-Provides functional annotation options through PROKKA, KEGG, InterProScan, the carbohydrate-active enzymes (CAZy) database, and the MEROPS database. Optionally, MEROPS matches can be filtered to target predicted outer membrane and extracellular proteins using PSORTb and SignalP4.1. KEGG results are processed through KEGG-Decoder to provide visual heatmaps of metabolic functions and pathways.
+Customize a functional annotation pipeline to include KEGG, PROKKA, KEGG, InterProScan, the carbohydrate-active enzymes (CAZy) database, and the MEROPS database. Optionally, MEROPS matches can be filtered to target predicted outer membrane and extracellular proteins using PSORTb and SignalP4.1. KEGG results are processed through KEGG-Decoder to provide visual heatmaps of metabolic functions and pathways.
 
 ### [BioMetaDB](https://github.com/cjneely10/BioMetaDB)
 
