@@ -192,7 +192,19 @@ def _line_split(line, phyl_loc):
         return line
     # CheckM only
     if len(phylogeny_out) == 1:
-        line[phyl_loc:phyl_loc + 1] = [line[phyl_loc].replace("k__", "")] + ["None"] * 6
+        # Possible classification
+        checkm_phyl = ["d", "p", "c", "o", "f", "g", "s"]
+        # Checkm-given classification
+        identified_phyl_idx = checkm_phyl.index(line[phyl_loc][0])
+        added_phyl = []
+        for i in range(7):
+            # Actual value if output
+            if i == identified_phyl_idx:
+                added_phyl.append(line[phyl_loc].replace(line[phyl_loc][0:3], ""))
+            # None for non-checkm output
+            else:
+                added_phyl.append("None")
+        line[phyl_loc:phyl_loc + 1] = added_phyl
         return line
     # GTDB-Tk
     int_data = [val.split("__")[1] if val.split("__")[1] != "" else "None" for val in line[phyl_loc].split(";")]
