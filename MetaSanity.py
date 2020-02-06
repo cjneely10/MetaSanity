@@ -193,7 +193,12 @@ def _line_split(line, phyl_loc):
     # CheckM only
     if len(phylogeny_out) == 1:
         # Possible classification
-        checkm_phyl = ["d", "p", "c", "o", "f", "g", "s"]
+        checkm_phyl = ["d", "k", "p", "c", "o", "f", "g", "s"]
+        # Handle kingdom Bacteria - standardize all 'Bacteria'/'Archaea' assignments to Domain level
+        if line[phyl_loc] == "k__Bacteria":
+            line[phyl_loc] = "d__Bacteria"
+        elif line[phyl_loc] == "k__Archaea":
+            line[phyl_loc] = "d__Archaea"
         # Checkm-given classification
         identified_phyl_idx = checkm_phyl.index(line[phyl_loc][0])
         added_phyl = []
