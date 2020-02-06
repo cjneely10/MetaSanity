@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to **MetaSanity** and **BioMetaDB** will be documented in this file.
 
-## MetaSanity v1.2.0 - 01/31/2020
+## MetaSanity v1.2.0 - 02/07/2020
 
 ### BioMetaDB v1.3.0
 #### Changed
@@ -12,6 +12,10 @@ All notable changes to **MetaSanity** and **BioMetaDB** will be documented in th
 ### MetaSanity-Code v0.0.6
 #### Changed
 - Refactor `install.py`, `MetaSanity.py` to use `pip3` version of BioMetaDB.
+
+#### Fixed
+- Correctly parse CheckM results into initial phylogenetic assignments.
+- Parse missing GTDB-Tk archaeal assignments.
 
 ------
 ## MetaSanity v1.1.1 - 2020 version, 01/05/2020
