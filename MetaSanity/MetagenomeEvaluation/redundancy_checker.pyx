@@ -49,13 +49,20 @@ cdef class RedundancyChecker:
     def _parse_records_to_categories(self):
         cdef dict checkm_results = CheckMParser.parse_dict(<object>self.checkm_file)
         cdef list _fastANI_results = TSVParser.parse_list(<object>self.fastani_file)
+        gtdbtk_results = {}
         if len(_fastANI_results[0]) < 2:
             _fastANI_results = TSVParser.parse_list(<object>self.fastani_file, delimiter=" ")
         cdef dict gtdbktk_results
+        # GTDB-Tk optional
+        # bac120 results
         if os.path.isfile(<object>self.gtdbtk_file):
-            gtdbktk_results = TSVParser.parse_dict(<object>self.gtdbtk_file)
-        else:
-            gtdbktk_results = {}
+            gtdbktk_results.update(TSVParser.parse_dict(<object>self.gtdbtk_file))
+        file_name = str(<object>self.gtdbtk_file)
+        file_name = os.path.join(
+            os.path.dirname(file_name),os.path.basename(file_name).split(".")[0] + ".ar122.summary.tsv")
+        # ar122 results
+        if os.path.isfile(file_name):
+            gtdbktk_results.update(TSVParser.parse_dict(file_name))
         cdef str max_completion_id
         cdef float max_completion
         cdef int i
