@@ -52,17 +52,16 @@ cdef class RedundancyChecker:
         gtdbtk_results = {}
         if len(_fastANI_results[0]) < 2:
             _fastANI_results = TSVParser.parse_list(<object>self.fastani_file, delimiter=" ")
-        cdef dict gtdbktk_results
         # GTDB-Tk optional
         # bac120 results
         if os.path.isfile(<object>self.gtdbtk_file):
-            gtdbktk_results.update(TSVParser.parse_dict(<object>self.gtdbtk_file))
+            gtdbtk_results.update(TSVParser.parse_dict(<object>self.gtdbtk_file))
         file_name = str(<object>self.gtdbtk_file)
         file_name = os.path.join(
             os.path.dirname(file_name),os.path.basename(file_name).split(".")[0] + ".ar122.summary.tsv")
         # ar122 results
         if os.path.isfile(file_name):
-            gtdbktk_results.update(TSVParser.parse_dict(file_name))
+            gtdbtk_results.update(TSVParser.parse_dict(file_name))
         cdef str max_completion_id
         cdef float max_completion
         cdef int i
@@ -90,8 +89,8 @@ cdef class RedundancyChecker:
             key_and_ext = key + self.file_ext_dict[key]
             self.output_data[key_and_ext] = {}
             # Set gtdbtk value
-            if gtdbktk_results.get(key) is not None:
-                self.output_data[key_and_ext][phylogeny_str] = gtdbktk_results.get(key)[0]
+            if gtdbtk_results.get(key) is not None:
+                self.output_data[key_and_ext][phylogeny_str] = gtdbtk_results.get(key)[0]
             else:
                 self.output_data[key_and_ext][phylogeny_str] = checkm_results.get(key)[2]
             # Initialize empty redundancy list
