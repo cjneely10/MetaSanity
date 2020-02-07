@@ -46,13 +46,13 @@ metagenome_annotation consists of:
 
 class MetagenomeAnnotationConstants:
     TABLE_NAME = "Functions"
-    TMP_TSV_OUT = "metagenome_annotation_tmp.tsv"
-    TSV_OUT = "metagenome_annotation.tsv"
-    FXNS_OUT = "metagenome_functions.tsv"
-    LIST_FILE = "metagenome_annotation.list"
-    PROJECT_NAME = "MetagenomeAnnotation"
+    TMP_TSV_OUT = "annotation_tmp.tsv"
+    TSV_OUT = "annotation.tsv"
+    FXNS_OUT = "functions.tsv"
+    LIST_FILE = "annotation.list"
+    PROJECT_NAME = "Annotation"
     PEPTIDASE = "_peptidase"
-    PIPELINE_NAME = "metagenome_annotation"
+    PIPELINE_NAME = "annotation"
     STORAGE_STRING = "Combined results"
 
 

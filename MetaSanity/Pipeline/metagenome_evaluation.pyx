@@ -20,10 +20,9 @@ Uses assembled genomes (.fna)
 
 class MetagenomeEvaluationConstants:
     TABLE_NAME = "evaluation"
-    TSV_OUT = "metagenome_evaluation.tsv"
-    LIST_FILE = "metagenome_evaluation.list"
-    PROJECT_NAME = "MetagenomeEvaluation"
-    PIPELINE_NAME = "metagenome_evaluation"
+    TSV_OUT = "evaluation.tsv"
+    LIST_FILE = "evaluation.list"
+    PIPELINE_NAME = "evaluation"
 
 
 def metagenome_evaluation(str directory, str config_file, bint cancel_autocommit, str output_directory,

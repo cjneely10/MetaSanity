@@ -295,8 +295,8 @@ cfg.optionxform = str
 cfg.read(ap.args.config_file)
 
 met_list = {
-    "PhyloSanity": "metagenome_evaluation.list",
-    "FuncSanity": "metagenome_annotation.list"
+    "PhyloSanity": "evaluation.list",
+    "FuncSanity": "annotation.list"
 }
 
 prokka_add = []
@@ -403,14 +403,14 @@ if not ap.args.cancel_autocommit and os.path.exists(os.path.join(ap.args.output_
                    if ap.args.biometadb_project != "None"
                    else cfg.get("BIOMETADB", "--db_name"))
     except:
-        db_name = "MetagenomeAnnotation"
+        db_name = "Annotation"
 
     dbdm = GetDBDMCall(BIOMETADB, db_name, ap.args.cancel_autocommit, get_added_flags(cfg, "BIOMETADB"))
     if ap.args.program == "FuncSanity":
         dbdm.run(
             "functions",
             os.path.join(ap.args.output_directory, "genomes"),
-            os.path.join(ap.args.output_directory, "metagenome_functions.tsv"),
+            os.path.join(ap.args.output_directory, "functions.tsv"),
         )
         # Begin commit individual genomes info
         # Based on file names in metagenome_annotation.list
@@ -429,23 +429,23 @@ if not ap.args.cancel_autocommit and os.path.exists(os.path.join(ap.args.output_
             dbdm.run(
                 genome_prefix,
                 os.path.join(ap.args.output_directory, "splitfiles", genome_prefix),
-                os.path.join(ap.args.output_directory, "%s.metagenome_annotation.tsv" % genome_prefix),
+                os.path.join(ap.args.output_directory, "%s.annotation.tsv" % genome_prefix),
             )
     elif ap.args.program == "PhyloSanity":
-        eval_file = os.path.join(ap.args.output_directory, "metagenome_evaluation.tsv")
+        eval_file = os.path.join(ap.args.output_directory, "evaluation.tsv")
         split_phylo_in_evaluation_file(eval_file)
         dbdm.run(
             "evaluation",
             os.path.join(ap.args.output_directory, "genomes"),
-            os.path.join(ap.args.output_directory, "metagenome_evaluation.tsv"),
+            os.path.join(ap.args.output_directory, "evaluation.tsv"),
         )
     sys.stderr.write("BioMetaDB project complete!\n")
     sys.stderr.write("MetaSanity pipeline and database creation complete!\n")
 
 if ap.args.program == "FuncSanity":
     for prefix in out_prefixes:
-        if os.path.exists(os.path.join(ap.args.output_directory, prefix + ".metagenome_annotation_tmp.tsv")):
-            os.remove(os.path.join(ap.args.output_directory, prefix + ".metagenome_annotation_tmp.tsv"))
+        if os.path.exists(os.path.join(ap.args.output_directory, prefix + ".annotation_tmp.tsv")):
+            os.remove(os.path.join(ap.args.output_directory, prefix + ".annotation_tmp.tsv"))
 
 if ap.args.remove_intermediates:
     if os.path.exists(os.path.join(ap.args.output_directory, "genomes")):

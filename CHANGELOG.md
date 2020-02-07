@@ -98,5 +98,3 @@ All notable changes to **MetaSanity** and **BioMetaDB** will be documented in th
 ------
 ## MetaSanity v1 - 10/01/2019
 First Release
-
-
