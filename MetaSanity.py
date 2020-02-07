@@ -403,7 +403,7 @@ if not ap.args.cancel_autocommit and os.path.exists(os.path.join(ap.args.output_
                    if ap.args.biometadb_project != "None"
                    else cfg.get("BIOMETADB", "--db_name"))
     except:
-        db_name = "Annotation"
+        db_name = "MSResults"
 
     dbdm = GetDBDMCall(BIOMETADB, db_name, ap.args.cancel_autocommit, get_added_flags(cfg, "BIOMETADB"))
     if ap.args.program == "FuncSanity":

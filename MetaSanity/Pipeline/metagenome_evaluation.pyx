@@ -21,6 +21,7 @@ Uses assembled genomes (.fna)
 class MetagenomeEvaluationConstants:
     TABLE_NAME = "evaluation"
     TSV_OUT = "evaluation.tsv"
+    PROJECT_NAME = "Evaluation"
     LIST_FILE = "evaluation.list"
     PIPELINE_NAME = "evaluation"
 
