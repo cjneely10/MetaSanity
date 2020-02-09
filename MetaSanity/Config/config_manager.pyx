@@ -13,7 +13,7 @@ from MetaSanity.Annotation.interproscan import InterproscanConstants
 from MetaSanity.PipelineManagement.citation_generator import CitationGenerator
 
 pipelines = {
-    "metagenome_annotation": {
+    "annotation": {
         "required": ["PRODIGAL", "HMMSEARCH", "HMMCONVERT", "HMMPRESS", "DIAMOND"],
         "peptidase": ["CAZY", "MEROPS"],
         "kegg": ["KOFAMSCAN", "BIODATA",],
@@ -21,7 +21,7 @@ pipelines = {
         "interproscan": ["INTERPROSCAN",],
         "virsorter": ["VIRSORTER",],
     },
-    "metagenome_evaluation": {
+    "evaluation": {
         "required": ["CHECKM", "FASTANI",],
         "gtdbtk": ["GTDBTK",],
     },
