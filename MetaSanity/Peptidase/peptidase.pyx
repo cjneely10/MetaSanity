@@ -12,7 +12,7 @@ cdef extern from "Python.h":
 
 class PeptidaseConstants:
     PEPTIDASE = "PEPTIDASE"
-    OUTPUT_DIRECTORY = "peptidase_results"
+    OUTPUT_DIRECTORY = "cazymerops_results"
     EXTRACELLULAR_MATCHES_EXT = ".pfam.tsv"
     EXTRACELLULAR_MATCHES_BYPROT_EXT = ".pfam.by_prot.tsv"
     MEROPS_HITS_EXT = ".merops.tsv"
