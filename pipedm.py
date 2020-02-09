@@ -64,4 +64,4 @@ if __name__ == "__main__":
         _help=_help,
         errors=errors
     )
-    pc.run(ap.args, debug=False)
+    pc.run(ap.args, debug=True)
