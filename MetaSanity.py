@@ -44,8 +44,6 @@ RNAMMER_FOLDER = "/path/to/rnammer-1.2.src"
 # # Only edit below if your database files were not gathered using the download-data.py script
 # Location of VERSIONS.json should be in installation directory
 version_data = json.load(open(os.path.join(DOWNLOAD_DIRECTORY, "VERSIONS.json"), "r"))
-# Location of BioMetaDB on system. If not used, ensure to pass `-a` flag to MetaSanity.py when running
-BIOMETADB = "dbdm"
 # Location of databases
 DOWNLOAD_DIRECTORY = os.path.join(DOWNLOAD_DIRECTORY, "databases")
 # Data downloaded from  https://data.ace.uq.edu.au/public/gtdbtk/
@@ -405,7 +403,7 @@ if not ap.args.cancel_autocommit and os.path.exists(os.path.join(ap.args.output_
     except:
         db_name = "MSResults"
 
-    dbdm = GetDBDMCall(BIOMETADB, db_name, ap.args.cancel_autocommit, get_added_flags(cfg, "BIOMETADB"))
+    dbdm = GetDBDMCall("dbdm", db_name, ap.args.cancel_autocommit, get_added_flags(cfg, "BIOMETADB"))
     if ap.args.program == "FuncSanity":
         dbdm.run(
             "functions",

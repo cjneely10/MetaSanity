@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to **MetaSanity** and **BioMetaDB** will be documented in this file.
 
-## MetaSanity v1.2.0 - 02/07/2020
+## MetaSanity v1.2.0 - 02/10/2020
 
 ### BioMetaDB v1.3.0
 #### Changed
@@ -12,6 +12,12 @@ All notable changes to **MetaSanity** and **BioMetaDB** will be documented in th
 ### MetaSanity-Code v0.0.6
 #### Changed
 - Refactor `install.py`, `MetaSanity.py` to use `pip3` version of BioMetaDB.
+- Remove option to set `BIOMETADB` path, as is now a `pip` package.
+
+---
+### MetaSanity-Docker v1.2.0
+#### Changed
+- Changed name of output folder `peptidase_results` to be `cazymerops_results`.
 
 #### Fixed
 - Correctly parse CheckM results into initial phylogenetic assignments.
