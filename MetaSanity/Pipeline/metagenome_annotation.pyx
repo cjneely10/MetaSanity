@@ -495,17 +495,17 @@ def metagenome_annotation(str directory, str config_file, bint cancel_autocommit
                 output_directory=os.path.join(output_directory, KofamScanConstants.KEGG_DIRECTORY, CombineOutputConstants.OUTPUT_DIRECTORY),
             )
         )
-        task_list.append(
-            HMMSearch(
-                calling_script_path=cfg.get(HMMSearchConstants.HMMSEARCH, ConfigManager.PATH),
-                output_directory=os.path.join(output_directory, KofamScanConstants.KEGG_DIRECTORY, HMMSearchConstants.OUTPUT_DIRECTORY),
-                out_file=CombineOutputConstants.HMM_OUTPUT_FILE,
-                fasta_file=os.path.join(output_directory, KofamScanConstants.KEGG_DIRECTORY, CombineOutputConstants.OUTPUT_DIRECTORY,
-                                        CombineOutputConstants.PROT_OUTPUT_FILE),
-                hmm_file=os.path.join(cfg.get(BioDataConstants.BIODATA, ConfigManager.PATH), BioDataConstants.HMM_PATH),
-                added_flags=cfg.build_parameter_list_from_dict(HMMSearchConstants.HMMSEARCH),
-            )
-        )
+        # task_list.append(
+        #     HMMSearch(
+        #         calling_script_path=cfg.get(HMMSearchConstants.HMMSEARCH, ConfigManager.PATH),
+        #         output_directory=os.path.join(output_directory, KofamScanConstants.KEGG_DIRECTORY, HMMSearchConstants.OUTPUT_DIRECTORY),
+        #         out_file=CombineOutputConstants.HMM_OUTPUT_FILE,
+        #         fasta_file=os.path.join(output_directory, KofamScanConstants.KEGG_DIRECTORY, CombineOutputConstants.OUTPUT_DIRECTORY,
+        #                                 CombineOutputConstants.PROT_OUTPUT_FILE),
+        #         hmm_file=os.path.join(cfg.get(BioDataConstants.BIODATA, ConfigManager.PATH), BioDataConstants.HMM_PATH),
+        #         added_flags=cfg.build_parameter_list_from_dict(HMMSearchConstants.HMMSEARCH),
+        #     )
+        # )
         task_list.append(
             BioData(
                 calling_script_path=cfg.get(BioDataConstants.BIODATA, ConfigManager.PATH),
@@ -513,9 +513,11 @@ def metagenome_annotation(str directory, str config_file, bint cancel_autocommit
                 out_prefix=BioDataConstants.OUTPUT_FILE,
                 ko_file=os.path.join(output_directory, KofamScanConstants.KEGG_DIRECTORY, CombineOutputConstants.OUTPUT_DIRECTORY,
                                      CombineOutputConstants.KO_OUTPUT_FILE),
-                hmmsearch_file=os.path.join(output_directory, KofamScanConstants.KEGG_DIRECTORY, HMMSearchConstants.OUTPUT_DIRECTORY,
-                                            CombineOutputConstants.HMM_OUTPUT_FILE),
-                is_docker=is_docker,
+                protein_fasta=os.path.join(output_directory, KofamScanConstants.KEGG_DIRECTORY, CombineOutputConstants.OUTPUT_DIRECTORY,
+                                        CombineOutputConstants.PROT_OUTPUT_FILE),
+                # hmmsearch_file=os.path.join(output_directory, KofamScanConstants.KEGG_DIRECTORY, HMMSearchConstants.OUTPUT_DIRECTORY,
+                #                             CombineOutputConstants.HMM_OUTPUT_FILE),
+                # is_docker=is_docker,
             )
         )
 
