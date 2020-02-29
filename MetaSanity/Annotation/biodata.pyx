@@ -40,7 +40,7 @@ class BioData(LuigiTaskClass):
             [
                 os.path.join(str(self.calling_script_path), "combined_caller.py"),
                 "-i", str(self.ko_file), "-p", str(self.protein_fasta),
-                "-o", os.path.join(str(self.output_directory), str(self.out_prefix) + BioDataConstants.OUTPUT_SUFFIX),
+                "-o", os.path.join(str(self.output_directory), str(self.out_prefix) + ".tsv"),
                 *self.added_flags
             ],
             check=True,
