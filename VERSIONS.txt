@@ -13,7 +13,4 @@ v1.1    0.0.4   0.1.1   0.1.1   C  "10-11-2019 Integrate Bowers et. al quality a
 v1.1.1	0.0.5	0.1.2	0.1.2	C	"iss9; iss10; iss11; iss12; iss13; iss14;
                                     BioMetaDB optimization in query; BioMetaDB store unannotated;
 									2020 version - GTDB-Tk bug fix, iss15"
-v1.2.0	0.0.6	0.1.2	0.1.3	C	"iss16; iss17"
-v2      0.1.0   0.1.1   0.1.0   P   "Add flag storage and reload option;
-									Remove need for genome directory if running 2nd step in workflow;
-									Batch-job option for calling pipeline"
+v1.2.0	0.0.6	0.1.2	0.1.3	C	"iss16; iss17; Bump GTDB-Tk version"

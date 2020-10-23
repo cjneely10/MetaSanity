@@ -80,7 +80,7 @@ def wget(url, file_name, tar=False, gzip=False):
 
 @make_dirs("gtdbtk")
 def gtdbtk(outdir, *args, **kwargs):
-    RELEASE_URL = "https://data.ace.uq.edu.au/public/gtdb/data/releases/release89/89.0/gtdbtk_r89_data.tar.gz"
+    RELEASE_URL = "https://data.ace.uq.edu.au/public/gtdb/data/releases/release95/95.0/auxillary_files/gtdbtk_r95_data.tar.gz"
     wget(RELEASE_URL, "gtdbtk_r89_data.tar.gz", tar=True)
 
 

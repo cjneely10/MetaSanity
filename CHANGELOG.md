@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to **MetaSanity** and **BioMetaDB** will be documented in this file.
 
+## MetaSanity v1.2.0 - 10/23/2020
+#### Changed
+- Update GTDB-Tk 95 in docker release
+
 ## MetaSanity v1.2.0 - 02/10/2020
 
 ### BioMetaDB v1.3.0
