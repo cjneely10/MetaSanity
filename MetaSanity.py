@@ -47,7 +47,7 @@ version_data = json.load(open(os.path.join(DOWNLOAD_DIRECTORY, "VERSIONS.json"),
 # Location of databases
 DOWNLOAD_DIRECTORY = os.path.join(DOWNLOAD_DIRECTORY, "databases")
 # Data downloaded from  https://data.ace.uq.edu.au/public/gtdbtk/
-GTDBTK_FOLDER = os.path.join(DOWNLOAD_DIRECTORY, "gtdbtk/release89")
+GTDBTK_FOLDER = os.path.join(DOWNLOAD_DIRECTORY, "gtdbtk/release95")
 # Extracted checkm data from  https://data.ace.uq.edu.au/public/CheckM_databases/
 CHECKM_FOLDER = os.path.join(DOWNLOAD_DIRECTORY, "checkm")
 # Directory containing extracted ko_list and profiles/ from  ftp://ftp.genome.jp/pub/db/kofam/
