@@ -43,7 +43,7 @@ The use of SignalP4.1 and RNAmmer1.2 requires accepting an additional academic l
 **MetaSanity** would not be possible without the open-source contributions of several research teams. Please include the following citations
 when using **MetaSanity**:
 
-Neely C., Graham E. D., Tully, B. J. (2020). MetaSanity: An integrated, customizable microbial genome evaluation and annotation pipeline. BioRxiv https://www.biorxiv.org/content/10.1101/789024v1.
+Neely C., Graham E. D., Tully, B. J. (2020). MetaSanity: An integrated, customizable microbial genome evaluation and annotation pipeline. Bioinformatics, Volume 36, Issue 15, 1 August 2020, Pages 4341–4344, https://doi.org/10.1093/bioinformatics/btaa512
 
 Aramaki T., Blanc-Mathieu R., Endo H., Ohkubo K., Kanehisa M., Goto S., Ogata H. (2019). KofamKOALA: KEGG ortholog assignment based on profile HMM and adaptive score threshold. bioRxiv doi: https://doi.org/10.1101/602110. 
 
