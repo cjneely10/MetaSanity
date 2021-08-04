@@ -4,12 +4,10 @@ version pipedm:v# cjneely10/metasanity:v#
 iss#    <short descr>
     | <description of error>
     - Notes
-    >>>
     | <edit>
     - Notes
     | <issue resolution> OR *| <issue failure>
     - Notes
-    <<<
 ----------------------------------------------------------------------------------------------------------------
 
 iss1    PSORTb output
@@ -102,6 +100,11 @@ iss16	BioMetaDB has many install issues
 		| Reported by multiple uses
 		| Create `pip` installation
 		| In testing
+		| Issue resolved, nothing further
 
 iss17	Refactor MetaSanity for BioMetaDB `pip` installation
 		| Confirm working work all versions
+		| Issue resolved, nothing further
+
+iss18   Begin conda installation
+        | Easy in download + make accessible to HPC users
