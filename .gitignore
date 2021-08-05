@@ -25,3 +25,7 @@ TARA*
 */*/*/target
 psortb/bio-tools-psort-all
 psortb/libpsortb-1.0
+databases
+tmp
+MetaSanity/MetaSanity.py
+MetaSanity/MetaSanity.py.prior

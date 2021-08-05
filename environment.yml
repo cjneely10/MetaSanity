@@ -3,7 +3,6 @@ channels:
   - anaconda
   - bioconda
   - conda-forge
-  - rmg
 dependencies:
   - python=3.6
   - pplacer
@@ -12,19 +11,18 @@ dependencies:
   - future
   - pip
   - virsorter
-  - gtdbtk
   - fasttree
   - Cython
   - pip
   - blast
   - pftools
   - perl
-  - glibc
   - perl-bioperl
   - perl-io-string
   - blast
   - blast-legacy
   - pip:
+    - gtdbtk
     - matplotlib
     - dendropy
     - drep

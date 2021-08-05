@@ -80,8 +80,9 @@ def wget(url, file_name, tar=False, gzip=False):
 
 @make_dirs("gtdbtk")
 def gtdbtk(outdir, *args, **kwargs):
-    RELEASE_URL = "https://data.ace.uq.edu.au/public/gtdb/data/releases/release95/95.0/auxillary_files/gtdbtk_r95_data.tar.gz"
-    wget(RELEASE_URL, "gtdbtk_r89_data.tar.gz", tar=True)
+    RELEASE_URL = "https://data.gtdb.ecogenomic.org/releases/latest/auxillary_files/gtdbtk_data.tar.gz"
+    wget(RELEASE_URL, "gtdbtk_r95_data.tar.gz")
+    subprocess.run(["tar", "-xzf", "gtdbtk_r95_data.tar.gz"], check=True)
 
 
 @make_dirs("checkm")

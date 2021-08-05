@@ -265,13 +265,16 @@ if __name__ == "__main__":
             (("-t", "--download_type"),
              {"help": "Download type for scripts. Select from: Docker,SourceCode (def Docker)", "default": "Docker"}),
             (("-v", "--version"),
-             {"help": "Version to download. (def %s)" % DEFAULT_VERSION, "default": DEFAULT_VERSION})
+             {"help": "Version to download. (def %s)" % DEFAULT_VERSION, "default": DEFAULT_VERSION}),
+            (("-o", "--output_dir"),
+             {"help": "Output location. (def %s)" % OUTDIR, "default": OUTDIR})
         ),
         description="Download MetaSanity package"
     )
 
     assert ap.args.version in versions.keys(), "Invalid version, select from {}".format(",".join(versions.keys()))
     PACKAGE_VERSION = ap.args.version
+    OUTDIR = ap.args.output_dir
     sections = ap.args.sections.split(",")
     if "docker_installation" in sections:
         VERSION = "Docker"

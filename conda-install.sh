@@ -12,11 +12,14 @@ SOURCE=$MINICONDA/etc/profile.d/conda.sh
 conda env create -f environment.yml
 source $SOURCE
 conda activate MetaSanity
-# GTDB-Tk data and finish install
-
-# CheckM data and finish install
-
-# PSortb setup
-./psortb-install.sh
+# Remaining data
+python ./download-data.py
+mkdir -p build
+mv databases build/
+# Link checkm data
+checkm data setRoot build/databases/checkm
 # Prokka setup
 conda install -y -c conda-forge -c bioconda prokka
+# MetaSanity run script setup
+python ./install.py -s download_metasanity,config_pull -t SourceCode -o build
+sed -i "s/MetaSanity\/build\///" build/MetaSanity.py
