@@ -9,6 +9,7 @@ dependencies:
   - kofamscan
   - hmmer
   - future
+  - diamond
   - pip
   - virsorter
   - fasttree

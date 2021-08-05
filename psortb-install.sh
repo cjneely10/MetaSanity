@@ -19,13 +19,11 @@ cd libpsortb-1.0
 ./configure --prefix `pwd`/build
 make
 make install
-mkdir -p tmp tmp/etc
-LIBRARY_PATH=`pwd`/tmp
-ldconfig -r "$LIBRARY_PATH"
+ldconfig
 
 # Move back to bio-tools and build
 cd ../bio-tools-psort-all
-echo -e "$CONDA_BIN\n$CONDA_BIN\n`dirname $(pwd)`" | LD_LIBRARY_PATH="$LIBRARY_PATH":"$LD_LIBRARY_PATH" perl Makefile.PL
+echo -e "$CONDA_BIN\n$CONDA_BIN\n`dirname $(pwd)`" | perl Makefile.PL
 make
 make install
 

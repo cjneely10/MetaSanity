@@ -8,9 +8,9 @@ DCODES
 PACKAGE  METASANITY_SCRIPT  METASANITY  BIOMETADB  DCODE   NOTES
 v1      0.0.3   0.1.0   0.1.0   D   "Updated CheckM - validated working PhyloSanity;
 									iss1; iss2; iss4; iss5; iss6; iss7"
-v1.1    0.0.4   0.1.1   0.1.1   C  "10-11-2019 Integrate Bowers et. al quality analyses;
+v1.1    0.0.4   0.1.1   0.1.1   D  "10-11-2019 Integrate Bowers et. al quality analyses;
 									BioMetaDB general speedups"
-v1.1.1	0.0.5	0.1.2	0.1.2	C	"iss9; iss10; iss11; iss12; iss13; iss14;
+v1.1.1	0.0.5	0.1.2	0.1.2	D	"iss9; iss10; iss11; iss12; iss13; iss14;
                                     BioMetaDB optimization in query; BioMetaDB store unannotated;
 									2020 version - GTDB-Tk bug fix, iss15"
 v1.2.0	0.0.6	0.1.2	0.1.3	C	"iss16; iss17; Bump GTDB-Tk version"
