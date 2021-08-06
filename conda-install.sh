@@ -20,6 +20,8 @@ python ./download-data.py
 mv databases build/
 # Link checkm data
 checkm data setRoot build/databases/checkm
+# Link GTDB-Tk data
+echo export GTDBTK_DATA_PATH="$(pwd)"/build/databases/gtdbtk/release202 >> ~/.bashrc
 
 # Prokka setup
 conda install -y -c conda-forge -c bioconda prokka
@@ -29,3 +31,5 @@ python ./install.py -s download_metasanity,config_pull -t SourceCode -o build
 sed -i "s/MetaSanity\/build\///" build/MetaSanity.py
 # MetaSanity build
 python setup.py build_ext --inplace
+# Additional needed files
+cp VERSIONS.json build/

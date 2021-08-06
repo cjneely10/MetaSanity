@@ -2,6 +2,7 @@
 
 import os
 from pathlib import Path
+import subprocess
 from configparser import NoSectionError, NoOptionError
 from MetaSanity.Config.config import Config
 from MetaSanity.Peptidase.cazy import CAZYConstants
@@ -149,7 +150,8 @@ class ConfigManager:
                 # Check PATH, DATA, and DATA_DICT paths
                 self.citation_generator.add(program, self.build_parameter_list_from_dict(program))
                 for key in ("PATH", "DATA", "DATA_DICT"):
-                    if key in value.keys() and not os.path.exists(str(Path(value[key]).resolve())):
+                    if key in value.keys() and (not os.path.exists(str(Path(value[key]).resolve()))
+                                                and subprocess.call(['which', value[key]]) != 0):
                         print("%s for %s not found" % (key, program))
                         exit(1)
             except NoSectionError:
