@@ -34,8 +34,8 @@ cd psort/conf/analysis/sclblast
 # Return to base MetaSanity repo dir
 cd "$CURR_DIR"
 
-# Path and location variable set
-echo export PATH="$(pwd)"/psortb/bio-tools-psort-all/psort/bin:'$PATH' >> ~/.bashrc
-echo export PSORT_ROOT="$(pwd)"/psortb >> ~/.bashrc
-echo export BLASTDIR="$CONDA_BIN" >> ~/.bashrc
-echo export PSORT_PFTOOLS="$CONDA_BIN" >> ~/.bashrc
+## Path and location variable set
+# echo export PATH="$(pwd)"/psortb/bio-tools-psort-all/psort/bin:'$PATH' >> ~/.bashrc
+# echo export PSORT_ROOT="$(pwd)"/psortb >> ~/.bashrc
+# echo export BLASTDIR="$CONDA_BIN" >> ~/.bashrc
+# echo export PSORT_PFTOOLS="$CONDA_BIN" >> ~/.bashrc
