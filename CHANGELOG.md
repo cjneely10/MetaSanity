@@ -1,6 +1,18 @@
 # Changelog
 All notable changes to **MetaSanity** and **BioMetaDB** will be documented in this file.
 
+## MetaSanity v1.3.0
+### MetaSanity-Code v0.0.7
+#### Changed
+- `PATH` variables in config file are also checked for existence using `which`.
+
+---
+### MetaSanity-Conda v1.3.0
+#### Added
+- Support for conda installation.
+    - Removes psortb installation - running is still supported, but application must be installed externally by user.
+
+---
 ## MetaSanity v1.2.0 - 10/23/2020 (version bump)
 Note that there is no version increase as no MetaSanity code is modified.
 #### Changed

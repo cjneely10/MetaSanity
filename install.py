@@ -30,6 +30,11 @@ versions = {
         "biometadb": "v0.1.3.0",
         "metasanity_docker": "v0.1.2",
         "metasanity_script": "v0.0.6"
+    },
+    "v1.3.0": {
+        "biometadb": "v0.1.3.0",
+        "metasanity_docker": "",
+        "metasanity_script": "v1.3.0"
     }
 }
 
@@ -135,7 +140,7 @@ def download_metasanity():
                         's/DOWNLOAD_DIRECTORY = \"\/path\/to\/MetaSanity\"/DOWNLOAD_DIRECTORY = \"' + os.getcwd().replace(
                             "/", "\/") + '\"/',
                         "MetaSanity.py"])
-        if VERSION == 'SourceCode':
+        if VERSION in ('SourceCode', "Conda"):
             subprocess.run(["sed", "-i",
                             's/PIPEDM_PATH = \"\/path\/to\/MetaSanity\/pipedm.py\"/PIPEDM_PATH = \"' +
                             os.path.join(os.getcwd(), 'MetaSanity/pipedm.py').replace("/", "\/") + '\"/',

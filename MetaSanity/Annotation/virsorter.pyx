@@ -41,20 +41,37 @@ class VirSorter(LuigiTaskClass):
             # if not os.path.exists(os.path.join(str(self.wdir), "virsorter-out")):
             #     os.makedirs(os.path.join(str(self.wdir), "virsorter-out"))
             if not os.path.exists(os.path.join(str(self.wdir), "virsorter-out", VirSorterConstants.DEFAULT_CSV_OUTFILE)):
-                subprocess.run(
-                    [
-                        "virsorter",
-                        "--fna",
-                        str(self.fasta_file),
-                        "--data-dir",
-                        str(self.calling_script_path),
-                        "--wdir",
-                        os.path.join(str(self.wdir), "virsorter-out"),
-                        *ending_flags,
+                try:
+                    subprocess.run(
+                        [
+                            "virsorter",
+                            "--fna",
+                            str(self.fasta_file),
+                            "--data-dir",
+                            str(self.calling_script_path),
+                            "--wdir",
+                            os.path.join(str(self.wdir), "virsorter-out"),
+                            *ending_flags,
                         ],
-                    check=True,
-                    stdout=stderr,
-                )
+                        check=True,
+                        stdout=stderr,
+                    )
+                except:
+                    subprocess.run(
+                        [
+                            "virsorter",
+                            "run", "all",
+                            "-i",
+                            str(self.fasta_file),
+                            "--data-dir",
+                            str(self.calling_script_path),
+                            "--wdir",
+                            os.path.join(str(self.wdir), "virsorter-out"),
+                            *ending_flags,
+                        ],
+                        check=True,
+                        stdout=stderr,
+                    )
                 parse_virsorter_to_dbdm_tsv(
                     os.path.join(str(self.wdir), "virsorter-out", VirSorterConstants.DEFAULT_CSV_OUTFILE),
                     str(self.fasta_file),

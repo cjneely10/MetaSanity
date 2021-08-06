@@ -27,9 +27,10 @@ echo export GTDBTK_DATA_PATH="$(pwd)"/build/databases/gtdbtk/release202 >> ~/.ba
 conda install -y -c conda-forge -c bioconda prokka
 
 # MetaSanity run script setup
-python ./install.py -s download_metasanity,config_pull -t SourceCode -o build
-sed -i "s/MetaSanity\/build\///" build/MetaSanity.py
+python ./install.py -s download_metasanity,config_pull -t SourceCode -o build -v Conda
 # MetaSanity build
 python setup.py build_ext --inplace
-# Additional needed files
+# Additional needed files and path updates
 cp VERSIONS.json build/
+sed -i "s/MetaSanity\/build\///" build/MetaSanity.py
+BUILD_PATH="$(pwd)"/build/databases/ sed "s,/path/to/,$BUILD_PATH," build/Config/Conda/*FuncSanity.ini
