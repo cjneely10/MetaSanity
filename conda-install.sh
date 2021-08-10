@@ -8,8 +8,8 @@ MINICONDA=`dirname $CONDA_DIRNAME`
 SOURCE=$MINICONDA/etc/profile.d/conda.sh
 [ ! -f $SOURCE ] && (echo "Unable to locate source directory" && exit 1)
 
-# Create conda env with most dependencies present and activate
-conda env create -f environment.yml
+# Load conda env with most dependencies present and activate
+#conda env create -f environment.yml
 source $SOURCE
 conda activate MetaSanity
 
@@ -22,7 +22,8 @@ mv databases build/
 checkm data setRoot build/databases/checkm
 # Link GTDB-Tk data
 echo export GTDBTK_DATA_PATH="$(pwd)"/build/databases/gtdbtk/release202 >> ~/.bashrc
-
+# VirSorter data
+virsorter setup -d db -j 4
 # Prokka setup
 conda install -y -c conda-forge -c bioconda prokka
 
