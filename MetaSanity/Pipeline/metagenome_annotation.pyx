@@ -1,5 +1,7 @@
 # cython: language_level=3
 import os
+from pathlib import Path
+
 import luigi
 from MetaSanity.Accessories.ops import get_prefix
 from MetaSanity.Parsers.tsv_parser import TSVParser
@@ -508,7 +510,7 @@ def metagenome_annotation(str directory, str config_file, bint cancel_autocommit
         # )
         task_list.append(
             BioData(
-                calling_script_path=cfg.get(BioDataConstants.BIODATA, ConfigManager.PATH),
+                calling_script_path=Path(__file__).parent.parent.parent.joinpath("BioData").joinpath("KEGGDecoder"),
                 output_directory=os.path.join(output_directory, KofamScanConstants.KEGG_DIRECTORY, BioDataConstants.OUTPUT_DIRECTORY),
                 out_prefix=BioDataConstants.OUTPUT_FILE,
                 ko_file=os.path.join(output_directory, KofamScanConstants.KEGG_DIRECTORY, CombineOutputConstants.OUTPUT_DIRECTORY,

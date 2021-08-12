@@ -36,3 +36,4 @@ dependencies:
     - checkm-genome
     - argparse
     - configparser
+    - plumbum
