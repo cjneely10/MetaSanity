@@ -16,19 +16,19 @@ conda activate MetaSanity
 # Create build environment
 mkdir -p build
 # Download remaining data and move to build
-python ./download-data.py
+python ./download-data.py -d checkm,gtdbtk,kofamscan,peptidase
 mv databases build/
 # Link checkm data
 checkm data setRoot build/databases/checkm
 # Link GTDB-Tk data
 echo export GTDBTK_DATA_PATH="$(pwd)"/build/databases/gtdbtk/release202 >> ~/.bashrc
 # VirSorter data
-virsorter setup -d db -j 4
+virsorter setup -d build/databases/virsorter -j 4
 # Prokka setup
 conda install -y -c conda-forge -c bioconda prokka
 
 # MetaSanity run script setup
-python ./install.py -s download_metasanity,config_pull -t SourceCode -o build -v Conda
+python ./install.py -s download_metasanity,config_pull -t Conda -o build -v v1.3.0
 # MetaSanity build
 python setup.py build_ext --inplace
 # Additional needed files and path updates
