@@ -15,9 +15,11 @@ conda activate MetaSanity
 
 # Create build environment
 mkdir -p build
-# Download remaining data and move to build
-python ./download-data.py -d checkm,gtdbtk,kofamscan,peptidase
-mv databases build/
+if [ ! -e build/databases ]; then
+  # Download remaining data and move to build
+  python ./download-data.py -d checkm,gtdbtk,kofamscan,peptidase
+  mv databases build/
+fi
 # Link checkm data
 checkm data setRoot build/databases/checkm
 # Link GTDB-Tk data
@@ -33,5 +35,10 @@ python ./install.py -s download_metasanity,config_pull -t Conda -o build -v v1.3
 python setup.py build_ext --inplace
 # Additional needed files and path updates
 cp VERSIONS.json build/
+# MetaSanity calling script path
 sed -i "s/MetaSanity\/build\///" build/MetaSanity.py
-BUILD_PATH="$(pwd)"/build/databases/ sed "s,/path/to/,$BUILD_PATH," build/Config/Conda/*FuncSanity.ini
+# Config data/program paths edit
+BUILD_PATH="$(pwd)"/build/databases/
+sed -i "s,/path/to/,$BUILD_PATH,g" build/Config/Conda/*Sanity.ini
+# Provide uid for docker users of virsorter
+sed -i "s,UID-of-user-from-etc/passwd-file,$UID," build/Config/Conda/*FuncSanity.ini
