@@ -27,7 +27,7 @@ echo export GTDBTK_DATA_PATH="$(pwd)"/build/databases/gtdbtk/release202 >> ~/.ba
 # VirSorter data
 virsorter setup -d build/databases/virsorter -j 4
 # Prokka setup
-conda install -y -c conda-forge -c bioconda prokka
+mamba install -y -c conda-forge -c bioconda prokka
 
 # MetaSanity run script setup
 python ./install.py -s download_metasanity,config_pull -t Conda -o build -v v1.3.0

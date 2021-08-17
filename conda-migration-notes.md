@@ -5,12 +5,19 @@ The following document is intended to provide a high-level overview of the diffe
 In this update, the Docker or SourceCode installations remain unchanged.
 
 ## Installation
+Ensure you have the conda package `mamba` installed in your `(base)` environment:
+
+```shell
+conda install mamba -n base -c conda-forge
+```
+
 For the conda installation, users will pull the repo and run the installation script from within their conda `(base)` environment:
 
 ```shell
 git clone https://github.com/cjneely10/MetaSanity.git
 cd MetaSanity
-conda env create -f environment.yml
+git checkout v1.3.0
+mamba env create -f environment.yml
 ./conda-install.sh
 ```
 
