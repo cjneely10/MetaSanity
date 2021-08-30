@@ -6,7 +6,7 @@ CONDA=`which conda`
 CONDA_DIRNAME=`dirname $CONDA`
 MINICONDA=`dirname $CONDA_DIRNAME`
 SOURCE=$MINICONDA/etc/profile.d/conda.sh
-[ ! -f $SOURCE ] && (echo "Unable to locate source directory" && exit 1)
+[ ! -f $SOURCE ] && (echo "Unable to locate conda installation directory" && exit 1)
 
 # Load conda env with most dependencies present and activate
 #conda env create -f environment.yml
@@ -50,3 +50,4 @@ BUILD_PATH="$(pwd)"/build/databases/
 sed -i "s,/path/to/,$BUILD_PATH,g" build/Config/Conda/*Sanity.ini
 # Provide uid for docker users of virsorter
 sed -i "s,UID-of-user-from-etc/passwd-file,$UID," build/Config/Conda/*FuncSanity.ini
+echo "Your installation is complete"
