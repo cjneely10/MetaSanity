@@ -6,7 +6,7 @@ import subprocess
 from sys import stderr
 from MetaSanity.Accessories.ops import get_prefix
 from MetaSanity.TaskClasses.luigi_task_class import LuigiTaskClass
-from MetaSanity.Parsers.virsorter_parser cimport parse_virsorter_to_dbdm_tsv
+from MetaSanity.Parsers.virsorter_parser cimport parse_virsorter_to_dbdm_tsv, parse_virsorter2_to_dbdm_tsv
 
 
 class VirSorterConstants:
@@ -116,7 +116,7 @@ class VirSorter(LuigiTaskClass):
                     check=True,
                     stdout=stderr,
                 )
-        parse_virsorter_to_dbdm_tsv(
+        parse_virsorter2_to_dbdm_tsv(
             os.path.join(str(self.wdir), "virsorter-out", VirSorterConstants.DEFAULT_CSV_OUTFILE),
             str(self.fasta_file),
             os.path.join(str(self.wdir), "virsorter-out",
