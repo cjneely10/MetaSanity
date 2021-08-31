@@ -12,12 +12,18 @@ cdef void parse_virsorter2_to_dbdm_tsv(str virsorter_file, str fasta_file, str o
     output_file = open(outfile, "w")
     with open(virsorter_file, "r") as result_ptr:
         header = {_h: i for i, _h in enumerate(next(result_ptr).rstrip("\r\n").split("\t"))}
-        output_file.write("\t".join(["Contig", "Viral", "ViralMaxScore"]))
+        output_file.write("\t".join(["Contig", "Viral", "ViralMaxScore", "ViralCount"]))
         output_file.write("\n")
         for line in result_ptr:
             line = line.rstrip("\r\n").split("\t")
-            name = line[0].split("||")[0] + os.path.splitext(fasta_file)[1]
-            output_file.write("\t".join([name, line[header["max_score_group"]], line[header["max_score"]]]))
+            contig_name_as_list = line[0].split("||")
+            name = contig_name_as_list[0] + os.path.splitext(fasta_file)[1]
+            output_file.write("\t".join([
+                name,
+                line[header["max_score_group"]],
+                line[header["max_score"]],
+                contig_name_as_list[1]
+            ]))
             output_file.write("\n")
     output_file.close()
 
