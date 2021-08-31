@@ -117,7 +117,7 @@ class VirSorter(LuigiTaskClass):
                     stdout=stderr,
                 )
         parse_virsorter2_to_dbdm_tsv(
-            os.path.join(str(self.wdir), "virsorter-out", VirSorterConstants.DEFAULT_CSV_OUTFILE),
+            os.path.join(str(self.wdir), "virsorter-out", "final-viral-score.tsv"),
             str(self.fasta_file),
             os.path.join(str(self.wdir), "virsorter-out",
                          get_prefix(str(self.fasta_file)) + "." + VirSorterConstants.ADJ_OUT_FILE)
