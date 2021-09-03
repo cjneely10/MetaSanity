@@ -1,13 +1,13 @@
-# MetaSanity v1.2.0
+# MetaSanity v1.3.0
 
 ## About
 
-**MetaSanity v1.2.0** provides a unified workflow for genome assessment and functional annotation that combines
-all outputs into a single queryable database – all within an easily distributed Docker image.
+**MetaSanity v1.3.0** provides a unified workflow for genome assessment and functional annotation that combines
+all outputs into a single queryable database.
 
 ### [Installing MetaSanity](https://github.com/cjneely10/MetaSanity/wiki/2-Installation)
-MetaSanity is available as a Docker installation and as a source code installation. Installation can be performed at the user level, limiting the need for contacting
-University IT. See the [wiki page](https://github.com/cjneely10/MetaSanity/wiki/2-Installation) for complete installation instructions.
+MetaSanity is installable through Conda.
+See the [wiki page](https://github.com/cjneely10/MetaSanity/wiki/2-Installation-Conda) for complete installation instructions.
 
 ### [PhyloSanity](https://github.com/cjneely10/MetaSanity/wiki/4-PhyloSanity)
 Evaluate MAGs for completion and contamination using CheckM, and evaluate redundancy using FastANI. Optionally predict phylogeny using GTDB-Tk.

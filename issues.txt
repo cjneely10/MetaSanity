@@ -108,3 +108,5 @@ iss17	Refactor MetaSanity for BioMetaDB `pip` installation
 
 iss18   Begin conda installation
         | Easy in download + make accessible to HPC users
+        | Conda install passes testing
+        | Issue resolved, nothing further

@@ -12,6 +12,12 @@ All notable changes to **MetaSanity** and **BioMetaDB** will be documented in th
 - Support for conda installation.
     - Removes psortb installation - running is still supported, but application must be installed externally by user.
 
+
+### MetaSanity-Docker v1.2.0
+#### PLANNED DEPRECATION
+MetaSanity will be migrating away from Docker entirely. We will no longer maintain the Docker image, and we advise users to
+update their installation to the Conda environment.
+
 ---
 ## MetaSanity v1.2.0 - 10/23/2020 (version bump)
 Note that there is no version increase as no MetaSanity code is modified.

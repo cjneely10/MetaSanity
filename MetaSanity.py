@@ -10,15 +10,14 @@ from configparser import RawConfigParser
 from argparse import RawTextHelpFormatter
 
 """
-MetaSanity v1.2.0
+MetaSanity v1.3.0
 
 
 **********
 Prior to first run:
 
 Ensure that the variable DOWNLOAD_DIRECTORY stores the correct location of MetaSanity on your system.
-If using the source code installation, ensure that the variable PIPEDM_PATH correctly points to the `pipedm.py` script
-in your MetaSanity source code.
+Ensure that the variable PIPEDM_PATH correctly points to the `pipedm.py` script in your MetaSanity directory.
 Provide valid locations for any recommended programs that you use. If you will not use a program, leave its value as is.
 
 **********
@@ -28,9 +27,9 @@ Provide valid locations for any recommended programs that you use. If you will n
 # Path to download location
 DOWNLOAD_DIRECTORY = "/path/to/MetaSanity"
 # Version installation - do not change unless using an older MetaSanity version
-VERSION = "v1.2.0"
+VERSION = "v1.3.0"
 
-# (Optional Source Code installation) Path to pipedm.py
+# Path to pipedm.py
 PIPEDM_PATH = "/path/to/MetaSanity/pipedm.py"
 
 # # Recommended program paths
@@ -56,9 +55,6 @@ KOFAM_FOLDER = os.path.join(DOWNLOAD_DIRECTORY, "kofamscan")
 PEPTIDASE_DATA_FOLDER = os.path.join(DOWNLOAD_DIRECTORY, "peptidase")
 # Extracted virsorter data from  https://github.com/simroux/VirSorter
 VIRSORTER_DATA_FOLDER = os.path.join(DOWNLOAD_DIRECTORY, "virsorter/virsorter-data")
-
-# MetaSanity version
-DOCKER_IMAGE = "cjneely10/metasanity:%s" % version_data[VERSION]["metasanity_docker"]
 
 
 class ArgParse:
@@ -306,6 +302,8 @@ cid_file_name = 'docker.pid'
 # Run docker version
 if not os.path.exists(PIPEDM_PATH):
     try:
+        # MetaSanity version
+        DOCKER_IMAGE = "cjneely10/metasanity:%s" % version_data[VERSION]["metasanity_docker"]
         subprocess.run(
             [
                 "docker",
