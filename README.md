@@ -5,6 +5,11 @@
 **MetaSanity v1.3.0** provides a unified workflow for genome assessment and functional annotation that combines
 all outputs into a single queryable database.
 
+---
+Looking to annotate large numbers of eukaryotic genomes or MAGs? Check out [EukMetaSanity](https://github.com/cjneely10/EukMetaSanity)!
+
+---
+
 ### [Installing MetaSanity](https://github.com/cjneely10/MetaSanity/wiki/2-Installation)
 MetaSanity is installable through Conda.
 See the [wiki page](https://github.com/cjneely10/MetaSanity/wiki/2-Installation-Conda) for complete installation instructions.
