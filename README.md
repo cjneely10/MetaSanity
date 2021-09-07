@@ -10,7 +10,7 @@ Looking to annotate large numbers of eukaryotic genomes or MAGs? Check out [EukM
 
 ---
 
-### [Installing MetaSanity](https://github.com/cjneely10/MetaSanity/wiki/2-Installation)
+### [Installing MetaSanity](https://github.com/cjneely10/MetaSanity/wiki/2-Installation-Conda)
 MetaSanity is installable through Conda.
 See the [wiki page](https://github.com/cjneely10/MetaSanity/wiki/2-Installation-Conda) for complete installation instructions.
 
