@@ -2,15 +2,15 @@
 set -e
 
 # Detect conda environment
-CONDA=`which conda`
-CONDA_DIRNAME=`dirname $CONDA`
-MINICONDA=`dirname $CONDA_DIRNAME`
-SOURCE=$MINICONDA/etc/profile.d/conda.sh
-[ ! -f $SOURCE ] && (echo "Unable to locate conda installation directory" && exit 1)
+CONDA="`which conda`"
+CONDA_DIRNAME="`dirname "$CONDA"`"
+MINICONDA="`dirname "$CONDA_DIRNAME"`"
+SOURCE="$MINICONDA"/etc/profile.d/conda.sh
+[ ! -f "$SOURCE" ] && (echo "Unable to locate conda installation directory" && exit 1)
 
 # Load conda env with most dependencies present and activate
 #conda env create -f environment.yml
-source $SOURCE
+source "$SOURCE"
 conda activate MetaSanity
 
 # Create build environment
