@@ -30,6 +30,7 @@ cdef class CheckMParser:
             self.records.push_back(line)
             line.clear()
             _line = next(R)
+        R.close()
 
     def get_values(self):
         cdef vector[vector[string]] values_in_file = self.records

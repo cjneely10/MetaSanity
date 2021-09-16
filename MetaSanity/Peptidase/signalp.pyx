@@ -31,6 +31,7 @@ class SignalP(LuigiTaskClass):
             data_type_flags = ["-t", "gram+"]
         else:
             data_type_flags = ["-t", "gram-"]
+        W = open(os.path.join(str(self.output_directory), str(self.outfile)), "w")
         subprocess.run(
             [
                 str(self.calling_script_path),
@@ -39,8 +40,9 @@ class SignalP(LuigiTaskClass):
                 str(self.prot_file),
             ],
             check=True,
-            stdout=open(os.path.join(str(self.output_directory), str(self.outfile)), "w"),
+            stdout=W,
         )
+        W.close()
         print("SignalP complete!")
 
     def output(self):

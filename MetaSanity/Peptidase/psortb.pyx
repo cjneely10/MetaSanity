@@ -40,6 +40,7 @@ class PSORTb(LuigiTaskClass):
         # Version was called from docker installation
         if self.is_docker:
             shutil.copy(str(self.prot_file), str(self.output_directory))
+            W = open(os.path.join(str(self.output_directory), "psortb_out"), "w")
             subprocess.run(
                 [
                     "psortb",
@@ -50,8 +51,9 @@ class PSORTb(LuigiTaskClass):
                     str(self.prot_file),
                 ],
                 check=True,
-                stdout=open(os.path.join(str(self.output_directory), "psortb_out"), "w"),
+                stdout=W,
             )
+            W.close()
             # Move results up and rename. Remove docker-created directory
             if os.path.exists(os.path.join(str(self.output_directory), "psortb_out")):
                 shutil.move(

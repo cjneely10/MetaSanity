@@ -52,6 +52,7 @@ class CombineOutput(LuigiTaskClass):
                         R = open(_f, "rb")
                         next(R)
                         _file.write(R.read())
+                        R.close()
                 _file.close()
             # Gathers headers by first lines, minus first value, to write final output.
             else:

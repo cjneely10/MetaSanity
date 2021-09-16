@@ -154,6 +154,7 @@ cdef void write_prokka_amended(str prokka_results, str outfile, str prokka_nucl_
         os.remove(out_added)
     W_added.close()
     W.close()
+    R.close()
 
 
 cdef void match_prokka_to_prodigal_and_write_tsv(str diamond_file, str prokka_annotation_tsv, str matches_file, str outfile,

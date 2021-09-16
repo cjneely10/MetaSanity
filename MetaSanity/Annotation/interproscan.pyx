@@ -58,6 +58,7 @@ class Interproscan(LuigiTaskClass):
                 check=True,
                 stdout=stderr,
             )
+            outfile.close()
         write_interproscan_amended(
             os.path.join(str(self.output_directory), str(self.out_prefix) + ".tsv"),
             os.path.join(str(self.output_directory), str(self.out_prefix) + InterproscanConstants.AMENDED_RESULTS_SUFFIX),

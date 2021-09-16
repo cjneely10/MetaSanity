@@ -41,6 +41,7 @@ class MEROPS(LuigiTaskClass):
             line = _line.split(maxsplit=1)
             if delimiter not in line[0]:
                 match_ids.add(line[0])
+        R.close()
         # Write protein sequences that match MEROPS genes
         cdef str out_file = os.path.join(str(self.output_directory), str(self.outfile))
         if os.path.exists(str(self.prot_file)) and os.path.getsize(str(self.prot_file)) != 0:

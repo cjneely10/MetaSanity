@@ -69,6 +69,7 @@ class HMMConvert(LuigiTaskClass):
             check=True,
             stdout=outfile,
         )
+        outfile.close()
         print("HMMConvert complete!")
 
     def output(self):

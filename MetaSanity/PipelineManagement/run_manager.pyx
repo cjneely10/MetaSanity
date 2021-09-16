@@ -13,6 +13,9 @@ class RunManager:
         self._line_num = 0
         self._file_pointer = open(list_file_path, "rb")
 
+    def __del__(self):
+        self._file_pointer.close()
+
     def get(self):
         """ Returns next line in file, split into assigned prefix and data files
         Increments line number for non-comment lines
