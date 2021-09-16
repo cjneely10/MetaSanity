@@ -150,6 +150,7 @@ cdef void write_prokka_amended(str prokka_results, str outfile, str prokka_nucl_
                 record[1]
             )
             out_fasta.write(FastaParser.record_to_string(record))
+            out_fasta.close()
     if not has_added:
         os.remove(out_added)
     W_added.close()

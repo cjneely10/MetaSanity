@@ -25,6 +25,7 @@ class HMMSearch(LuigiTaskClass):
         print("Running HMMSearch..........")
         if not os.path.exists(str(self.output_directory)):
             os.makedirs(str(self.output_directory))
+        W = open(os.path.join(str(self.output_directory), str(self.out_file) + ".log"), "w")
         subprocess.run(
             [
                 str(self.calling_script_path),
@@ -35,8 +36,9 @@ class HMMSearch(LuigiTaskClass):
                 str(self.fasta_file),
             ],
             check=True,
-            stdout=open(os.path.join(str(self.output_directory), str(self.out_file) + ".log"), "w")
+            stdout=W
         )
+        W.close()
         print("HMMSearch complete!")
 
     def output(self):

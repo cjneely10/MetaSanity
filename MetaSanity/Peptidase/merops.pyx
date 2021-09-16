@@ -76,4 +76,5 @@ def build_merops_dict(str file_name):
     for _line in merops_file:
         line = _line.rstrip("\r\n").split("\t")
         merops_data[line[3]] = "%s.%s" % (line[0], line[1])
+    merops_file.close()
     return merops_data
