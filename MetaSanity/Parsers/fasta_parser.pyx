@@ -32,6 +32,9 @@ cdef class FastaParser:
                                                 <string>PyUnicode_AsUTF8(delimiter),
                                                 <string>PyUnicode_AsUTF8(header))
 
+    def close(self):
+        self.file_pointer.close()
+
     def __del__(self):
         self.file_pointer.close()
         del self.file_pointer
@@ -226,6 +229,8 @@ cdef class FastaParser:
                     sorted_ids.popleft()
         except StopIteration:
             W.close()
+        W.close()
+        fp.close()
 
     @staticmethod
     def parse_list(str file_name, str delimiter = " ", str header = ">", bint is_python = True):
@@ -237,7 +242,10 @@ cdef class FastaParser:
         :param header:
         :return:
         """
-        return FastaParser(file_name, delimiter, header).get_values_as_list(is_python)
+        cdef object fp = FastaParser(file_name, delimiter, header)
+        result = fp.get_values_as_list(is_python)
+        fp.close()
+        return result
 
     @staticmethod
     def parse_dict(str file_name, str delimiter = " ", str header = ">", bint is_python = True):
@@ -249,7 +257,10 @@ cdef class FastaParser:
         :param header:
         :return:
         """
-        return FastaParser(file_name, delimiter, header).get_values_as_dict(is_python)
+        cdef object fp = FastaParser(file_name, delimiter, header)
+        result = fp.get_values_as_dict(is_python)
+        fp.close()
+        return result
 
     @staticmethod
     def write_simple(str file_name, str out_file, str delimiter = " ", str header = ">", str simplify = "", int length = 80):
@@ -271,6 +282,8 @@ cdef class FastaParser:
                 W.write(next(record_gen))
         except StopIteration:
             W.close()
+        W.close()
+        fp.close()
 
     @staticmethod
     def split(str file_name, str out_dir = "", str header = ">", str delimiter = " ", int name_len = -1):
@@ -298,8 +311,11 @@ cdef class FastaParser:
                 W = open("".join([chr(_c) for _c in out_file]), "wb")
                 W.write(FastaParser.record_to_string(record, name_len=name_len))
                 W.close()
+                fp.close()
                 out_files.append(out_file)
         except StopIteration:
+            fp.close()
+            W.close()
             return out_files
 
     @staticmethod
@@ -342,10 +358,11 @@ cdef class FastaParser:
                 record = next(record_gen)
                 if (_id != "" and (<string>record[0]).compare(<string>PyUnicode_AsUTF8(_id)) == 0) or \
                         (index != -1 and i == index):
+                    fp.close()
                     return record
                 i += 1
         except StopIteration:
-            del fp
+            fp.close()
             return None
 
     @staticmethod
@@ -357,4 +374,7 @@ cdef class FastaParser:
         :param delimiter:
         :return:
         """
-        return FastaParser(file_name, delimiter, header).get_index(True)
+        cdef object fp = FastaParser(file_name, delimiter, header)
+        result = fp.get_index(True)
+        fp.close()
+        return result
