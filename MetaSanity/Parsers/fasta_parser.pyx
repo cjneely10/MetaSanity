@@ -282,6 +282,7 @@ cdef class FastaParser:
                 W.write(next(record_gen))
         except StopIteration:
             W.close()
+            fp.close()
         W.close()
         fp.close()
 
@@ -311,7 +312,6 @@ cdef class FastaParser:
                 W = open("".join([chr(_c) for _c in out_file]), "wb")
                 W.write(FastaParser.record_to_string(record, name_len=name_len))
                 W.close()
-                fp.close()
                 out_files.append(out_file)
         except StopIteration:
             fp.close()
