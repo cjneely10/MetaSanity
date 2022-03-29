@@ -18,7 +18,8 @@ mkdir -p build
 if [ ! -e build/databases ]; then
   # Download remaining data and move to build
   cd build
-  ./download-data.sh
+  ../download-data.sh
+  cd ..
 fi
 
 # Link checkm data

@@ -23,7 +23,7 @@ function download() {
 ## Download and extract each set of required data
 
 # GTDB-Tk
-download gtdbtk https://data.gtdb.ecogenomic.org/releases/latest/auxillary_files/gtdbtk_data.tar.gz gtdbtk_r95_data.tar.gz
+download gtdbtk https://data.ace.uq.edu.au/public/gtdb/data/releases/latest/auxillary_files/gtdbtk_data.tar.gz gtdbtk_r95_data.tar.gz
 tar -xzf gtdbtk_r95_data.tar.gz
 cd ..
 
