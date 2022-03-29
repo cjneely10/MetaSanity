@@ -17,8 +17,8 @@ conda activate MetaSanity
 mkdir -p build
 if [ ! -e build/databases ]; then
   # Download remaining data and move to build
-  python ./download-data.py -d checkm,gtdbtk,kofamscan,peptidase
-  mv databases build/
+  cd build
+  ./download-data.sh
 fi
 
 # Link checkm data
