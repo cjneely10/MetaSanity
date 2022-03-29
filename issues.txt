@@ -110,3 +110,8 @@ iss18   Begin conda installation
         | Easy in download + make accessible to HPC users
         | Conda install passes testing
         | Issue resolved, nothing further
+
+iss19   Change GTDB-Tk download path
+        | Error on downloading data due to expired certificates on primary GTDB-Tk download link
+        | Issues primarily affected HPC systems
+        | Issue resolved, nothing further

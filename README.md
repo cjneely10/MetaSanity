@@ -1,8 +1,8 @@
-# MetaSanity v1.3.0
+# MetaSanity v1.3
 
 ## About
 
-**MetaSanity v1.3.0** provides a unified workflow for genome assessment and functional annotation that combines
+**MetaSanity v1.3** provides a unified workflow for genome assessment and functional annotation that combines
 all outputs into a single queryable database.
 
 ---

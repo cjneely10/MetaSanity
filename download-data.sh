@@ -28,7 +28,7 @@ tar -xzf gtdbtk_r95_data.tar.gz
 cd ..
 
 # CheckM
-download checkm https://data.ace.uq.edu.au/public/CheckM_databases/checkm_data_2015_01_16.tar.gz
+download checkm https://data.ace.uq.edu.au/public/CheckM_databases/checkm_data_2015_01_16.tar.gz checkm_data_2015_01_16.tar.gz
 tar -xzf checkm_data_2015_01_16.tar.gz
 cd ..
 

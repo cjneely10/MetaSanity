@@ -10,7 +10,7 @@ from configparser import RawConfigParser
 from argparse import RawTextHelpFormatter
 
 """
-MetaSanity v1.3.0
+MetaSanity v1.3.1
 
 
 **********
@@ -26,8 +26,8 @@ Provide valid locations for any recommended programs that you use. If you will n
 
 # Path to download location
 DOWNLOAD_DIRECTORY = "/path/to/MetaSanity"
-# Version installation - do not change unless using an older MetaSanity version
-VERSION = "v1.3.0"
+# Version installation - do not change
+VERSION = "v1.3.1"
 
 # Path to pipedm.py
 PIPEDM_PATH = "/path/to/MetaSanity/pipedm.py"
