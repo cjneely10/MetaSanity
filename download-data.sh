@@ -25,11 +25,13 @@ function download() {
 # GTDB-Tk
 download gtdbtk https://data.ace.uq.edu.au/public/gtdb/data/releases/latest/auxillary_files/gtdbtk_data.tar.gz gtdbtk_r95_data.tar.gz
 tar -xzf gtdbtk_r95_data.tar.gz
+rm gtdbtk_r95_data.tar.gz
 cd ..
 
 # CheckM
 download checkm https://data.ace.uq.edu.au/public/CheckM_databases/checkm_data_2015_01_16.tar.gz checkm_data_2015_01_16.tar.gz
 tar -xzf checkm_data_2015_01_16.tar.gz
+rm checkm_data_2015_01_16.tar.gz
 cd ..
 
 # MEROPS
@@ -48,6 +50,7 @@ cd ..
 # KofamScan profiles
 download kofamscan ftp://ftp.genome.jp/pub/db/kofam/profiles.tar.gz profiles.tar.gz
 tar -xzf profiles.tar.gz
+rm profiles.tar.gz
 cd ..
 
 # KofamScan list
