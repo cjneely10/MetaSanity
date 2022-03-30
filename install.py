@@ -8,7 +8,7 @@ from argparse import RawTextHelpFormatter
 global VERSION, PACKAGE_VERSION
 
 OUTDIR = "MetaSanity"
-DEFAULT_VERSION = "v1.2.0"
+DEFAULT_VERSION = "v1.3.1"
 
 versions = {
     "v1": {
@@ -35,6 +35,11 @@ versions = {
         "biometadb": "v0.1.3.0",
         "metasanity_docker": "",
         "metasanity_script": "v1.3.0"
+    },
+    "v1.3.1": {
+        "biometadb": "v0.1.3.0",
+        "metasanity_docker": "",
+        "metasanity_script": "v1.3.1"
     }
 }
 

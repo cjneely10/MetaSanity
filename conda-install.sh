@@ -39,7 +39,7 @@ virsorter setup -d $VIRSORTER_DATA_PATH -j 4
 mamba install -y -c conda-forge -c bioconda prokka
 
 # MetaSanity run script setup
-python ./install.py -s download_metasanity,config_pull -t Conda -o build -v v1.3.0
+python ./install.py -s download_metasanity,config_pull -t Conda -o build -v v1.3.1
 # MetaSanity build
 python setup.py build_ext --inplace
 # Additional needed files and path updates

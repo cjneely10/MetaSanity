@@ -14,7 +14,7 @@ dependencies:
   - pip
   - virsorter
   - fasttree
-  - Cython
+  - cython
   - pip
   - blast
   - pftools
